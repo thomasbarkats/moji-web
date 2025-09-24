@@ -1,23 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
+
+const STORAGE_KEY = 'kana-app-theme';
 
 export const useTheme = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  const getInitialTheme = () => {
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    return savedTheme === 'dark';
+  };
 
+  const [darkMode, setDarkMode] = useState(getInitialTheme);
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('kana-app-theme');
-    if (savedTheme !== null) {
-      setDarkMode(savedTheme === 'dark');
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('kana-app-theme', darkMode ? 'dark' : 'light');
-  }, [darkMode]);
-
-
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleDarkMode = () => {
+    setDarkMode(prev => {
+      const newMode = !prev;
+      localStorage.setItem(STORAGE_KEY, newMode ? 'dark' : 'light');
+      return newMode;
+    });
+  };
 
   const getThemeClasses = () => {
     if (darkMode) {

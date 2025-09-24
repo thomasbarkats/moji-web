@@ -184,7 +184,7 @@ function App() {
           darkMode={darkMode}
           toggleDarkMode={toggleDarkMode}
           soundMode={soundMode}
-          cycleSoundMode={cycleSoundMode}
+          cycleSoundMode={() => cycleSoundMode(true)}
           getSoundModeIcon={getSoundModeIcon}
           requiredSuccesses={requiredSuccesses}
           onRequiredSuccessesChange={handleRequiredSuccessesChange}
@@ -204,7 +204,7 @@ function App() {
           darkMode={darkMode}
           toggleDarkMode={toggleDarkMode}
           soundMode={soundMode}
-          cycleSoundMode={cycleSoundMode}
+          cycleSoundMode={() => cycleSoundMode(false)}
           getSoundModeIcon={getSoundModeIcon}
           currentKana={currentKana}
           userInput={userInput}
