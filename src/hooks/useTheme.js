@@ -2,16 +2,13 @@ import { useState, useEffect } from 'react';
 
 
 export const useTheme = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('kana-app-theme');
-    if (savedTheme) {
+    if (savedTheme !== null) {
       setDarkMode(savedTheme === 'dark');
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setDarkMode(prefersDark);
     }
   }, []);
 

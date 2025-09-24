@@ -1,5 +1,6 @@
-import { Sun, Moon } from 'lucide-react';
+import { Sun, Moon, Settings2 } from 'lucide-react';
 import { GAME_MODES, REQUIRED_SUCCESSES_LIMITS } from '../../constants';
+import { Toggle } from '../ui/Toggle';
 
 
 export const MainMenu = ({
@@ -10,6 +11,10 @@ export const MainMenu = ({
   getSoundModeIcon,
   requiredSuccesses,
   onRequiredSuccessesChange,
+  includeDakuten,
+  onToggleDakuten,
+  includeCombinations,
+  onToggleCombinations,
   onStartGame
 }) => {
   const renderModeButton = (mode, icon, label, className) => (
@@ -38,14 +43,36 @@ export const MainMenu = ({
           {renderModeButton(GAME_MODES.BOTH, 'ひカ', 'Hiragana + Katakana', 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700')}
         </div>
 
+        {/* Advanced options */}
+        <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
+          <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
+
+            <div className="px-4 divide-y divide-gray-200 dark:divide-gray-600">
+              <Toggle
+                checked={includeDakuten}
+                onChange={onToggleDakuten}
+                label="Dakuten & Handakuten"
+                theme={{ ...theme, darkMode }}
+              />
+              <Toggle
+                checked={includeCombinations}
+                onChange={onToggleCombinations}
+                label="Combinations"
+                description=""
+                theme={{ ...theme, darkMode }}
+              />
+            </div>
+          </div>
+        </div>
+
         <div className={`mt-8 p-4 ${theme.sectionBg} rounded-xl`}>
           <p className={`text-sm ${theme.textSecondary} text-center`}>
             Master each kana by getting it right {requiredSuccesses} times!
           </p>
         </div>
 
-        <div className="mt-8 flex justify-between items-center">
-          <div className="flex justify-end items-center">
+        <div className="mt-6 flex justify-between items-center">
+          <div className="flex items-center space-x-2">
             <button
               onClick={toggleDarkMode}
               className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
@@ -62,18 +89,20 @@ export const MainMenu = ({
             </button>
           </div>
 
-          <div className="flex justify-end items-center space-x-3">
+          <div className="flex items-center space-x-3">
             <label className={`text-sm font-medium ${theme.textSecondary}`}>
-              Required successes:
+              Success goal:
             </label>
-            <input
-              type="number"
-              min={REQUIRED_SUCCESSES_LIMITS.MIN}
-              max={REQUIRED_SUCCESSES_LIMITS.MAX}
-              value={requiredSuccesses}
-              onChange={onRequiredSuccessesChange}
-              className={`${theme.inputBg} ${theme.border} rounded-lg px-3 py-1 w-16 text-sm text-center focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm ${theme.text}`}
-            />
+            <div className="flex items-center space-x-2">
+              <input
+                type="number"
+                min={REQUIRED_SUCCESSES_LIMITS.MIN}
+                max={REQUIRED_SUCCESSES_LIMITS.MAX}
+                value={requiredSuccesses}
+                onChange={onRequiredSuccessesChange}
+                className={`${theme.inputBg} ${theme.border} rounded-lg px-3 py-1 w-12 text-sm text-center focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm ${theme.text}`}
+              />
+            </div>
           </div>
         </div>
       </div>

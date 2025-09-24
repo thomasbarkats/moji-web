@@ -10,6 +10,11 @@ export const GAME_MODES = {
   BOTH: 'both'
 };
 
+export const KANA_OPTIONS = {
+  DAKUTEN: 'dakuten',
+  YOON: 'yoon'
+};
+
 export const SORT_MODES = {
   FAILURES: 'failures',
   ALPHABETICAL: 'alphabetical',
@@ -29,7 +34,7 @@ export const FEEDBACK_TYPES = {
 
 export const REQUIRED_SUCCESSES_LIMITS = {
   MIN: 1,
-  MAX: 50
+  MAX: 10
 };
 
 export const TIMING = {

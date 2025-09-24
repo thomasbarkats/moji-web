@@ -1,10 +1,25 @@
-import { useState } from 'react';
-import { Speech, Volume2, VolumeX } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Speech } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
 import { SOUND_MODES } from '../constants';
 
 
+const STORAGE_KEY = 'kana-app-sound-mode';
+
 export const useSound = () => {
   const [soundMode, setSoundMode] = useState(SOUND_MODES.BOTH);
+
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem(STORAGE_KEY);
+    if (savedMode && Object.values(SOUND_MODES).includes(savedMode)) {
+      setSoundMode(savedMode);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, soundMode);
+  }, [soundMode]);
 
 
   const cycleSoundMode = () => {

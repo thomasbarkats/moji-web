@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { MainMenu, GamePlay, Summary } from './components/game';
-import { useTheme, useKanaData, useSound } from './hooks';
+import { useTheme, useKanaData, useSound, useUserPreferences } from './hooks';
 import { getSortedStats } from './services/statsService';
 import {
   getAllKanaForMode,
@@ -20,13 +20,11 @@ import {
 
 
 function App() {
-  // Hooks
   const { darkMode, toggleDarkMode, theme } = useTheme();
   const kanaData = useKanaData();
   const { soundMode, cycleSoundMode, getSoundModeIcon } = useSound();
+  const { preferences, updatePreferences } = useUserPreferences();
 
-
-  // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
   const [gameMode, setGameMode] = useState('');
   const [currentKana, setCurrentKana] = useState(null);
@@ -35,12 +33,31 @@ function App() {
   const [sessionStats, setSessionStats] = useState({});
   const [sortBy, setSortBy] = useState(SORT_MODES.FAILURES);
   const [startTime, setStartTime] = useState(null);
-  const [requiredSuccesses, setRequiredSuccesses] = useState(3);
   const [feedback, setFeedback] = useState(null);
   const currentKanaStartRef = useRef(null);
 
+  // Use preferences directly instead of creating separate states
+  const requiredSuccesses = preferences.requiredSuccesses;
+  const includeDakuten = preferences.includeDakuten;
+  const includeCombinations = preferences.includeCombinations;
 
-  // Initialize game
+
+  const handleRequiredSuccessesChange = (e) => {
+    const value = Math.max(
+      REQUIRED_SUCCESSES_LIMITS.MIN,
+      Math.min(REQUIRED_SUCCESSES_LIMITS.MAX, Number(e.target.value) || 1)
+    );
+    updatePreferences({ requiredSuccesses: value });
+  };
+
+  const handleToggleDakuten = (value) => {
+    updatePreferences({ includeDakuten: value });
+  };
+
+  const handleToggleCombinations = (value) => {
+    updatePreferences({ includeCombinations: value });
+  };
+
   const initializeGame = (mode) => {
     setGameMode(mode);
     setGameState(GAME_STATES.PLAYING);
@@ -48,7 +65,8 @@ function App() {
     setStartTime(Date.now());
     setFeedback(null);
 
-    const allKana = getAllKanaForMode(mode, kanaData);
+    const options = { includeDakuten, includeCombinations };
+    const allKana = getAllKanaForMode(mode, kanaData, options);
     const { initialProgress, initialStats } = initializeKanaData(allKana);
 
     setProgress(initialProgress);
@@ -57,7 +75,6 @@ function App() {
     selectNextKana(allKana, initialProgress);
   };
 
-  // Select next kana
   const selectNextKana = (allKana, currentProgress) => {
     const availableKana = allKana.filter(kana => !currentProgress[kana.char].mastered);
 
@@ -75,7 +92,6 @@ function App() {
     currentKanaStartRef.current = Date.now();
   };
 
-  // Finish session
   const finishSession = () => {
     setGameState(GAME_STATES.SUMMARY);
     setCurrentKana(null);
@@ -85,14 +101,12 @@ function App() {
     triggerConfetti();
   };
 
-  // Calculate time spent
   const calculateTimeSpent = () => {
     if (!currentKanaStartRef.current) return 0;
     const deltaMs = Date.now() - currentKanaStartRef.current;
     return Math.round(deltaMs / 1000);
   };
 
-  // Update stats
   const updateKanaStats = (kana, isCorrect, timeSpent) => {
     const newProgress = { ...progress };
     const newStats = { ...sessionStats };
@@ -118,7 +132,6 @@ function App() {
     return { newProgress, newStats };
   };
 
-  // Handle submit
   const handleSubmit = () => {
     if (!currentKana || !userInput.trim()) return;
 
@@ -145,12 +158,12 @@ function App() {
     currentKanaStartRef.current = null;
 
     setTimeout(() => {
-      const allKana = getAllKanaForMode(gameMode, kanaData);
+      const options = { includeDakuten, includeCombinations };
+      const allKana = getAllKanaForMode(gameMode, kanaData, options);
       selectNextKana(allKana, newProgress);
     }, isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY);
   };
 
-  // Reset game
   const resetGame = () => {
     setGameState(GAME_STATES.MENU);
     setGameMode('');
@@ -163,16 +176,6 @@ function App() {
     currentKanaStartRef.current = null;
   };
 
-  // Handle required successes change
-  const handleRequiredSuccessesChange = (e) => {
-    const value = Math.max(
-      REQUIRED_SUCCESSES_LIMITS.MIN,
-      Math.min(REQUIRED_SUCCESSES_LIMITS.MAX, Number(e.target.value) || 1)
-    );
-    setRequiredSuccesses(value);
-  };
-
-  // Render based on game state
   switch (gameState) {
     case GAME_STATES.MENU:
       return (
@@ -185,6 +188,10 @@ function App() {
           getSoundModeIcon={getSoundModeIcon}
           requiredSuccesses={requiredSuccesses}
           onRequiredSuccessesChange={handleRequiredSuccessesChange}
+          includeDakuten={includeDakuten}
+          onToggleDakuten={handleToggleDakuten}
+          includeCombinations={includeCombinations}
+          onToggleCombinations={handleToggleCombinations}
           onStartGame={initializeGame}
         />
       );
