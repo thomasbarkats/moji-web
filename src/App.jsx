@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { MainMenu, GamePlay, Summary } from './components/game';
+import { MainMenu, GamePlay, Summary } from './components';
 import { useTheme, useKanaData, useSound, useUserPreferences } from './hooks';
 import { getSortedStats } from './services/statsService';
 import {
@@ -38,8 +38,8 @@ function App() {
 
   // Use preferences directly instead of creating separate states
   const requiredSuccesses = preferences.requiredSuccesses;
-  const includeDakuten = preferences.includeDakuten;
-  const includeCombinations = preferences.includeCombinations;
+  const dakutenMode = preferences.dakutenMode;
+  const combinationsMode = preferences.combinationsMode;
 
 
   const handleRequiredSuccessesChange = (e) => {
@@ -50,12 +50,12 @@ function App() {
     updatePreferences({ requiredSuccesses: value });
   };
 
-  const handleToggleDakuten = (value) => {
-    updatePreferences({ includeDakuten: value });
+  const handleDakutenModeChange = (value) => {
+    updatePreferences({ dakutenMode: value });
   };
 
-  const handleToggleCombinations = (value) => {
-    updatePreferences({ includeCombinations: value });
+  const handleCombinationsModeChange = (value) => {
+    updatePreferences({ combinationsMode: value });
   };
 
   const initializeGame = (mode) => {
@@ -65,7 +65,7 @@ function App() {
     setStartTime(Date.now());
     setFeedback(null);
 
-    const options = { includeDakuten, includeCombinations };
+    const options = { dakutenMode, combinationsMode };
     const allKana = getAllKanaForMode(mode, kanaData, options);
     const { initialProgress, initialStats } = initializeKanaData(allKana);
 
@@ -158,7 +158,7 @@ function App() {
     currentKanaStartRef.current = null;
 
     setTimeout(() => {
-      const options = { includeDakuten, includeCombinations };
+      const options = { dakutenMode, combinationsMode };
       const allKana = getAllKanaForMode(gameMode, kanaData, options);
       selectNextKana(allKana, newProgress);
     }, isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY);
@@ -188,10 +188,11 @@ function App() {
           getSoundModeIcon={getSoundModeIcon}
           requiredSuccesses={requiredSuccesses}
           onRequiredSuccessesChange={handleRequiredSuccessesChange}
-          includeDakuten={includeDakuten}
-          onToggleDakuten={handleToggleDakuten}
-          includeCombinations={includeCombinations}
-          onToggleCombinations={handleToggleCombinations}
+          dakutenMode={dakutenMode}
+          onDakutenModeChange={handleDakutenModeChange}
+          combinationsMode={combinationsMode}
+          onCombinationsModeChange={handleCombinationsModeChange}
+          kanaData={kanaData}
           onStartGame={initializeGame}
         />
       );

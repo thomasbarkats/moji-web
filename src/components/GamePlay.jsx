@@ -1,8 +1,8 @@
 import { useRef, useEffect } from 'react';
 import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
-import { ProgressBar } from '../ui';
-import { FEEDBACK_TYPES } from '../../constants';
-import { formatTime } from '../../utils';
+import { ProgressBar } from '.';
+import { FEEDBACK_TYPES } from '../constants';
+import { formatTime } from '../utils';
 
 
 export const GamePlay = ({

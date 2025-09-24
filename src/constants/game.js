@@ -15,6 +15,12 @@ export const KANA_OPTIONS = {
   YOON: 'yoon'
 };
 
+export const KANA_INCLUSION = {
+  OFF: 'off',
+  ADD: 'add',
+  ONLY: 'only'
+};
+
 export const SORT_MODES = {
   FAILURES: 'failures',
   ALPHABETICAL: 'alphabetical',

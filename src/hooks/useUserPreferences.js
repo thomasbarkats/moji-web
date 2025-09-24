@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { KANA_INCLUSION } from '../constants';
 
 
 const STORAGE_KEY = 'kana-app-preferences';
@@ -6,8 +7,8 @@ const STORAGE_KEY = 'kana-app-preferences';
 export const useUserPreferences = () => {
   const defaultPreferences = {
     requiredSuccesses: 3,
-    includeDakuten: false,
-    includeCombinations: false
+    dakutenMode: KANA_INCLUSION.OFF,
+    combinationsMode: KANA_INCLUSION.OFF
   };
 
   const loadPreferences = () => {

@@ -1,8 +1,8 @@
 import { Trophy, Target, BarChart3, Clock, ChevronDown, Sun, Moon } from 'lucide-react';
-import { Button, StatsCard } from '../ui';
-import { formatTime } from '../../utils';
-import { calculateTintStyle } from '../../services/statsService';
-import { GAME_MODES } from '../../constants';
+import { Button, StatsCard } from '.';
+import { formatTime } from '../utils';
+import { calculateTintStyle } from '../services/statsService';
+import { GAME_MODES } from '../constants';
 
 
 export const Summary = ({
