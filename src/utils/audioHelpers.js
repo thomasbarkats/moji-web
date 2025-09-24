@@ -1,6 +1,5 @@
 import { SPEECH_CONFIG } from '../constants';
 
-
 export const speakKanaReading = (char) => {
   if (!('speechSynthesis' in window)) {
     console.warn('Speech synthesis not supported');
@@ -22,7 +21,7 @@ export const speakKanaReading = (char) => {
 export const playFeedbackSound = (type, soundMode) => {
   if (soundMode === 'both') {
     try {
-      new Audio(`../../assets/sounds/${type}.mp3`).play();
+      new Audio(`/sounds/${type}.mp3`).play();
     } catch (error) {
       console.warn('Could not play audio:', error);
     }
