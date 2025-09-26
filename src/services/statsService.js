@@ -43,11 +43,27 @@ export const getSortedStats = (sessionStats, sortBy) => {
 
   switch (sortBy) {
     case SORT_MODES.FAILURES:
-      return [...stats].sort((a, b) => b.failures - a.failures || a.char.localeCompare(b.char));
+      return [...stats].sort((a, b) => {
+        const failuresDiff = (b.failures || 0) - (a.failures || 0);
+        if (failuresDiff !== 0) return failuresDiff;
+        const aText = a.question || a.char || '';
+        const bText = b.question || b.char || '';
+        return aText.localeCompare(bText);
+      });
     case SORT_MODES.ALPHABETICAL:
-      return [...stats].sort((a, b) => a.char.localeCompare(b.char));
+      return [...stats].sort((a, b) => {
+        const aText = a.question || a.char || '';
+        const bText = b.question || b.char || '';
+        return aText.localeCompare(bText);
+      });
     case SORT_MODES.TIME:
-      return [...stats].sort((a, b) => (b.timeSpent || 0) - (a.timeSpent || 0) || a.char.localeCompare(b.char));
+      return [...stats].sort((a, b) => {
+        const timeDiff = (b.timeSpent || 0) - (a.timeSpent || 0);
+        if (timeDiff !== 0) return timeDiff;
+        const aText = a.question || a.char || '';
+        const bText = b.question || b.char || '';
+        return aText.localeCompare(bText);
+      });
     default:
       return stats;
   }

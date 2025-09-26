@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KANA_INCLUSION } from '../constants';
+import { KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
 
 
 const STORAGE_KEY = 'kana-app-preferences';
@@ -8,7 +8,8 @@ export const useUserPreferences = () => {
   const defaultPreferences = {
     requiredSuccesses: 3,
     dakutenMode: KANA_INCLUSION.OFF,
-    combinationsMode: KANA_INCLUSION.OFF
+    combinationsMode: KANA_INCLUSION.OFF,
+    vocabularyMode: VOCABULARY_MODES.FROM_JAPANESE
   };
 
   const loadPreferences = () => {

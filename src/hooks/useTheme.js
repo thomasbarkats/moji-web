@@ -24,6 +24,8 @@ export const useTheme = () => {
       return {
         bg: 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900',
         cardBg: 'bg-gray-800/90',
+        selectorBg: 'bg-gray-800',
+        selectorHover: 'hover:bg-gray-700',
         inputBg: 'bg-gray-700',
         progressBg: 'bg-gray-600',
         sectionBg: 'bg-gray-700',
@@ -31,6 +33,7 @@ export const useTheme = () => {
         textSecondary: 'text-gray-300',
         textMuted: 'text-gray-400',
         border: 'border-gray-600',
+        divider: 'divide-gray-600',
         inputBorder: 'border-gray-600 focus:border-blue-400',
         buttonSecondary: 'text-gray-300 hover:text-gray-100 hover:bg-gray-700',
         statsBg: {
@@ -60,6 +63,8 @@ export const useTheme = () => {
       return {
         bg: 'bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-100',
         cardBg: 'bg-white/90',
+        selectorBg: 'bg-white',
+        selectorHover: 'hover:bg-gray-100',
         inputBg: 'bg-white',
         progressBg: 'bg-gray-200',
         sectionBg: 'bg-gray-100',
@@ -67,6 +72,7 @@ export const useTheme = () => {
         textSecondary: 'text-gray-600',
         textMuted: 'text-gray-500',
         border: 'border-gray-300',
+        divider: 'divide-gray-300',
         inputBorder: 'border-gray-300 focus:border-blue-500',
         buttonSecondary: 'text-gray-500 hover:text-gray-700 hover:bg-gray-100',
         statsBg: {

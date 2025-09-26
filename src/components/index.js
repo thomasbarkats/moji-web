@@ -5,3 +5,8 @@ export { MainMenu } from './MainMenu';
 export { GamePlay } from './GamePlay';
 export { Summary } from './Summary';
 export { SegmentedControl } from './SegmentedControl';
+export { VocabularyMenu } from './VocabularyMenu';
+export { MultiSelection } from './MultiSelection';
+export { KeyboardHint } from './KeyboardHint';
+export { MenuLayout } from './MenuLayout';
+export { MenuControls } from './MenuControls';

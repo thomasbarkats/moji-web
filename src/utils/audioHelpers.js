@@ -1,6 +1,6 @@
 import { SPEECH_CONFIG } from '../constants';
 
-export const speakKanaReading = (char) => {
+export const speakKanaReading = (char, rate) => {
   if (!('speechSynthesis' in window)) {
     console.warn('Speech synthesis not supported');
     return;
@@ -11,7 +11,7 @@ export const speakKanaReading = (char) => {
 
   const utterance = new SpeechSynthesisUtterance(char);
   utterance.lang = SPEECH_CONFIG.JAPANESE.lang;
-  utterance.rate = SPEECH_CONFIG.JAPANESE.rate;
+  utterance.rate = rate || SPEECH_CONFIG.JAPANESE.rate;
   utterance.pitch = SPEECH_CONFIG.JAPANESE.pitch;
   utterance.volume = SPEECH_CONFIG.JAPANESE.volume;
 

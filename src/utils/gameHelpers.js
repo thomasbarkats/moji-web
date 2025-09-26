@@ -1,4 +1,4 @@
-import { KANA_INCLUSION } from '../constants';
+import { KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
 
 
 export const formatTime = (seconds) => {
@@ -53,7 +53,30 @@ export const initializeKanaData = (allKana) => {
 
   allKana.forEach(kana => {
     initialProgress[kana.char] = { successes: 0, failures: 0, mastered: false };
-    initialStats[kana.char] = { ...kana, failures: 0, successes: 0, timeSpent: 0 };
+    initialStats[kana.char] = { question: kana.char, answer: kana.reading, failures: 0, successes: 0, timeSpent: 0 };
+  });
+
+  return { initialProgress, initialStats };
+};
+
+export const initializeVocabularyData = (words, vocabularyMode) => {
+  const initialProgress = {};
+  const initialStats = {};
+
+  words.forEach(word => {
+    const key = word.japanese;
+    initialProgress[key] = {
+      successes: 0,
+      failures: 0,
+      mastered: false
+    };
+    initialStats[key] = {
+      question: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.japanese : word.translation,
+      answer: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.translation : word.japanese,
+      successes: 0,
+      failures: 0,
+      timeSpent: 0
+    };
   });
 
   return { initialProgress, initialStats };

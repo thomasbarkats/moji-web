@@ -1,0 +1,106 @@
+import { VOCABULARY_MODES } from '../constants';
+import { MenuLayout, MenuControls, MultiSelection, SegmentedControl } from './';
+
+
+export const VocabularyMenu = ({
+  theme,
+  darkMode,
+  toggleDarkMode,
+  cycleSoundMode,
+  getSoundModeIcon,
+  requiredSuccesses,
+  onRequiredSuccessesChange,
+  selectedLists,
+  onSelectedListsChange,
+  vocabularyMode,
+  onVocabularyModeChange,
+  vocabularyLists,
+  onSwitchToKana,
+  onStartGame
+}) => {
+  const listOptions = Object.entries(vocabularyLists).map(([key, list]) => ({
+    value: key,
+    label: list.name,
+    count: list.words.length
+  }));
+
+  const modeOptions = [
+    {
+      value: VOCABULARY_MODES.TO_JAPANESE,
+      label: 'FR → JP',
+      tooltip: 'Type Japanese from French'
+    },
+    {
+      value: VOCABULARY_MODES.FROM_JAPANESE,
+      label: 'JP → FR',
+      tooltip: 'Type French from Japanese'
+    }
+  ];
+
+  const totalWords = selectedLists.reduce((sum, listKey) => {
+    return sum + (vocabularyLists[listKey]?.words.length || 0);
+  }, 0);
+
+
+  return (
+    <MenuLayout
+      theme={theme}
+      darkMode={darkMode}
+      title="語彙学習"
+      subtitle="Vocabulary Learning"
+      onPrevious={onSwitchToKana}
+      previousTooltip="Switch to Kana Learning"
+    >
+      <div className="space-y-4">
+        <MultiSelection
+          options={listOptions}
+          selectedValues={selectedLists}
+          onChange={onSelectedListsChange}
+          placeholder="Select vocabulary lists..."
+          theme={theme}
+        />
+
+        {selectedLists.length > 0 && (
+          <button
+            onClick={onStartGame}
+            className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
+          >
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col text-left mb-1">
+                <span className="text-lg">Start Practice</span>
+                <div className="text-xs opacity-80">
+                  {totalWords} words selected
+                </div>
+              </div>
+            </div>
+          </button>
+        )}
+      </div>
+
+      {/* Advanced options */}
+      <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
+        <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
+          <div className={`px-4 divide-y ${theme.divider}`}>
+            <SegmentedControl
+              value={vocabularyMode}
+              onChange={onVocabularyModeChange}
+              options={modeOptions}
+              label="Reading and typing"
+              theme={{ ...theme, darkMode }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <MenuControls
+        theme={theme}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+        cycleSoundMode={cycleSoundMode}
+        getSoundModeIcon={getSoundModeIcon}
+        requiredSuccesses={requiredSuccesses}
+        onRequiredSuccessesChange={onRequiredSuccessesChange}
+      />
+    </MenuLayout>
+  );
+};

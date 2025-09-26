@@ -7,6 +7,7 @@ export const Button = ({ onClick, disabled, children, variant = 'primary', class
     danger: "bg-gradient-to-r from-red-500 to-pink-600 text-white hover:from-red-600 hover:to-pink-700"
   };
 
+
   return (
     <button
       onClick={onClick}

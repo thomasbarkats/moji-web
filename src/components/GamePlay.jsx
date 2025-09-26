@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
 import { ProgressBar } from '.';
-import { FEEDBACK_TYPES } from '../constants';
+import { FEEDBACK_TYPES, GAME_MODES } from '../constants';
 import { formatTime } from '../utils';
 
 
@@ -11,7 +11,7 @@ export const GamePlay = ({
   toggleDarkMode,
   cycleSoundMode,
   getSoundModeIcon,
-  currentKana,
+  currentItem,
   userInput,
   setUserInput,
   feedback,
@@ -20,29 +20,43 @@ export const GamePlay = ({
   sessionStats,
   startTime,
   onSubmit,
-  onReset
+  onReset,
+  gameMode
 }) => {
   const inputRef = useRef(null);
+  const [liveTime, setLiveTime] = useState(0);
+
 
   useEffect(() => {
     if (!feedback && inputRef.current) {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [feedback, currentKana]);
+  }, [feedback, currentItem]);
+
+
+  useEffect(() => {
+    if (!startTime) return;
+
+    const interval = setInterval(() => {
+      setLiveTime(Math.floor((Date.now() - startTime) / 1000));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [startTime]);
 
 
   const handleKeyDown = (e) => {
-    if ((e.key === 'Enter' || e.key === ' ') && !feedback) {
+    if ((e.key === 'Enter') && !feedback) {
       e.preventDefault();
       onSubmit();
     }
   };
 
+  const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
   const total = Object.values(sessionStats).length;
   const mastered = Object.values(progress).filter(p => p.mastered).length;
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
   const progressPercentage = total ? (mastered / total) * 100 : 0;
-  const liveElapsedSec = startTime ? Math.floor((Date.now() - startTime) / 1000) : 0;
 
   return (
     <div className={`min-h-screen ${theme.bg} flex items-center justify-center p-4 -mb-8`}>
@@ -51,7 +65,7 @@ export const GamePlay = ({
           <div className="flex justify-between items-center mb-4">
             <div className={`flex items-center space-x-2 ${theme.textSecondary}`}>
               <Clock className="w-4 h-4" />
-              <span className="text-sm">{formatTime(liveElapsedSec)}</span>
+              <span className="text-sm">{formatTime(liveTime)}</span>
             </div>
             <div className="flex items-center space-x-2">
               <button
@@ -85,10 +99,10 @@ export const GamePlay = ({
           </div>
         </div>
 
-        {currentKana && (
+        {currentItem && (
           <div className="text-center mb-8">
-            <div className={`text-8xl font-light ${theme.text} mb-6 select-none`}>
-              {currentKana.char}
+            <div className={`${isVocabularyMode ? 'text-5xl' : 'text-8xl'} font-light ${theme.text} select-none ${isVocabularyMode ? 'mb-8' : 'mb-6'}`}>
+              {currentItem.question}
             </div>
 
             {feedback ? (
@@ -116,7 +130,7 @@ export const GamePlay = ({
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Type the reading..."
+                  placeholder={isVocabularyMode ? "Type the translation..." : "Type the reading..."}
                   className={`w-full text-2xl text-center py-4 px-6 border-2 ${theme.inputBorder} ${theme.inputBg} ${theme.text} rounded-xl focus:ring-4 focus:ring-blue-200 outline-none transition-all`}
                   autoComplete="off"
                   disabled={feedback !== null}
@@ -130,13 +144,13 @@ export const GamePlay = ({
                 disabled={!userInput.trim()}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-8 rounded-xl hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
               >
-                Validate (Enter/Space)
+                Validate (Enter)
               </button>
             )}
 
             <div className={`mt-4 text-sm ${theme.textMuted}`}>
-              Success: {progress[currentKana.char]?.successes || 0}/{requiredSuccesses} |
-              Errors: {progress[currentKana.char]?.failures || 0}
+              Success: {progress[currentItem.question]?.successes || 0}/{requiredSuccesses} |
+              Errors: {progress[currentItem.question]?.failures || 0}
             </div>
           </div>
         )}

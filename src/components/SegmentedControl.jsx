@@ -27,11 +27,6 @@ export const SegmentedControl = ({ value, onChange, options, label, theme }) => 
           </button>
         ))}
       </div>
-      {options.find(o => o.value === value)?.description && (
-        <div className={`text-xs ${theme.textMuted}`}>
-          {options.find(o => o.value === value).description}
-        </div>
-      )}
     </div>
   );
 };

@@ -1,3 +1,8 @@
+export const APP_MODES = {
+  KANA: 'kana',
+  VOCABULARY: 'vocabulary'
+};
+
 export const GAME_STATES = {
   MENU: 'menu',
   PLAYING: 'playing',
@@ -7,7 +12,8 @@ export const GAME_STATES = {
 export const GAME_MODES = {
   HIRAGANA: 'hiragana',
   KATAKANA: 'katakana',
-  BOTH: 'both'
+  BOTH: 'both',
+  VOCABULARY: 'vocabulary'
 };
 
 export const KANA_OPTIONS = {
@@ -25,6 +31,11 @@ export const SORT_MODES = {
   FAILURES: 'failures',
   ALPHABETICAL: 'alphabetical',
   TIME: 'time'
+};
+
+export const VOCABULARY_MODES = {
+  TO_JAPANESE: 'to_japanese',
+  FROM_JAPANESE: 'from_japanese'
 };
 
 export const SOUND_MODES = {
