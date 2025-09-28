@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
 import { ProgressBar } from '.';
-import { FEEDBACK_TYPES, GAME_MODES } from '../constants';
+import { FEEDBACK_TYPES, GAME_MODES, VOCABULARY_MODES } from '../constants';
 import { formatTime } from '../utils';
 
 
@@ -21,7 +21,8 @@ export const GamePlay = ({
   startTime,
   onSubmit,
   onReset,
-  gameMode
+  gameMode,
+  vocabularyMode
 }) => {
   const inputRef = useRef(null);
   const [liveTime, setLiveTime] = useState(0);
@@ -101,7 +102,9 @@ export const GamePlay = ({
 
         {currentItem && (
           <div className="text-center mb-8">
-            <div className={`${isVocabularyMode ? 'text-5xl' : 'text-8xl'} font-light ${theme.text} select-none ${isVocabularyMode ? 'mb-8' : 'mb-6'}`}>
+            <div className={`
+              ${isVocabularyMode ? (vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? 'text-[2.5rem]' : 'text-[2rem]') : 'text-8xl'}
+              font-light ${theme.text} select-none mb-6`}>
               {currentItem.question}
             </div>
 

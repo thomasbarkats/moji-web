@@ -52,8 +52,19 @@ export const initializeKanaData = (allKana) => {
   const initialStats = {};
 
   allKana.forEach(kana => {
-    initialProgress[kana.char] = { successes: 0, failures: 0, mastered: false };
-    initialStats[kana.char] = { question: kana.char, answer: kana.reading, failures: 0, successes: 0, timeSpent: 0 };
+    initialProgress[kana.char] = {
+      successes: 0,
+      failures: 0,
+      mastered: false
+    };
+    initialStats[kana.char] = {
+      key: kana.char,
+      question: kana.char,
+      answer: kana.reading,
+      failures: 0,
+      successes: 0,
+      timeSpent: 0
+    };
   });
 
   return { initialProgress, initialStats };
@@ -71,6 +82,7 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
       mastered: false
     };
     initialStats[key] = {
+      key: word.japanese,
       question: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.japanese : word.translation,
       answer: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.translation : word.japanese,
       successes: 0,

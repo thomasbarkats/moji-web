@@ -1,4 +1,4 @@
-import { Trophy, Target, BarChart3, Clock, ChevronDown, Sun, Moon } from 'lucide-react';
+import { Trophy, Target, BarChart3, Clock, ChevronDown } from 'lucide-react';
 import { Button, StatsCard } from '.';
 import { formatTime } from '../utils';
 import { calculateTintStyle } from '../services/statsService';
@@ -7,8 +7,6 @@ import { GAME_MODES } from '../constants';
 
 export const Summary = ({
   theme,
-  darkMode,
-  toggleDarkMode,
   gameMode,
   sessionStats,
   sortBy,
@@ -124,9 +122,9 @@ export const Summary = ({
               const bgStyle = calculateTintStyle(item, Object.values(sessionStats), sortBy, requiredSuccesses, isVocabularyMode);
 
               return (
-                <div key={item.question} className="rounded-lg p-4 transition-colors duration-200" style={bgStyle}>
+                <div key={item.key} className="rounded-lg p-4 transition-colors duration-200" style={bgStyle}>
                   <div className="flex items-center justify-between mb-2">
-                    <span className={`${isVocabularyMode ? 'text-lg font-medium' : 'text-3xl'} ${theme.text}`}>
+                    <span className={`${isVocabularyMode ? 'text-md font-medium' : 'text-3xl'} ${theme.text}`}>
                       {item.question}
                     </span>
                     <span className={`text-sm ${theme.textSecondary} ${isVocabularyMode ? 'max-w-[50%] text-right' : ''}`}>

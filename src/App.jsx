@@ -161,6 +161,12 @@ function App() {
     };
 
     setCurrentItem(newItem);
+
+    if ((soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
+      vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE) {
+      setTimeout(() => speakKanaReading(nextWord.japanese, 1), 100);
+    }
+
     setUserInput('');
     setFeedback(null);
     currentItemStartRef.current = Date.now();
@@ -218,16 +224,6 @@ function App() {
 
     playFeedbackSound(feedbackType, soundMode);
 
-    if (soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) {
-      setTimeout(
-        () => speakKanaReading(
-          (isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE) ? currentItem.answer : currentItem.question,
-          isVocabularyMode ? 1 : 0.5,
-        ),
-        (isCorrect && !isVocabularyMode) ? 200 : 400
-      );
-    }
-
     setFeedback({
       type: feedbackType,
       correctAnswer: correctAnswer,
@@ -240,15 +236,33 @@ function App() {
 
     currentItemStartRef.current = null;
 
-    setTimeout(() => {
-      if (isVocabularyMode) {
-        selectNextVocabularyWord(currentVocabularyWords, newProgress);
-      } else {
-        const options = { dakutenMode, combinationsMode };
-        const allKana = getAllKanaForMode(gameMode, kanaData, options);
-        selectNextKana(allKana, newProgress);
-      }
-    }, isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY);
+    const shouldPlaySpeech = (soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
+      !(isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE);
+
+    if (shouldPlaySpeech) {
+      const textToSpeak = (isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE) ? currentItem.answer : currentItem.question;
+      const speechDelay = (isCorrect && !isVocabularyMode) ? 200 : 400;
+
+      setTimeout(() => {
+        speakKanaReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
+          proceedToNextItem(newProgress);
+        });
+      }, speechDelay);
+    } else {
+      setTimeout(() => {
+        proceedToNextItem(newProgress);
+      }, isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY);
+    }
+  };
+
+  const proceedToNextItem = (newProgress) => {
+    if (gameMode === GAME_MODES.VOCABULARY) {
+      selectNextVocabularyWord(currentVocabularyWords, newProgress);
+    } else {
+      const options = { dakutenMode, combinationsMode };
+      const allKana = getAllKanaForMode(gameMode, kanaData, options);
+      selectNextKana(allKana, newProgress);
+    }
   };
 
   const resetGame = () => {
@@ -319,6 +333,7 @@ function App() {
       return (
         <GamePlay
           gameMode={gameMode}
+          vocabularyMode={vocabularyMode}
           theme={theme}
           darkMode={darkMode}
           toggleDarkMode={toggleDarkMode}
