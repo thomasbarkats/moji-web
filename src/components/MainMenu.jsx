@@ -1,25 +1,27 @@
 import { useState } from 'react';
+import { useGameContext } from '../contexts/GameContext';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { useTheme, useSound, useGameLogic } from '../hooks';
 import { GAME_MODES, KANA_INCLUSION } from '../constants';
 import { getAllKanaForMode } from '../utils';
 import { MenuLayout, MenuControls, SegmentedControl } from './';
 
 
-export const MainMenu = ({
-  theme,
-  darkMode,
-  toggleDarkMode,
-  cycleSoundMode,
-  getSoundModeIcon,
-  requiredSuccesses,
-  onRequiredSuccessesChange,
-  dakutenMode,
-  onDakutenModeChange,
-  combinationsMode,
-  onCombinationsModeChange,
-  onStartGame,
-  onSwitchToVocabulary,
-  kanaData,
-}) => {
+export const MainMenu = () => {
+  const { theme, darkMode, toggleDarkMode } = useTheme();
+  const { cycleSoundMode, getSoundModeIcon } = useSound();
+  const { kanaData, switchToVocabulary } = useGameContext();
+  const { initializeGame } = useGameLogic();
+
+  const {
+    requiredSuccesses,
+    dakutenMode,
+    combinationsMode,
+    handleRequiredSuccessesChange,
+    handleDakutenModeChange,
+    handleCombinationsModeChange,
+  } = usePreferences();
+
   const [dakutenOnDisabled, setDakutenOnDisabled] = useState(combinationsMode === KANA_INCLUSION.ONLY);
   const [combinationOnDisabled, setCombinationOnDisabled] = useState(dakutenMode === KANA_INCLUSION.ONLY);
 
@@ -40,27 +42,26 @@ export const MainMenu = ({
     ];
   };
 
-  const handleDakutenModeChange = (value) => {
+  const handleLocalDakutenModeChange = (value) => {
     setCombinationOnDisabled(value === KANA_INCLUSION.ONLY);
     if (value === KANA_INCLUSION.ONLY && combinationsMode === KANA_INCLUSION.ADD) {
-      onCombinationsModeChange(KANA_INCLUSION.OFF);
+      handleCombinationsModeChange(KANA_INCLUSION.OFF);
     }
-    onDakutenModeChange(value);
+    handleDakutenModeChange(value);
   };
 
-  const handleCombinationsModeChange = (value) => {
+  const handleLocalCombinationsModeChange = (value) => {
     setDakutenOnDisabled(value === KANA_INCLUSION.ONLY);
     if (value === KANA_INCLUSION.ONLY && dakutenMode === KANA_INCLUSION.ADD) {
-      onDakutenModeChange(KANA_INCLUSION.OFF);
+      handleDakutenModeChange(KANA_INCLUSION.OFF);
     }
-    onCombinationsModeChange(value);
+    handleCombinationsModeChange(value);
   };
-
 
   const renderModeButton = (mode, icon, label, className) => {
     return (
       <button
-        onClick={() => onStartGame(mode)}
+        onClick={() => initializeGame(mode)}
         className={`w-full ${className} text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer relative`}
       >
         <div className="flex items-center justify-center">
@@ -77,14 +78,13 @@ export const MainMenu = ({
     );
   };
 
-
   return (
     <MenuLayout
       theme={theme}
       darkMode={darkMode}
       title="学習カナ"
       subtitle="Kana Learning"
-      onNext={onSwitchToVocabulary}
+      onNext={switchToVocabulary}
       nextTooltip="Switch to Vocabulary Learning"
     >
       <div className="space-y-4">
@@ -101,14 +101,14 @@ export const MainMenu = ({
           <div className={`px-4 divide-y ${theme.divider}`}>
             <SegmentedControl
               value={dakutenMode}
-              onChange={handleDakutenModeChange}
+              onChange={handleLocalDakutenModeChange}
               options={getDakutenOptions()}
               label="Dakuten & Handakuten"
               theme={{ ...theme, darkMode }}
             />
             <SegmentedControl
               value={combinationsMode}
-              onChange={handleCombinationsModeChange}
+              onChange={handleLocalCombinationsModeChange}
               options={getCombinationsOptions()}
               label="Combinations"
               theme={{ ...theme, darkMode }}
@@ -124,7 +124,7 @@ export const MainMenu = ({
         cycleSoundMode={cycleSoundMode}
         getSoundModeIcon={getSoundModeIcon}
         requiredSuccesses={requiredSuccesses}
-        onRequiredSuccessesChange={onRequiredSuccessesChange}
+        onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
     </MenuLayout>
   );

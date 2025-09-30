@@ -1,31 +1,29 @@
 import { Trophy, Target, BarChart3, Clock, ChevronDown } from 'lucide-react';
+import { useGameContext } from '../contexts/GameContext';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { useTheme } from '../hooks';
 import { Button, StatsCard } from '.';
 import { formatTime } from '../utils';
 import { calculateTintStyle } from '../services/statsService';
 import { GAME_MODES } from '../constants';
 
 
-export const Summary = ({
-  theme,
-  gameMode,
-  sessionStats,
-  sortBy,
-  setSortBy,
-  sortedStats,
-  requiredSuccesses,
-  onNewSession,
-  onRestartSameMode
-}) => {
+export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
+  const { theme } = useTheme();
+  const { gameMode, sessionStats, sortBy, setSortBy } = useGameContext();
+  const { requiredSuccesses } = usePreferences();
+
+
   const total = Object.values(sessionStats).length;
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
   const elapsedTime = Object.values(sessionStats).reduce((sum, s) => sum + (s.timeSpent || 0), 0);
   const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
 
+
   const getFinalSummaryText = () => {
     if (isVocabularyMode) {
       return 'You have mastered all the vocabulary words in this session';
     }
-
     switch (gameMode) {
       case GAME_MODES.HIRAGANA:
         return 'You have mastered all the hiragana in this session';

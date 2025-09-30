@@ -1,29 +1,30 @@
 import { useRef, useEffect, useState } from 'react';
 import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
+import { useGameContext } from '../contexts/GameContext';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { useTheme, useSound, useGameActions } from '../hooks';
 import { ProgressBar } from '.';
 import { FEEDBACK_TYPES, GAME_MODES, VOCABULARY_MODES } from '../constants';
 import { formatTime } from '../utils';
 
 
-export const GamePlay = ({
-  theme,
-  darkMode,
-  toggleDarkMode,
-  cycleSoundMode,
-  getSoundModeIcon,
-  currentItem,
-  userInput,
-  setUserInput,
-  feedback,
-  progress,
-  requiredSuccesses,
-  sessionStats,
-  startTime,
-  onSubmit,
-  onReset,
-  gameMode,
-  vocabularyMode
-}) => {
+export const GamePlay = () => {
+  const { theme, darkMode, toggleDarkMode } = useTheme();
+  const { cycleSoundMode, getSoundModeIcon } = useSound();
+  const { requiredSuccesses, vocabularyMode } = usePreferences();
+  const { handleSubmit, resetGame } = useGameActions();
+
+  const {
+    gameMode,
+    currentItem,
+    userInput,
+    setUserInput,
+    feedback,
+    progress,
+    sessionStats,
+    startTime,
+  } = useGameContext();
+
   const inputRef = useRef(null);
   const [liveTime, setLiveTime] = useState(0);
 
@@ -33,7 +34,6 @@ export const GamePlay = ({
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [feedback, currentItem]);
-
 
   useEffect(() => {
     if (!startTime) return;
@@ -49,7 +49,7 @@ export const GamePlay = ({
   const handleKeyDown = (e) => {
     if ((e.key === 'Enter') && !feedback) {
       e.preventDefault();
-      onSubmit();
+      handleSubmit();
     }
   };
 
@@ -84,7 +84,7 @@ export const GamePlay = ({
                 {getSoundModeIcon().icon}
               </button>
               <button
-                onClick={onReset}
+                onClick={resetGame}
                 className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
               >
                 <RefreshCw className="w-5 h-5" />
@@ -143,7 +143,7 @@ export const GamePlay = ({
 
             {!feedback && (
               <button
-                onClick={onSubmit}
+                onClick={handleSubmit}
                 disabled={!userInput.trim()}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-8 rounded-xl hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
               >

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 const VOCABULARY_LISTS = {
   'premiers-kanji': 'Premiers mots en kanji',
   'formules-politesse': 'Les formules de politesse',
+  'materiel-domestique': 'Le matériel domestique',
+  'pays': 'Les pays',
 };
 
 export const useVocabularyData = (language = 'fr') => {

@@ -1,23 +1,24 @@
+import { useGameContext } from '../contexts/GameContext';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { useTheme, useSound, useVocabularyGameLogic } from '../hooks';
 import { VOCABULARY_MODES } from '../constants';
 import { MenuLayout, MenuControls, MultiSelection, SegmentedControl } from './';
 
 
-export const VocabularyMenu = ({
-  theme,
-  darkMode,
-  toggleDarkMode,
-  cycleSoundMode,
-  getSoundModeIcon,
-  requiredSuccesses,
-  onRequiredSuccessesChange,
-  selectedLists,
-  onSelectedListsChange,
-  vocabularyMode,
-  onVocabularyModeChange,
-  vocabularyLists,
-  onSwitchToKana,
-  onStartGame
-}) => {
+export const VocabularyMenu = () => {
+  const { theme, darkMode, toggleDarkMode } = useTheme();
+  const { cycleSoundMode, getSoundModeIcon } = useSound();
+  const { vocabularyLists, selectedLists, setSelectedLists, switchToKana } = useGameContext();
+  const { initializeVocabularyGame } = useVocabularyGameLogic();
+
+  const {
+    requiredSuccesses,
+    vocabularyMode,
+    handleRequiredSuccessesChange,
+    handleVocabularyModeChange,
+  } = usePreferences();
+
+
   const listOptions = Object.entries(vocabularyLists).map(([key, list]) => ({
     value: key,
     label: list.name,
@@ -41,28 +42,27 @@ export const VocabularyMenu = ({
     return sum + (vocabularyLists[listKey]?.words.length || 0);
   }, 0);
 
-
   return (
     <MenuLayout
       theme={theme}
       darkMode={darkMode}
       title="語彙学習"
       subtitle="Vocabulary Learning"
-      onPrevious={onSwitchToKana}
+      onPrevious={switchToKana}
       previousTooltip="Switch to Kana Learning"
     >
       <div className="space-y-4">
         <MultiSelection
           options={listOptions}
           selectedValues={selectedLists}
-          onChange={onSelectedListsChange}
+          onChange={setSelectedLists}
           placeholder="Select vocabulary lists..."
           theme={theme}
         />
 
         {selectedLists.length > 0 && (
           <button
-            onClick={onStartGame}
+            onClick={() => initializeVocabularyGame(selectedLists)}
             className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
           >
             <div className="flex items-center justify-center">
@@ -83,7 +83,7 @@ export const VocabularyMenu = ({
           <div className={`px-4 divide-y ${theme.divider}`}>
             <SegmentedControl
               value={vocabularyMode}
-              onChange={onVocabularyModeChange}
+              onChange={handleVocabularyModeChange}
               options={modeOptions}
               label="Reading and typing"
               theme={{ ...theme, darkMode }}
@@ -99,7 +99,7 @@ export const VocabularyMenu = ({
         cycleSoundMode={cycleSoundMode}
         getSoundModeIcon={getSoundModeIcon}
         requiredSuccesses={requiredSuccesses}
-        onRequiredSuccessesChange={onRequiredSuccessesChange}
+        onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
     </MenuLayout>
   );

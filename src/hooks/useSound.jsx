@@ -16,7 +16,7 @@ export const useSound = () => {
 
   const [soundMode, setSoundMode] = useState(getInitialSoundMode);
 
-  const cycleSoundMode = (fromMenu = false) => {
+  const cycleSoundMode = () => {
     setSoundMode(prev => {
       let next;
       switch (prev) {
@@ -24,17 +24,6 @@ export const useSound = () => {
         case SOUND_MODES.NONE: next = SOUND_MODES.SPEECH_ONLY; break;
         case SOUND_MODES.SPEECH_ONLY: next = SOUND_MODES.BOTH; break;
         default: next = SOUND_MODES.BOTH;
-      }
-      if (fromMenu) {
-        switch (next) {
-          case SOUND_MODES.BOTH:
-            setTimeout(() => playFeedbackSound(FEEDBACK_TYPES.SUCCESS, SOUND_MODES.BOTH), 100);
-            setTimeout(() => speakKanaReading('か'), 300);
-            break;
-          case SOUND_MODES.SPEECH_ONLY:
-            setTimeout(() => speakKanaReading('か'), 100);
-            break;
-        }
       }
       localStorage.setItem(STORAGE_KEY, next);
       return next;

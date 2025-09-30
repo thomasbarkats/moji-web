@@ -1,0 +1,23 @@
+{
+  "ベッド": "lit",
+  "ソファー": "canapé",
+  "ペン": "stylo",
+  "ノート": "cahier",
+  "カレンダー": "calendrier",
+  "ラジオ": "radio",
+  "ステレオ": "chaîne hi-fi",
+  "テレビ": "TV",
+  "カメラ": "appareil photo",
+  "コンピュータ": "ordinateur",
+  "パソコン": "PC",
+  "エアコン": "clim",
+  "リモコン": "télécommande",
+  "クレジットカード": "carte de crédit",
+  "ドア": "porte",
+  "ランプ": "lampe",
+  "テーブル": "table",
+  "フォーク": "fourchette",
+  "ナイフ": "couteau",
+  "スプーン": "cuillère",
+  "トイレ": "toilettes"
+}
