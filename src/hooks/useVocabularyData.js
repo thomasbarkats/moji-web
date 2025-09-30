@@ -1,45 +1,47 @@
 import { useState, useEffect } from 'react';
 
 
-const VOCABULARY_LISTS = {
-  'premiers-kanji': 'Premiers mots en kanji',
-  'formules-politesse': 'Les formules de politesse',
-  'materiel-domestique': 'Le matériel domestique',
-  'pays': 'Les pays',
-};
-
 export const useVocabularyData = (language = 'fr') => {
   const [vocabularyLists, setVocabularyLists] = useState({});
   const [loading, setLoading] = useState(true);
-
 
   useEffect(() => {
     const loadVocabularyLists = async () => {
       const lists = {};
 
-      for (const [key, name] of Object.entries(VOCABULARY_LISTS)) {
-        try {
-          const data = await import(`../data/${language}/${key}.json`);
+      try {
+        const modules = import.meta.glob('../data/fr/*.json');
 
-          lists[key] = {
-            name,
-            words: Object.entries(data.default).map(([japanese, translation]) => ({
-              japanese,
-              translation
-            }))
-          };
-        } catch (error) {
-          console.warn(`Failed to load vocabulary list: ${key}`, error);
-        }
+        const loadPromises = Object.entries(modules).map(async ([path, importFn]) => {
+          try {
+            const data = await importFn();
+            const filename = path.split('/').pop().replace('.json', '');
+
+            if (data.default && data.default.name && data.default.words) {
+              lists[filename] = {
+                name: data.default.name,
+                words: data.default.words
+              };
+            } else {
+              console.warn(`Invalid format for vocabulary list: ${filename}`);
+            }
+          } catch (error) {
+            console.warn(`Failed to load vocabulary file: ${path}`, error);
+          }
+        });
+
+        await Promise.all(loadPromises);
+
+        setVocabularyLists(lists);
+      } catch (error) {
+        console.error('Failed to load vocabulary lists:', error);
+      } finally {
+        setLoading(false);
       }
-
-      setVocabularyLists(lists);
-      setLoading(false);
     };
 
     loadVocabularyLists();
   }, [language]);
-
 
   return { vocabularyLists, loading };
 };

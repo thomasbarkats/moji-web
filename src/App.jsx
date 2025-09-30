@@ -1,7 +1,6 @@
 import { MainMenu, GamePlay, Summary, VocabularyMenu, KeyboardHint } from './components';
 import { useTheme } from './hooks';
 import { useGameContext } from './contexts/GameContext';
-import { usePreferences } from './contexts/PreferencesContext';
 import { useGameLogic } from './hooks/useGameLogic';
 import { useVocabularyGameLogic } from './hooks/useVocabularyGameLogic';
 import { useGameActions } from './hooks/useGameActions';
@@ -19,6 +18,7 @@ function App() {
     selectedLists,
     sessionStats,
     sortBy,
+    currentVocabularyWords,
   } = useGameContext();
 
   const { initializeGame } = useGameLogic();
@@ -51,12 +51,12 @@ function App() {
       return (
         <Summary
           onNewSession={resetGame}
-          onRestartSameMode={() => 
-            gameMode === GAME_MODES.VOCABULARY 
-              ? initializeVocabularyGame(selectedLists) 
+          onRestartSameMode={() =>
+            gameMode === GAME_MODES.VOCABULARY
+              ? initializeVocabularyGame(selectedLists)
               : initializeGame(gameMode)
           }
-          sortedStats={getSortedStats(sessionStats, sortBy)}
+          sortedStats={getSortedStats(sessionStats, sortBy, currentVocabularyWords)}
         />
       );
 

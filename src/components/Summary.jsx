@@ -120,7 +120,12 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
               const bgStyle = calculateTintStyle(item, Object.values(sessionStats), sortBy, requiredSuccesses, isVocabularyMode);
 
               return (
-                <div key={item.key} className="rounded-lg p-4 transition-colors duration-200" style={bgStyle}>
+                <div 
+                  key={item.key} 
+                  className={`rounded-lg p-4 transition-colors duration-200 ${item.infoText ? 'cursor-help' : ''}`}
+                  style={bgStyle}
+                  title={item.infoText || ''}
+                >
                   <div className="flex items-center justify-between mb-2">
                     <span className={`${isVocabularyMode ? 'text-md font-medium' : 'text-3xl'} ${theme.text}`}>
                       {item.question}

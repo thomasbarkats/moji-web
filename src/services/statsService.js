@@ -38,8 +38,15 @@ export const calculateTintStyle = (kana, allStats, sortBy, requiredSuccesses) =>
   }
 };
 
-export const getSortedStats = (sessionStats, sortBy) => {
-  const stats = Object.values(sessionStats);
+export const getSortedStats = (sessionStats, sortBy, currentVocabularyWords = []) => {
+  const stats = Object.values(sessionStats).map(stat => {
+    const vocabularyItem = currentVocabularyWords.find(word => word.japanese === stat.key);
+
+    return {
+      ...stat,
+      infoText: vocabularyItem?.infoText || null,
+    };
+  });
 
   switch (sortBy) {
     case SORT_MODES.FAILURES:

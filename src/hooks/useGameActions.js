@@ -8,6 +8,7 @@ import {
   speakKanaReading,
   playFeedbackSound,
   triggerConfetti,
+  checkVocabularyAnswer,
 } from '../utils';
 import {
   GAME_STATES,
@@ -16,14 +17,12 @@ import {
   SOUND_MODES,
   GAME_MODES,
   VOCABULARY_MODES,
-  APP_MODES,
 } from '../constants';
 
 
 export const useGameActions = () => {
   const {
     kanaData,
-    gameState,
     gameMode,
     currentItem,
     userInput,
@@ -74,7 +73,13 @@ export const useGameActions = () => {
       newProgress[item.key].failures += 1;
     }
 
-    newStats[item.key] = { ...newStats[item.key] };
+    newStats[item.key] = {
+      ...newStats[item.key],
+      key: item.key,
+      question: item.displayText || item.question,
+      answer: item.answer,
+    };
+
     if (isCorrect) {
       newStats[item.key].successes += 1;
     } else {
@@ -96,7 +101,7 @@ export const useGameActions = () => {
 
   const proceedToNextItem = (newProgress) => {
     const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
-    
+
     let nextItem;
     if (isVocabularyMode) {
       nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress);
@@ -116,11 +121,14 @@ export const useGameActions = () => {
     if (!currentItem || !userInput.trim()) return;
 
     const timeSpent = calculateTimeSpent();
+    const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
 
     const correctAnswer = currentItem.answer;
-    const isCorrect = userInput.toLowerCase().trim() === correctAnswer.toLowerCase();
+    const isCorrect = isVocabularyMode
+      ? checkVocabularyAnswer(userInput, correctAnswer)
+      : userInput.toLowerCase().trim() === correctAnswer.toLowerCase();
+
     const feedbackType = isCorrect ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
-    const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
 
     playFeedbackSound(feedbackType, soundMode);
 
@@ -139,19 +147,23 @@ export const useGameActions = () => {
     const shouldPlaySpeech = (soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
       !(isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE);
 
+    const hasInfoText = isVocabularyMode && currentItem.infoText;
+    const infoTextDelay = hasInfoText ? 1500 : 0;
+    const nextDelay = (isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY) + infoTextDelay;
+
     if (shouldPlaySpeech) {
-      const textToSpeak = (isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE) ? currentItem.answer : currentItem.question;
-      const speechDelay = (isCorrect && !isVocabularyMode) ? 200 : 400;
+      const textToSpeak = (isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE)
+        ? currentItem.speechText
+        : currentItem.question;
+      const speechDelay = (isCorrect && !isVocabularyMode) ? 150 : 280;
 
       setTimeout(() => {
         speakKanaReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
-          proceedToNextItem(newProgress);
+          setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
         });
       }, speechDelay);
     } else {
-      setTimeout(() => {
-        proceedToNextItem(newProgress);
-      }, isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY);
+      setTimeout(() => proceedToNextItem(newProgress), nextDelay);
     }
   };
 

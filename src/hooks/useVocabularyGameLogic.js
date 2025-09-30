@@ -1,7 +1,8 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useSound } from './useSound';
-import { initializeVocabularyData, speakKanaReading } from '../utils';
+import { speakKanaReading } from '../utils';
+import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
 import { GAME_STATES, GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
 
 
@@ -29,9 +30,10 @@ export const useVocabularyGameLogic = () => {
       return;
     }
 
-    const words = selectedListKeys.flatMap(listKey =>
-      vocabularyLists[listKey]?.words || []
-    );
+    const words = selectedListKeys.flatMap(listKey => {
+      const rawWords = vocabularyLists[listKey]?.words || [];
+      return rawWords.map(parseVocabularyEntry);
+    });
 
     if (words.length === 0) {
       return;
@@ -44,7 +46,20 @@ export const useVocabularyGameLogic = () => {
     setStartTime(Date.now());
     setFeedback(null);
 
-    const { initialProgress, initialStats } = initializeVocabularyData(words, vocabularyMode);
+    const initialProgress = {};
+    const initialStats = {};
+    words.forEach(word => {
+      initialProgress[word.japanese] = { successes: 0, failures: 0, mastered: false };
+      initialStats[word.japanese] = {
+        key: word.japanese,
+        question: word.displayText,
+        answer: word.translation,
+        successes: 0,
+        failures: 0,
+        timeSpent: 0
+      };
+    });
+
     setProgress(initialProgress);
     setSessionStats(initialStats);
 
@@ -60,14 +75,19 @@ export const useVocabularyGameLogic = () => {
 
     const randomIndex = Math.floor(Math.random() * availableWords.length);
     const nextWord = availableWords[randomIndex];
+
     const newItem = {
       key: nextWord.japanese,
       question: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
         ? nextWord.translation
-        : nextWord.japanese,
+        : nextWord.displayText,
       answer: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
         ? nextWord.japanese
-        : nextWord.translation
+        : nextWord.translation,
+      displayText: nextWord.displayText,
+      parts: nextWord.parts,
+      infoText: nextWord.infoText,
+      speechText: nextWord.speechText,
     };
 
     setCurrentItem(newItem);
@@ -75,7 +95,7 @@ export const useVocabularyGameLogic = () => {
     // Speak word when showing Japanese (from Japanese mode)
     if ((soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
       vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE) {
-      setTimeout(() => speakKanaReading(nextWord.japanese, 1), 100);
+      setTimeout(() => speakKanaReading(nextWord.speechText, 1), 100);
     }
 
     setUserInput('');
