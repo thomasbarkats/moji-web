@@ -1,7 +1,7 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { getAllKanaForMode, initializeKanaData, speakKanaReading } from '../utils';
-import { GAME_STATES, SOUND_MODES } from '../constants';
+import { getAllKanaForMode, initializeKanaData } from '../utils';
+import { GAME_STATES } from '../constants';
 
 
 export const useGameLogic = () => {

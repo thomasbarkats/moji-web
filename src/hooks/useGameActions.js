@@ -1,6 +1,5 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useSound } from './useSound';
 import { useGameLogic } from './useGameLogic';
 import { useVocabularyGameLogic } from './useVocabularyGameLogic';
 import {
@@ -32,6 +31,7 @@ export const useGameActions = () => {
     currentItemStartRef,
     setGameState,
     setGameMode,
+    soundMode,
     setCurrentItem,
     setUserInput,
     setProgress,
@@ -48,7 +48,6 @@ export const useGameActions = () => {
     vocabularyMode,
   } = usePreferences();
 
-  const { soundMode } = useSound();
   const { selectNextKana } = useGameLogic();
   const { selectNextVocabularyWord } = useVocabularyGameLogic();
 

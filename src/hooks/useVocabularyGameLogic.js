@@ -1,6 +1,5 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useSound } from './useSound';
 import { speakKanaReading } from '../utils';
 import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
 import { GAME_STATES, GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
@@ -19,10 +18,10 @@ export const useVocabularyGameLogic = () => {
     setCurrentItem,
     setCurrentVocabularyWords,
     currentItemStartRef,
+    soundMode,
   } = useGameContext();
 
   const { vocabularyMode } = usePreferences();
-  const { soundMode } = useSound();
 
 
   const initializeVocabularyGame = (selectedListKeys) => {

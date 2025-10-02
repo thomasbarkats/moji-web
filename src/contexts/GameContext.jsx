@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useRef } from 'react';
-import { useKanaData, useVocabularyData } from '../hooks';
+import { useKanaData, useVocabularyData, useSound } from '../hooks';
 import { GAME_STATES, APP_MODES, SORT_MODES } from '../constants';
 
 
@@ -13,6 +13,7 @@ export const GameProvider = ({ children }) => {
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
   const [gameMode, setGameMode] = useState('');
   const [appMode, setAppMode] = useState(APP_MODES.KANA);
+  const { soundMode, cycleSoundMode, getSoundModeIcon } = useSound();
 
   // Current item & input
   const [currentItem, setCurrentItem] = useState(null);
@@ -47,6 +48,9 @@ export const GameProvider = ({ children }) => {
     setGameMode,
     appMode,
     setAppMode,
+    soundMode,
+    cycleSoundMode,
+    getSoundModeIcon,
 
     // Current item
     currentItem,

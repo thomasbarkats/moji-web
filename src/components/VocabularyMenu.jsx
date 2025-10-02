@@ -7,9 +7,16 @@ import { MenuLayout, MenuControls, MultiSelection, SegmentedControl } from './';
 
 export const VocabularyMenu = () => {
   const { theme, darkMode, toggleDarkMode } = useTheme();
-  const { cycleSoundMode, getSoundModeIcon } = useSound();
-  const { vocabularyLists, selectedLists, setSelectedLists, switchToKana } = useGameContext();
   const { initializeVocabularyGame } = useVocabularyGameLogic();
+
+  const {
+    vocabularyLists,
+    selectedLists,
+    setSelectedLists,
+    switchToKana,
+    cycleSoundMode,
+    getSoundModeIcon,
+  } = useGameContext();
 
   const {
     requiredSuccesses,

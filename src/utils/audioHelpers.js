@@ -1,4 +1,4 @@
-import { SPEECH_CONFIG } from '../constants';
+import { SOUND_MODES, SPEECH_CONFIG } from '../constants';
 
 export const speakKanaReading = (char, rate, onComplete) => {
   if (!('speechSynthesis' in window)) {
@@ -24,7 +24,7 @@ export const speakKanaReading = (char, rate, onComplete) => {
 };
 
 export const playFeedbackSound = (type, soundMode) => {
-  if (soundMode === 'both') {
+  if (soundMode === SOUND_MODES.BOTH) {
     try {
       new Audio(`/sounds/${type}.mp3`).play();
     } catch (error) {

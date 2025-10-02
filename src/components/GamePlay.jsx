@@ -10,7 +10,6 @@ import { formatTime, cleanJapaneseText } from '../utils';
 
 export const GamePlay = () => {
   const { theme, darkMode, toggleDarkMode } = useTheme();
-  const { cycleSoundMode, getSoundModeIcon } = useSound();
   const { requiredSuccesses, vocabularyMode } = usePreferences();
   const { handleSubmit, resetGame } = useGameActions();
 
@@ -23,6 +22,8 @@ export const GamePlay = () => {
     progress,
     sessionStats,
     startTime,
+    cycleSoundMode,
+    getSoundModeIcon,
   } = useGameContext();
 
   const inputRef = useRef(null);
@@ -128,7 +129,7 @@ export const GamePlay = () => {
               )
             }
             {feedback ? (
-              <div className="mb-6">
+              <div className="pt-2 mb-6">
                 {feedback.type === FEEDBACK_TYPES.SUCCESS ? (
                   <div className={`${theme.feedbackSuccess.bg} border-2 rounded-xl p-6 animate-pulse`}>
                     <div className="text-6xl mb-2">✅</div>

@@ -9,9 +9,14 @@ import { MenuLayout, MenuControls, SegmentedControl } from './';
 
 export const MainMenu = () => {
   const { theme, darkMode, toggleDarkMode } = useTheme();
-  const { cycleSoundMode, getSoundModeIcon } = useSound();
-  const { kanaData, switchToVocabulary } = useGameContext();
   const { initializeGame } = useGameLogic();
+
+  const {
+    kanaData,
+    switchToVocabulary,
+    cycleSoundMode,
+    getSoundModeIcon,
+  } = useGameContext();
 
   const {
     requiredSuccesses,

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Speech, Volume2, VolumeX } from 'lucide-react';
-import { FEEDBACK_TYPES, SOUND_MODES } from '../constants';
-import { speakKanaReading, playFeedbackSound } from '../utils';
+import { SOUND_MODES } from '../constants';
 
 
 const STORAGE_KEY = 'kana-app-sound-mode';

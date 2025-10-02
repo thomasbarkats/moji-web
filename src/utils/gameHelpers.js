@@ -1,4 +1,4 @@
-import { KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
+import { GAME_MODES, KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
 
 
 export const formatTime = (seconds) => {
@@ -15,8 +15,8 @@ export const getAllKanaForMode = (mode, kanaData, options = {}) => {
   const includeBasics = dakutenMode !== KANA_INCLUSION.ONLY && combinationsMode !== KANA_INCLUSION.ONLY;
 
   // Determine base kana sets
-  const includeBasicHiragana = mode === 'hiragana' || mode === 'both';
-  const includeBasicKatakana = mode === 'katakana' || mode === 'both';
+  const includeBasicHiragana = mode === GAME_MODES.HIRAGANA || mode === GAME_MODES.BOTH;
+  const includeBasicKatakana = mode === GAME_MODES.KATAKANA || mode === GAME_MODES.BOTH;
 
   // Add basic kana if needed
   if (includeBasics) {
