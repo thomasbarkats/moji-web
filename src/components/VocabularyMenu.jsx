@@ -1,6 +1,7 @@
+import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme, useSound, useVocabularyGameLogic } from '../hooks';
+import { useTheme, useVocabularyGameLogic } from '../hooks';
 import { VOCABULARY_MODES } from '../constants';
 import { MenuLayout, MenuControls, MultiSelection, SegmentedControl } from './';
 
@@ -16,6 +17,7 @@ export const VocabularyMenu = () => {
     switchToKana,
     cycleSoundMode,
     getSoundModeIcon,
+    openVocabularyReview,
   } = useGameContext();
 
   const {
@@ -65,22 +67,36 @@ export const VocabularyMenu = () => {
           onChange={setSelectedLists}
           placeholder="Select vocabulary lists..."
           theme={theme}
+          itemLabel="list"
+          py={3}
         />
 
         {selectedLists.length > 0 && (
-          <button
-            onClick={() => initializeVocabularyGame(selectedLists)}
-            className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
-          >
-            <div className="flex items-center justify-center">
-              <div className="flex flex-col text-left mb-1">
-                <span className="text-lg">Start Practice</span>
-                <div className="text-xs opacity-80">
-                  {totalWords} words selected
+          <div className="space-y-4">
+            <button
+              onClick={() => openVocabularyReview(selectedLists)}
+              className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
+            >
+              <div className="flex items-center justify-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                <span className="text-sm">Review selected words</span>
+              </div>
+            </button>
+
+            <button
+              onClick={() => initializeVocabularyGame(selectedLists)}
+              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
+            >
+              <div className="flex items-center justify-center">
+                <div className="flex flex-col text-left mb-1">
+                  <span className="text-lg">Start Practice</span>
+                  <div className="text-xs opacity-80">
+                    {totalWords} words selected
+                  </div>
                 </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </div>
         )}
       </div>
 

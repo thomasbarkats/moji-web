@@ -6,7 +6,8 @@ export const APP_MODES = {
 export const GAME_STATES = {
   MENU: 'menu',
   PLAYING: 'playing',
-  SUMMARY: 'summary'
+  SUMMARY: 'summary',
+  REVIEW: 'review'
 };
 
 export const GAME_MODES = {
@@ -16,9 +17,9 @@ export const GAME_MODES = {
   VOCABULARY: 'vocabulary'
 };
 
-export const KANA_OPTIONS = {
+export const KANA_TYPES = {
   DAKUTEN: 'dakuten',
-  YOON: 'yoon'
+  COMBINATION: 'combination'
 };
 
 export const KANA_INCLUSION = {
@@ -30,7 +31,8 @@ export const KANA_INCLUSION = {
 export const SORT_MODES = {
   FAILURES: 'failures',
   ALPHABETICAL: 'alphabetical',
-  TIME: 'time'
+  TIME: 'time',
+  DEFAULT: 'default'
 };
 
 export const VOCABULARY_MODES = {

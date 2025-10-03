@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useRef } from 'react';
 import { useKanaData, useVocabularyData, useSound } from '../hooks';
-import { GAME_STATES, APP_MODES, SORT_MODES } from '../constants';
+import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 
 
 const GameContext = createContext();
@@ -34,6 +34,14 @@ export const GameProvider = ({ children }) => {
   // Mode switching
   const switchToVocabulary = () => setAppMode(APP_MODES.VOCABULARY);
   const switchToKana = () => setAppMode(APP_MODES.KANA);
+  const openKanaReview = () => setGameState(GAME_STATES.REVIEW);
+
+  const openVocabularyReview = (lists) => {
+    setSelectedLists(lists);
+    setGameMode(GAME_MODES.VOCABULARY);
+    setGameState(GAME_STATES.REVIEW);
+  };
+
 
   const value = {
     // Data
@@ -80,6 +88,8 @@ export const GameProvider = ({ children }) => {
     // Actions
     switchToVocabulary,
     switchToKana,
+    openKanaReview,
+    openVocabularyReview,
   };
 
   return (

@@ -30,7 +30,7 @@ export const KeyboardHint = ({ theme }) => {
               </h3>
               <button
                 onClick={() => setShowHint(false)}
-                className={`p-1 rounded ${theme.text}`}
+                className={`p-1 rounded ${theme.text} cursor-pointer`}
               >
                 <X className="w-5 h-5" />
               </button>

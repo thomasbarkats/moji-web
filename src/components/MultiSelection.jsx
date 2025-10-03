@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 
 
-export const MultiSelection = ({ options, selectedValues, onChange, placeholder, theme }) => {
+export const MultiSelection = ({ options, selectedValues, onChange, placeholder, theme, py, itemLabel }) => {
   const [isOpen, setIsOpen] = useState(false);
 
 
@@ -23,7 +23,7 @@ export const MultiSelection = ({ options, selectedValues, onChange, placeholder,
       <button
         onClick={() => setIsOpen(!isOpen)}
         className={`
-          w-full px-4 py-3 rounded-xl border-2 
+          w-full px-4 py-${py} rounded-xl border-2 
           ${theme.inputBorder} ${theme.inputBg} ${theme.text}
           flex items-center justify-between
           hover:border-blue-400 transition-colors
@@ -31,7 +31,7 @@ export const MultiSelection = ({ options, selectedValues, onChange, placeholder,
       >
         <span className={selectedLabels.length > 0 ? '' : theme.textMuted}>
           {selectedLabels.length > 0
-            ? `${selectedLabels.length} list${selectedLabels.length > 1 ? 's' : ''} selected`
+            ? `${selectedLabels.length} ${itemLabel}${selectedLabels.length > 1 ? 's' : ''} selected`
             : placeholder}
         </span>
         <ChevronDown className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />

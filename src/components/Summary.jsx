@@ -105,7 +105,7 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className={`appearance-none ${theme.inputBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                className={`appearance-none ${theme.sectionBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
               >
                 {getSortOptions().map(option => (
                   <option key={option.value} value={option.value}>{option.label}</option>

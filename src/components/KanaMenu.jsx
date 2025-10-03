@@ -1,13 +1,14 @@
 import { useState } from 'react';
+import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme, useSound, useGameLogic } from '../hooks';
+import { useTheme, useGameLogic } from '../hooks';
 import { GAME_MODES, KANA_INCLUSION } from '../constants';
 import { getAllKanaForMode } from '../utils';
-import { MenuLayout, MenuControls, SegmentedControl } from './';
+import { MenuLayout, MenuControls, SegmentedControl } from '.';
 
 
-export const MainMenu = () => {
+export const KanaMenu = () => {
   const { theme, darkMode, toggleDarkMode } = useTheme();
   const { initializeGame } = useGameLogic();
 
@@ -16,6 +17,7 @@ export const MainMenu = () => {
     switchToVocabulary,
     cycleSoundMode,
     getSoundModeIcon,
+    openKanaReview,
   } = useGameContext();
 
   const {
@@ -63,19 +65,20 @@ export const MainMenu = () => {
     handleCombinationsModeChange(value);
   };
 
-  const renderModeButton = (mode, icon, label, className) => {
+  const renderModeSection = (mode, icon, label, gradientClass) => {
+    const kanaCount = getAllKanaForMode(mode, kanaData, { dakutenMode, combinationsMode })?.length;
+
     return (
       <button
         onClick={() => initializeGame(mode)}
-        className={`w-full ${className} text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer relative`}
+        className={`w-full ${gradientClass} text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
       >
         <div className="flex items-center justify-center">
           <span className="text-3xl mr-4 font-normal">{icon}</span>
           <div className="flex flex-col text-left mb-1">
             <span className="text-lg">{label}</span>
             <span className="text-xs opacity-80">
-              {getAllKanaForMode(mode, kanaData, { dakutenMode, combinationsMode })?.length} kana
-              {requiredSuccesses > 1 && ` × ${requiredSuccesses}`}
+              {kanaCount} kana{requiredSuccesses > 1 && ` × ${requiredSuccesses}`}
             </span>
           </div>
         </div>
@@ -93,11 +96,21 @@ export const MainMenu = () => {
       nextTooltip="Switch to Vocabulary Learning"
     >
       <div className="space-y-4">
+        <button
+          onClick={openKanaReview}
+          className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
+        >
+          <div className="flex items-center justify-center gap-2">
+            <BookOpen className="w-4 h-4" />
+            <span className="text-sm">Review all Kana</span>
+          </div>
+        </button>
+
         <div className="flex gap-4">
-          {renderModeButton(GAME_MODES.HIRAGANA, 'ひ', 'Hiragana', 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700')}
-          {renderModeButton(GAME_MODES.KATAKANA, 'カ', 'Katakana', 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700')}
+          {renderModeSection(GAME_MODES.HIRAGANA, 'ひ', 'Hiragana', 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700')}
+          {renderModeSection(GAME_MODES.KATAKANA, 'カ', 'Katakana', 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700')}
         </div>
-        {renderModeButton(GAME_MODES.BOTH, 'ひカ', 'Hiragana + Katakana', 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700')}
+        {renderModeSection(GAME_MODES.BOTH, 'ひカ', 'Hiragana + Katakana', 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700')}
       </div>
 
       {/* Advanced options */}

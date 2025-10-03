@@ -1,4 +1,4 @@
-import { MainMenu, GamePlay, Summary, VocabularyMenu, KeyboardHint } from './components';
+import { KanaMenu, GamePlay, Summary, VocabularyMenu, KeyboardHint, VocabularyReview, KanaReview } from './components';
 import { useTheme } from './hooks';
 import { useGameContext } from './contexts/GameContext';
 import { useGameLogic } from './hooks/useGameLogic';
@@ -28,20 +28,19 @@ function App() {
 
   switch (gameState) {
     case GAME_STATES.MENU:
-      if (appMode === APP_MODES.VOCABULARY) {
-        if (vocabularyLoading) {
-          return (
-            <div>Loading vocabulary...</div>
-          );
-        }
-        return (
-          <>
+      switch (appMode) {
+        case APP_MODES.KANA:
+          return <KanaMenu />;
+        case APP_MODES.VOCABULARY:
+          if (vocabularyLoading) {
+            return <div>Loading vocabulary...</div>;
+          }
+          return (<>
             <VocabularyMenu />
             <KeyboardHint theme={theme} />
-          </>
-        );
-      } else {
-        return <MainMenu />;
+          </>);
+        default:
+          return null;
       }
 
     case GAME_STATES.PLAYING:
@@ -59,6 +58,16 @@ function App() {
           sortedStats={getSortedStats(sessionStats, sortBy, currentVocabularyWords)}
         />
       );
+
+    case GAME_STATES.REVIEW:
+      switch (appMode) {
+        case APP_MODES.KANA:
+          return <KanaReview />;
+        case APP_MODES.VOCABULARY:
+          return <VocabularyReview />
+        default:
+          return null;
+      }
 
     default:
       return null;
