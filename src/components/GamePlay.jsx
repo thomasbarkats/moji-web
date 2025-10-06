@@ -204,16 +204,17 @@ const JapaneseTextDisplay = ({ parts, theme }) => {
   if (!parts) return null;
 
   return (
-    <span>
+    <span className="inline-block">
       {parts.map((part, idx) => {
         if (part.type === 'kanji') {
           return (
-            <span
-              key={idx}
-              className="underline decoration-dotted decoration-1 underline-offset-4 cursor-help"
-              title={part.reading}
-            >
-              {part.text}
+            <span key={idx} className="inline-block align-bottom text-center">
+              <span className={`block text-sm ${theme.textMuted}`}>
+                {part.reading}
+              </span>
+              <span className="block">
+                {part.text}
+              </span>
             </span>
           );
         }
