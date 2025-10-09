@@ -1,0 +1,214 @@
+{
+  "name": "N5 - Kanji de base 1",
+  "kanji": [
+    {
+      "character": "人",
+      "readings": [
+        {
+          "kun": "ひと",
+          "on": "ジン",
+          "meanings": [
+            "personne"
+          ]
+        },
+        {
+          "kun": null,
+          "on": "ニン",
+          "meanings": [
+            "compteur de personnes >3"
+          ]
+        },
+        {
+          "kun": "-り",
+          "on": null,
+          "meanings": [
+            "compteur de 1 et 2 personnes"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "木",
+      "readings": [
+        {
+          "kun": "き",
+          "on": "モク, ボク",
+          "meanings": [
+            "arbre",
+            "bois"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "日",
+      "readings": [
+        {
+          "kun": "ひ",
+          "on": "ニチ, ジツ",
+          "meanings": [
+            "jour",
+            "soleil"
+          ]
+        },
+        {
+          "kun": "か",
+          "on": null,
+          "meanings": [
+            "compteur de jours"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "月",
+      "readings": [
+        {
+          "kun": "つき",
+          "on": null,
+          "meanings": [
+            "lune",
+            "compteur de mois <4"
+          ]
+        },
+        {
+          "kun": null,
+          "on": "ゲツ, ガツ",
+          "meanings": [
+            "mois"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "曜",
+      "readings": [
+        {
+          "kun": null,
+          "on": "ヨウ",
+          "meanings": [
+            "jour de la semaine"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "円",
+      "readings": [
+        {
+          "kun": "まる(い)",
+          "on": null,
+          "meanings": [
+            "rond"
+          ]
+        },
+        {
+          "kun": null,
+          "on": "エン",
+          "meanings": [
+            "cercle",
+            "yen"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "百",
+      "readings": [
+        {
+          "kun": null,
+          "on": "ヒャク",
+          "meanings": [
+            "cent"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "千",
+      "readings": [
+        {
+          "kun": "ち",
+          "on": "セン",
+          "meanings": [
+            "mille"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "万",
+      "readings": [
+        {
+          "kun": null,
+          "on": "マン",
+          "meanings": [
+            "dix mille"
+          ]
+        },
+        {
+          "kun": null,
+          "on": "バン",
+          "meanings": [
+            "plusieurs",
+            "tous"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "明",
+      "readings": [
+        {
+          "kun": "あ(かり), あか(るい), あき(らか)",
+          "on": "メイ",
+          "meanings": [
+            "lumineux",
+            "clair"
+          ]
+        },
+        {
+          "kun": null,
+          "on": "ミョウ",
+          "meanings": [
+            "prochain",
+            "suivant"
+          ]
+        },
+        {
+          "kun": "あ(ける)",
+          "on": null,
+          "meanings": [
+            "se lever (jour)",
+            "s'éclaircir",
+            "se terminer"
+          ]
+        },
+        {
+          "kun": "あ(く)",
+          "on": null,
+          "meanings": [
+            "s'ouvrir (jour)",
+            "commencer"
+          ]
+        },
+        {
+          "kun": "あ(かす)",
+          "on": null,
+          "meanings": [
+            "passer (la nuit) éveillé",
+            "révéler"
+          ]
+        },
+        {
+          "kun": "あ(くる)",
+          "on": null,
+          "meanings": [
+            "prochain",
+            "suivant"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "name": "N5 - Les nombres",
+  "kanji": [
+    {
+      "character": "一",
+      "readings": [
+        {
+          "kun": "ひと",
+          "on": "イチ",
+          "meanings": [
+            "un"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "二",
+      "readings": [
+        {
+          "kun": "ふた",
+          "on": "ニ",
+          "meanings": [
+            "deux"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "三",
+      "readings": [
+        {
+          "kun": "み",
+          "on": "サン",
+          "meanings": [
+            "trois"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "四",
+      "readings": [
+        {
+          "kun": "よ, よん",
+          "on": "シ",
+          "meanings": [
+            "quatre"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "五",
+      "readings": [
+        {
+          "kun": "いつ",
+          "on": "ゴ",
+          "meanings": [
+            "cinq"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "六",
+      "readings": [
+        {
+          "kun": "む",
+          "on": "ロク",
+          "meanings": [
+            "six"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "七",
+      "readings": [
+        {
+          "kun": "なな",
+          "on": "シチ",
+          "meanings": [
+            "sept"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "八",
+      "readings": [
+        {
+          "kun": "や",
+          "on": "ハチ",
+          "meanings": [
+            "huit"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "九",
+      "readings": [
+        {
+          "kun": "ここの",
+          "on": "キュウ, ク",
+          "meanings": [
+            "neuf"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "十",
+      "readings": [
+        {
+          "kun": "とお",
+          "on": "ジュウ",
+          "meanings": [
+            "dix"
+          ]
+        }
+      ]
+    }
+  ]
+}

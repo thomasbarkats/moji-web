@@ -1,14 +1,13 @@
 import { Volume2, ArrowLeft, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContext } from '../contexts/GameContext';
-import { useTheme } from '../hooks';
 import { speakKanaReading, parseVocabularyEntry } from '../utils';
 import { GAME_STATES, SORT_MODES } from '../constants';
-import { Button } from '.';
 
 
 export const VocabularyReview = () => {
-  const { theme } = useTheme();
+  const { theme } = usePreferences();
   const { vocabularyLists, selectedLists, setGameState } = useGameContext();
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
 

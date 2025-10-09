@@ -76,10 +76,10 @@ export const useTheme = () => {
         inputBorder: 'border-gray-300 focus:border-blue-500',
         buttonSecondary: 'text-gray-500 hover:text-gray-700 hover:bg-gray-100',
         statsBg: {
-          blue: 'bg-blue-50',
-          red: 'bg-red-50',
-          green: 'bg-green-50',
-          purple: 'bg-purple-50'
+          blue: 'bg-blue-100',
+          red: 'bg-red-100',
+          green: 'bg-green-100',
+          purple: 'bg-purple-100'
         },
         statsText: {
           blue: 'text-blue-800',

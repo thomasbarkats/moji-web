@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { REQUIRED_SUCCESSES_LIMITS, KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
+import { useTheme, useSound } from '../hooks';
 
 
 const PreferencesContext = createContext();
@@ -14,6 +15,9 @@ const DEFAULT_PREFERENCES = {
 };
 
 export const PreferencesProvider = ({ children }) => {
+  const { theme, darkMode, toggleDarkMode } = useTheme();
+  const { soundMode, cycleSoundMode, getSoundModeIcon } = useSound();
+
   const [preferences, setPreferences] = useState(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -22,6 +26,7 @@ export const PreferencesProvider = ({ children }) => {
       return DEFAULT_PREFERENCES;
     }
   });
+
 
   useEffect(() => {
     try {
@@ -57,7 +62,9 @@ export const PreferencesProvider = ({ children }) => {
 
   const value = {
     preferences,
-    updatePreferences,
+    theme,
+    darkMode,
+    soundMode,
 
     // Individual preferences (shortcuts)
     requiredSuccesses: preferences.requiredSuccesses,
@@ -66,10 +73,14 @@ export const PreferencesProvider = ({ children }) => {
     vocabularyMode: preferences.vocabularyMode,
 
     // Handlers
+    updatePreferences,
     handleRequiredSuccessesChange,
     handleDakutenModeChange,
     handleCombinationsModeChange,
     handleVocabularyModeChange,
+    toggleDarkMode,
+    cycleSoundMode,
+    getSoundModeIcon,
   };
 
   return (

@@ -1,7 +1,9 @@
 export { useTheme } from './useTheme';
 export { useKanaData } from './useKanaData';
 export { useVocabularyData } from './useVocabularyData';
+export { useKanjiData } from './useKanjiData';
 export { useSound } from './useSound';
-export { useGameLogic } from './useGameLogic';
+export { useKanaGameLogic } from './useKanaGameLogic';
 export { useVocabularyGameLogic } from './useVocabularyGameLogic';
 export { useGameActions } from './useGameActions';
+export { useKanjiGameLogic } from './useKanjiGameLogic';

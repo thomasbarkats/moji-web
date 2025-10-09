@@ -81,3 +81,9 @@ export const SPEECH_CONFIG = {
     volume: 1.5
   }
 };
+
+export const KANJI_STEPS = {
+  KUN_READINGS: 1,
+  ON_READINGS: 2,
+  MEANINGS: 3
+};

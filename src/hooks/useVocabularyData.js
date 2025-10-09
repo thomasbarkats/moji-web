@@ -10,9 +10,9 @@ export const useVocabularyData = (language = 'fr') => {
       const lists = {};
 
       try {
-        const modules = import.meta.glob('../data/fr/*.json');
+        const fr = import.meta.glob(`../data/vocabulary/fr/*.json`);
 
-        const loadPromises = Object.entries(modules).map(async ([path, importFn]) => {
+        const loadPromises = Object.entries(fr).map(async ([path, importFn]) => {
           try {
             const data = await importFn();
             const filename = path.split('/').pop().replace('.json', '');

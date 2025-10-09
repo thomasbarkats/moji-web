@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import hiraganaJSON from '../data/hiragana.json';
-import katakanaJSON from '../data/katakana.json';
-import hiraganaDakutenJSON from '../data/hiragana-dh.json';
-import katakanaDakutenJSON from '../data/katakana-dh.json';
-import hiraganaCombinationsJSON from '../data/hiragana-yoon.json';
-import katakanaCombinationsJSON from '../data/katakana-yoon.json';
+import hiraganaJSON from '../data/kana/hiragana.json';
+import katakanaJSON from '../data/kana/katakana.json';
+import hiraganaDakutenJSON from '../data/kana/hiragana-dh.json';
+import katakanaDakutenJSON from '../data/kana/katakana-dh.json';
+import hiraganaCombinationsJSON from '../data/kana/hiragana-yoon.json';
+import katakanaCombinationsJSON from '../data/kana/katakana-yoon.json';
 
 
 export const useKanaData = () => {

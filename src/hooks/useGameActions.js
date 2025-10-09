@@ -1,13 +1,19 @@
 import { useGameContext } from '../contexts/GameContext';
+import { useKanjiGameContext } from '../contexts/KanjiGameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useGameLogic } from './useGameLogic';
+import { useKanaGameLogic } from './useKanaGameLogic';
 import { useVocabularyGameLogic } from './useVocabularyGameLogic';
+import { useKanjiGameLogic } from './useKanjiGameLogic';
 import {
   getAllKanaForMode,
   speakKanaReading,
   playFeedbackSound,
   triggerConfetti,
   checkVocabularyAnswer,
+  validateKanjiAnswer,
+  getExpectedAnswerForStep,
+  getKunReadingsForAudio,
+  getOnReadingsForAudio,
 } from '../utils';
 import {
   GAME_STATES,
@@ -16,6 +22,7 @@ import {
   SOUND_MODES,
   GAME_MODES,
   VOCABULARY_MODES,
+  KANJI_STEPS,
 } from '../constants';
 
 
@@ -31,7 +38,6 @@ export const useGameActions = () => {
     currentItemStartRef,
     setGameState,
     setGameMode,
-    soundMode,
     setCurrentItem,
     setUserInput,
     setProgress,
@@ -42,14 +48,23 @@ export const useGameActions = () => {
   } = useGameContext();
 
   const {
+    currentStep,
+    currentKanjiList,
+    proceedToNextStep,
+    resetSteps,
+  } = useKanjiGameContext();
+
+  const {
     requiredSuccesses,
     dakutenMode,
     combinationsMode,
     vocabularyMode,
+    soundMode,
   } = usePreferences();
 
-  const { selectNextKana } = useGameLogic();
+  const { selectNextKana } = useKanaGameLogic();
   const { selectNextVocabularyWord } = useVocabularyGameLogic();
+  const { selectNextKanji } = useKanjiGameLogic();
 
 
   const calculateTimeSpent = () => {
@@ -99,15 +114,18 @@ export const useGameActions = () => {
   };
 
   const proceedToNextItem = (newProgress) => {
-    const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
-
     let nextItem;
-    if (isVocabularyMode) {
-      nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress);
-    } else {
-      const options = { dakutenMode, combinationsMode };
-      const allKana = getAllKanaForMode(gameMode, kanaData, options);
-      nextItem = selectNextKana(allKana, newProgress);
+    switch (gameMode) {
+      case GAME_MODES.VOCABULARY:
+        nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress);
+        break;
+      case GAME_MODES.VOCAKANJIBULARY:
+        nextItem = selectNextKanji(currentKanjiList, newProgress);
+        break;
+      default:
+        const options = { dakutenMode, combinationsMode };
+        const allKana = getAllKanaForMode(gameMode, kanaData, options);
+        nextItem = selectNextKana(allKana, newProgress);
     }
 
     // If no next item available, finish session
@@ -116,8 +134,74 @@ export const useGameActions = () => {
     }
   };
 
+  const handleKanjiStepSubmit = () => {
+    if (!currentItem || !userInput.trim()) return;
+
+    const isCorrect = validateKanjiAnswer(userInput, currentItem, currentStep);
+    const expectedAnswers = getExpectedAnswerForStep(currentItem, currentStep);
+    const correctAnswer = expectedAnswers.join(', ');
+    const feedbackType = isCorrect ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
+
+    playFeedbackSound(feedbackType, soundMode);
+
+    setFeedback({
+      type: feedbackType,
+      correctAnswer,
+      userAnswer: userInput.trim(),
+    });
+
+    const isLastStep = currentStep === KANJI_STEPS.MEANINGS;
+
+    if (!isCorrect || isLastStep) {
+      const timeSpent = calculateTimeSpent();
+      const { newProgress, newStats } = updateStats(currentItem, isCorrect, timeSpent);
+      setProgress(newProgress);
+      setSessionStats(newStats);
+      currentItemStartRef.current = null;
+    }
+
+    const shouldPlaySpeech = (soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) && !isLastStep;
+    const nextDelay = isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : (TIMING.ERROR_FEEDBACK_DELAY + (correctAnswer.length * 40));
+
+    const proceedToNext = () => {
+      if (!isCorrect) {
+        resetSteps();
+        proceedToNextItem(progress);
+      } else if (isLastStep) {
+        proceedToNextItem(progress);
+      } else {
+        setUserInput('');
+        setFeedback(null);
+        proceedToNextStep(expectedAnswers, currentItem);
+      }
+    };
+
+    if (shouldPlaySpeech) {
+      const readingsToSpeak = currentStep === KANJI_STEPS.KUN_READINGS
+        ? getKunReadingsForAudio(currentItem.readings)
+        : getOnReadingsForAudio(currentItem.readings);
+      const textToSpeak = readingsToSpeak.join(',').replace(/[()]/g, '');
+
+      if (soundMode === SOUND_MODES.SPEECH_ONLY) {
+        speakKanaReading(textToSpeak, 1, proceedToNext);
+      } else {
+        const speechDelay = isCorrect ? 150 : 280;
+        setTimeout(() => {
+          speakKanaReading(textToSpeak, 1, proceedToNext);
+        }, speechDelay);
+      }
+    } else {
+      setTimeout(proceedToNext, nextDelay);
+    }
+  };
+
   const handleSubmit = () => {
     if (!currentItem || !userInput.trim()) return;
+
+    if (gameMode === GAME_MODES.KANJI) {
+      handleKanjiStepSubmit();
+      return;
+    }
 
     const timeSpent = calculateTimeSpent();
     const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
@@ -154,13 +238,19 @@ export const useGameActions = () => {
       const textToSpeak = (isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE)
         ? currentItem.speechText
         : currentItem.question;
-      const speechDelay = (isCorrect && !isVocabularyMode) ? 150 : 280;
 
-      setTimeout(() => {
+      if (soundMode === SOUND_MODES.SPEECH_ONLY) {
         speakKanaReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
           setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
         });
-      }, speechDelay);
+      } else {
+        const speechDelay = (isCorrect && !isVocabularyMode) ? 150 : 280;
+        setTimeout(() => {
+          speakKanaReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
+            setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
+          });
+        }, speechDelay);
+      }
     } else {
       setTimeout(() => proceedToNextItem(newProgress), nextDelay);
     }
@@ -176,6 +266,7 @@ export const useGameActions = () => {
     setStartTime(null);
     setFeedback(null);
     setCurrentVocabularyWords([]);
+    resetSteps();
     currentItemStartRef.current = null;
   };
 

@@ -1,5 +1,6 @@
 import { SOUND_MODES, SPEECH_CONFIG } from '../constants';
 
+
 export const speakKanaReading = (char, rate, onComplete) => {
   if (!('speechSynthesis' in window)) {
     console.warn('Speech synthesis not supported');

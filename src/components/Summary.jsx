@@ -1,7 +1,6 @@
 import { Trophy, Target, BarChart3, Clock, ChevronDown } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme } from '../hooks';
 import { Button, StatsCard } from '.';
 import { formatTime } from '../utils';
 import { calculateTintStyle } from '../services/statsService';
@@ -9,9 +8,8 @@ import { GAME_MODES } from '../constants';
 
 
 export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
-  const { theme } = useTheme();
   const { gameMode, sessionStats, sortBy, setSortBy } = useGameContext();
-  const { requiredSuccesses } = usePreferences();
+  const { requiredSuccesses, theme } = usePreferences();
 
 
   const total = Object.values(sessionStats).length;

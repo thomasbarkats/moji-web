@@ -18,10 +18,9 @@ export const useVocabularyGameLogic = () => {
     setCurrentItem,
     setCurrentVocabularyWords,
     currentItemStartRef,
-    soundMode,
   } = useGameContext();
 
-  const { vocabularyMode } = usePreferences();
+  const { vocabularyMode, soundMode } = usePreferences();
 
 
   const initializeVocabularyGame = (selectedListKeys) => {

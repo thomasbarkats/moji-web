@@ -4,7 +4,7 @@ import { getAllKanaForMode, initializeKanaData } from '../utils';
 import { GAME_STATES } from '../constants';
 
 
-export const useGameLogic = () => {
+export const useKanaGameLogic = () => {
   const {
     kanaData,
     setGameMode,
@@ -21,7 +21,7 @@ export const useGameLogic = () => {
   const { dakutenMode, combinationsMode } = usePreferences();
 
 
-  const initializeGame = (mode) => {
+  const initializeKanaGame = (mode) => {
     setGameMode(mode);
     setGameState(GAME_STATES.PLAYING);
     setUserInput('');
@@ -62,7 +62,7 @@ export const useGameLogic = () => {
   };
 
   return {
-    initializeGame,
+    initializeKanaGame,
     selectNextKana,
   };
 };

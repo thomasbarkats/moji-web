@@ -1,28 +1,43 @@
-import { KanaMenu, GamePlay, Summary, VocabularyMenu, KeyboardHint, VocabularyReview, KanaReview } from './components';
-import { useTheme } from './hooks';
 import { useGameContext } from './contexts/GameContext';
-import { useGameLogic } from './hooks/useGameLogic';
-import { useVocabularyGameLogic } from './hooks/useVocabularyGameLogic';
-import { useGameActions } from './hooks/useGameActions';
+import { usePreferences } from './contexts/PreferencesContext';
 import { getSortedStats } from './services/statsService';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
+import {
+  useGameActions,
+  useVocabularyGameLogic,
+  useKanaGameLogic,
+  useKanjiGameLogic,
+} from './hooks';
+import {
+  KanaMenu,
+  GamePlay,
+  Summary,
+  VocabularyMenu,
+  KanjiMenu,
+  KeyboardHint,
+  VocabularyReview,
+  KanaReview,
+  KanjiReview,
+} from './components';
 
 
 function App() {
-  const { theme } = useTheme();
+  const { theme } = usePreferences();
   const {
     gameState,
     appMode,
     gameMode,
     vocabularyLoading,
+    kanjiLoading,
     selectedLists,
     sessionStats,
     sortBy,
     currentVocabularyWords,
   } = useGameContext();
 
-  const { initializeGame } = useGameLogic();
+  const { initializeKanaGame } = useKanaGameLogic();
   const { initializeVocabularyGame } = useVocabularyGameLogic();
+  const { initializeKanjiGame } = useKanjiGameLogic();
   const { resetGame } = useGameActions();
 
 
@@ -39,6 +54,14 @@ function App() {
             <VocabularyMenu />
             <KeyboardHint theme={theme} />
           </>);
+        case APP_MODES.KANJI:
+          if (kanjiLoading) {
+            return <div>Loading kanji...</div>;
+          }
+          return (<>
+            <KanjiMenu />
+            <KeyboardHint theme={theme} />
+          </>);
         default:
           return null;
       }
@@ -50,11 +73,16 @@ function App() {
       return (
         <Summary
           onNewSession={resetGame}
-          onRestartSameMode={() =>
-            gameMode === GAME_MODES.VOCABULARY
-              ? initializeVocabularyGame(selectedLists)
-              : initializeGame(gameMode)
-          }
+          onRestartSameMode={() => {
+            switch (gameMode) {
+              case GAME_MODES.VOCABULARY:
+                initializeVocabularyGame(selectedLists);
+              case GAME_MODES.KANJI:
+                initializeKanjiGame(selectedLists);
+              default:
+                initializeKanaGame(gameMode);
+            }
+          }}
           sortedStats={getSortedStats(sessionStats, sortBy, currentVocabularyWords)}
         />
       );
@@ -64,7 +92,9 @@ function App() {
         case APP_MODES.KANA:
           return <KanaReview />;
         case APP_MODES.VOCABULARY:
-          return <VocabularyReview />
+          return <VocabularyReview />;
+        case APP_MODES.KANJI:
+          return <KanjiReview />;
         default:
           return null;
       }

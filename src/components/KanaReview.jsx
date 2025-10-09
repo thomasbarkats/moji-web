@@ -2,16 +2,14 @@ import { Volume2, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme } from '../hooks';
 import { speakKanaReading, organizeKanaByRows, initFilterSelection } from '../utils';
 import { GAME_STATES, KANA_TYPES } from '../constants';
 import { MultiSelection } from './';
 
 
 export const KanaReview = () => {
-  const { theme } = useTheme();
   const { kanaData, setGameState } = useGameContext();
-  const { dakutenMode, combinationsMode } = usePreferences();
+  const { dakutenMode, combinationsMode, theme } = usePreferences();
   const [selectedOptions, setSelectedOptions] = useState(initFilterSelection(dakutenMode, combinationsMode));
 
 

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useRef } from 'react';
-import { useKanaData, useVocabularyData, useSound } from '../hooks';
+import { useKanaData, useVocabularyData, useKanjiData, useSound } from '../hooks';
 import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 
 
@@ -8,12 +8,12 @@ const GameContext = createContext();
 export const GameProvider = ({ children }) => {
   const kanaData = useKanaData();
   const { vocabularyLists, loading: vocabularyLoading } = useVocabularyData('fr');
+  const { kanjiLists, loading: kanjiLoading } = useKanjiData();
 
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
   const [gameMode, setGameMode] = useState('');
   const [appMode, setAppMode] = useState(APP_MODES.KANA);
-  const { soundMode, cycleSoundMode, getSoundModeIcon } = useSound();
 
   // Current item & input
   const [currentItem, setCurrentItem] = useState(null);
@@ -35,6 +35,7 @@ export const GameProvider = ({ children }) => {
   const switchToVocabulary = () => setAppMode(APP_MODES.VOCABULARY);
   const switchToKana = () => setAppMode(APP_MODES.KANA);
   const openKanaReview = () => setGameState(GAME_STATES.REVIEW);
+  const switchToKanji = () => setAppMode(APP_MODES.KANJI);
 
   const openVocabularyReview = (lists) => {
     setSelectedLists(lists);
@@ -42,12 +43,19 @@ export const GameProvider = ({ children }) => {
     setGameState(GAME_STATES.REVIEW);
   };
 
+  const openKanjiReview = (lists) => {
+    setSelectedLists(lists);
+    setGameMode(GAME_MODES.KANJI);
+    setGameState(GAME_STATES.REVIEW);
+  };
 
   const value = {
     // Data
     kanaData,
     vocabularyLists,
     vocabularyLoading,
+    kanjiLists,
+    kanjiLoading,
 
     // Game state
     gameState,
@@ -56,9 +64,6 @@ export const GameProvider = ({ children }) => {
     setGameMode,
     appMode,
     setAppMode,
-    soundMode,
-    cycleSoundMode,
-    getSoundModeIcon,
 
     // Current item
     currentItem,
@@ -88,8 +93,10 @@ export const GameProvider = ({ children }) => {
     // Actions
     switchToVocabulary,
     switchToKana,
+    switchToKanji,
     openKanaReview,
     openVocabularyReview,
+    openKanjiReview,
   };
 
   return (

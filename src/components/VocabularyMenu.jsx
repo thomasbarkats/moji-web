@@ -7,17 +7,14 @@ import { MenuLayout, MenuControls, MultiSelection, SegmentedControl } from './';
 
 
 export const VocabularyMenu = () => {
-  const { theme, darkMode, toggleDarkMode } = useTheme();
   const { initializeVocabularyGame } = useVocabularyGameLogic();
 
   const {
     vocabularyLists,
     selectedLists,
     setSelectedLists,
-    switchToKana,
-    cycleSoundMode,
-    getSoundModeIcon,
     openVocabularyReview,
+    switchToKanji,
   } = useGameContext();
 
   const {
@@ -25,6 +22,11 @@ export const VocabularyMenu = () => {
     vocabularyMode,
     handleRequiredSuccessesChange,
     handleVocabularyModeChange,
+    cycleSoundMode,
+    getSoundModeIcon,
+    theme,
+    darkMode,
+    toggleDarkMode,
   } = usePreferences();
 
 
@@ -57,8 +59,8 @@ export const VocabularyMenu = () => {
       darkMode={darkMode}
       title="語彙学習"
       subtitle="Vocabulary Learning"
-      onPrevious={switchToKana}
-      previousTooltip="Switch to Kana Learning"
+      onPrevious={switchToKanji}
+      previousTooltip="Switch to Kanji Learning"
     >
       <div className="space-y-4">
         <MultiSelection

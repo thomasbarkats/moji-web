@@ -2,21 +2,18 @@ import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme, useGameLogic } from '../hooks';
+import { useKanaGameLogic } from '../hooks';
 import { GAME_MODES, KANA_INCLUSION } from '../constants';
 import { getAllKanaForMode } from '../utils';
 import { MenuLayout, MenuControls, SegmentedControl } from '.';
 
 
 export const KanaMenu = () => {
-  const { theme, darkMode, toggleDarkMode } = useTheme();
-  const { initializeGame } = useGameLogic();
+  const { initializeKanaGame } = useKanaGameLogic();
 
   const {
     kanaData,
-    switchToVocabulary,
-    cycleSoundMode,
-    getSoundModeIcon,
+    switchToKanji,
     openKanaReview,
   } = useGameContext();
 
@@ -27,6 +24,11 @@ export const KanaMenu = () => {
     handleRequiredSuccessesChange,
     handleDakutenModeChange,
     handleCombinationsModeChange,
+    cycleSoundMode,
+    getSoundModeIcon,
+    theme,
+    darkMode,
+    toggleDarkMode,
   } = usePreferences();
 
   const [dakutenOnDisabled, setDakutenOnDisabled] = useState(combinationsMode === KANA_INCLUSION.ONLY);
@@ -70,7 +72,7 @@ export const KanaMenu = () => {
 
     return (
       <button
-        onClick={() => initializeGame(mode)}
+        onClick={() => initializeKanaGame(mode)}
         className={`w-full ${gradientClass} text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
       >
         <div className="flex items-center justify-center">
@@ -92,8 +94,8 @@ export const KanaMenu = () => {
       darkMode={darkMode}
       title="学習カナ"
       subtitle="Kana Learning"
-      onNext={switchToVocabulary}
-      nextTooltip="Switch to Vocabulary Learning"
+      onNext={switchToKanji}
+      nextTooltip="Switch to Kanji Learning"
     >
       <div className="space-y-4">
         <button

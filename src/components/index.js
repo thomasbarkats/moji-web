@@ -12,3 +12,5 @@ export { MenuLayout } from './MenuLayout';
 export { MenuControls } from './MenuControls';
 export { KanaReview } from './KanaReview';
 export { VocabularyReview } from './VocabularyReview';
+export { KanjiMenu } from './KanjiMenu';
+export { KanjiReview } from './KanjiReview';

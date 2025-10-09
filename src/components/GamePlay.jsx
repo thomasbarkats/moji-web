@@ -2,16 +2,31 @@ import { useRef, useEffect, useState } from 'react';
 import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme, useSound, useGameActions } from '../hooks';
+import { useKanjiGameContext } from '../contexts/KanjiGameContext';
+import { useGameActions } from '../hooks';
 import { ProgressBar } from '.';
-import { FEEDBACK_TYPES, GAME_MODES, VOCABULARY_MODES } from '../constants';
-import { formatTime, cleanJapaneseText } from '../utils';
+import { formatTime, cleanJapaneseText, getChipsForMeaningsStep } from '../utils';
+import {
+  FEEDBACK_TYPES,
+  GAME_MODES,
+  VOCABULARY_MODES,
+  KANJI_STEPS,
+} from '../constants';
 
 
 export const GamePlay = () => {
-  const { theme, darkMode, toggleDarkMode } = useTheme();
-  const { requiredSuccesses, vocabularyMode } = usePreferences();
   const { handleSubmit, resetGame } = useGameActions();
+  const { currentStep, stepData } = useKanjiGameContext();
+
+  const {
+    requiredSuccesses,
+    vocabularyMode,
+    theme,
+    darkMode,
+    toggleDarkMode,
+    cycleSoundMode,
+    getSoundModeIcon,
+  } = usePreferences();
 
   const {
     gameMode,
@@ -22,8 +37,6 @@ export const GamePlay = () => {
     progress,
     sessionStats,
     startTime,
-    cycleSoundMode,
-    getSoundModeIcon,
   } = useGameContext();
 
   const inputRef = useRef(null);
@@ -55,6 +68,7 @@ export const GamePlay = () => {
   };
 
   const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
+  const isKanjiMode = gameMode === GAME_MODES.KANJI;
   const total = Object.values(sessionStats).length;
   const mastered = Object.values(progress).filter(p => p.mastered).length;
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
@@ -63,6 +77,29 @@ export const GamePlay = () => {
   const displayCorrectAnswer = feedback && isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
     ? cleanJapaneseText(feedback.correctAnswer)
     : feedback?.correctAnswer;
+
+  const displayKanjiTextHelperText = (currentStep) => {
+    switch (currentStep) {
+      case KANJI_STEPS.KUN_READINGS:
+        return (
+          <span>
+            Enter all
+            <span className={`px-4 py-2 mx-2 ${theme.statsBg.green} ${theme.text} rounded-lg text-md`}>kun</span>
+            readings
+          </span>
+        );
+      case KANJI_STEPS.ON_READINGS:
+        return (
+          <span>
+            Enter all
+            <span className={`px-4 py-2 mx-2 ${theme.statsBg.blue} ${theme.text} rounded-lg text-md`}>ON</span>
+            readings
+          </span>
+        );
+      case KANJI_STEPS.MEANINGS:
+        return <span>Enter all meanings <b>(in reading order)</b></span>;
+    }
+  };
 
   return (
     <div className={`min-h-screen ${theme.bg} flex items-center justify-center p-4 -mb-8`}>
@@ -119,6 +156,7 @@ export const GamePlay = () => {
                 currentItem.question
               )}
             </div>
+
             {
               isVocabularyMode &&
               vocabularyMode === VOCABULARY_MODES.TO_JAPANESE &&
@@ -128,6 +166,18 @@ export const GamePlay = () => {
                 </div>
               )
             }
+
+
+            {isKanjiMode && (
+              <div className={`text-lg ${theme.textSecondary} pt-6 mb-2`}>
+                {displayKanjiTextHelperText(currentStep)}
+              </div>
+            )}
+
+            {isKanjiMode && currentStep === KANJI_STEPS.MEANINGS && (
+              <KanjiReadingsChips stepData={stepData} theme={theme} />
+            )}
+
             {feedback ? (
               <div className="pt-2 mb-6">
                 {feedback.type === FEEDBACK_TYPES.SUCCESS ? (
@@ -171,7 +221,13 @@ export const GamePlay = () => {
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={isVocabularyMode ? "Type the translation..." : "Type the reading..."}
+                  placeholder={
+                    isKanjiMode
+                      ? '... (comma separated)'
+                      : isVocabularyMode
+                        ? "Type the translation..."
+                        : "Type the reading..."
+                  }
                   className={`w-full text-2xl text-center py-4 px-6 border-2 ${theme.inputBorder} ${theme.inputBg} ${theme.text} rounded-xl focus:ring-4 focus:ring-blue-200 outline-none transition-all`}
                   autoComplete="off"
                   disabled={feedback !== null}
@@ -232,5 +288,34 @@ const JapaneseTextDisplay = ({ parts, theme }) => {
         );
       })}
     </span>
+  );
+};
+
+const KanjiReadingsChips = ({ stepData, theme }) => {
+  const { kunRow, onRow } = getChipsForMeaningsStep(stepData);
+
+  return (
+    <div className="pt-2 space-y-2">
+      <div className="flex justify-left gap-2 flex-wrap">
+        {kunRow.map((reading, idx) => (
+          <span key={`kun-${idx}`} className={
+            `${reading ? theme.statsBg.green : theme.sectionBg} ${theme.text}
+              inline-flex items-center justify-center w-20 h-8 rounded-lg text-sm`
+          }>
+            {reading || ''}
+          </span>
+        ))}
+      </div>
+      <div className="flex justify-left gap-2 flex-wrap">
+        {onRow.map((reading, idx) => (
+          <span key={`on-${idx}`} className={
+            `${reading ? theme.statsBg.blue : theme.sectionBg} ${theme.text}
+            inline-flex items-center justify-center w-20 h-8 rounded-lg text-sm`
+          }>
+            {reading || ''}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 };
