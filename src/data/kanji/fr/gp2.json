@@ -5,21 +5,30 @@
       "character": "人",
       "readings": [
         {
-          "kun": "ひと",
-          "on": "ジン",
+          "kun": [
+            "ひと"
+          ],
+          "on": [
+            "ジン"
+          ],
           "meanings": [
             "personne"
           ]
         },
         {
           "kun": null,
-          "on": "ニン",
+          "on": [
+            "ニン"
+          ],
           "meanings": [
-            "compteur de personnes >3"
+            "personne",
+            "compteur de personnes >2"
           ]
         },
         {
-          "kun": "-り",
+          "kun": [
+            "-り"
+          ],
           "on": null,
           "meanings": [
             "compteur de 1 et 2 personnes"
@@ -31,8 +40,13 @@
       "character": "木",
       "readings": [
         {
-          "kun": "き",
-          "on": "モク, ボク",
+          "kun": [
+            "き"
+          ],
+          "on": [
+            "モク",
+            "ボク"
+          ],
           "meanings": [
             "arbre",
             "bois"
@@ -44,15 +58,30 @@
       "character": "日",
       "readings": [
         {
-          "kun": "ひ",
-          "on": "ニチ, ジツ",
+          "kun": [
+            "ひ"
+          ],
+          "on": [
+            "ニチ"
+          ],
           "meanings": [
             "jour",
             "soleil"
           ]
         },
         {
-          "kun": "か",
+          "kun": null,
+          "on": [
+            "ジツ"
+          ],
+          "meanings": [
+            "jour"
+          ]
+        },
+        {
+          "kun": [
+            "か"
+          ],
           "on": null,
           "meanings": [
             "compteur de jours"
@@ -64,16 +93,20 @@
       "character": "月",
       "readings": [
         {
-          "kun": "つき",
+          "kun": [
+            "つき"
+          ],
           "on": null,
           "meanings": [
-            "lune",
-            "compteur de mois <4"
+            "lune"
           ]
         },
         {
           "kun": null,
-          "on": "ゲツ, ガツ",
+          "on": [
+            "ゲツ",
+            "ガツ"
+          ],
           "meanings": [
             "mois"
           ]
@@ -85,7 +118,9 @@
       "readings": [
         {
           "kun": null,
-          "on": "ヨウ",
+          "on": [
+            "ヨウ"
+          ],
           "meanings": [
             "jour de la semaine"
           ]
@@ -96,7 +131,9 @@
       "character": "円",
       "readings": [
         {
-          "kun": "まる(い)",
+          "kun": [
+            "まる(い)"
+          ],
           "on": null,
           "meanings": [
             "rond"
@@ -104,7 +141,9 @@
         },
         {
           "kun": null,
-          "on": "エン",
+          "on": [
+            "エン"
+          ],
           "meanings": [
             "cercle",
             "yen"
@@ -117,7 +156,9 @@
       "readings": [
         {
           "kun": null,
-          "on": "ヒャク",
+          "on": [
+            "ヒャク"
+          ],
           "meanings": [
             "cent"
           ]
@@ -128,8 +169,12 @@
       "character": "千",
       "readings": [
         {
-          "kun": "ち",
-          "on": "セン",
+          "kun": [
+            "ち"
+          ],
+          "on": [
+            "セン"
+          ],
           "meanings": [
             "mille"
           ]
@@ -141,14 +186,18 @@
       "readings": [
         {
           "kun": null,
-          "on": "マン",
+          "on": [
+            "マン"
+          ],
           "meanings": [
             "dix mille"
           ]
         },
         {
           "kun": null,
-          "on": "バン",
+          "on": [
+            "バン"
+          ],
           "meanings": [
             "plusieurs",
             "tous"
@@ -160,48 +209,71 @@
       "character": "明",
       "readings": [
         {
-          "kun": "あ(かり), あか(るい), あき(らか)",
-          "on": "メイ",
+          "kun": [
+            "あ(かり)"
+          ],
+          "on": [
+            "メイ"
+          ],
+          "meanings": [
+            "lumière",
+            "clarté"
+          ]
+        },
+        {
+          "kun": null,
+          "on": [
+            "ミョウ"
+          ],
+          "meanings": [
+            "lumière",
+            "prochain"
+          ]
+        },
+        {
+          "kun": [
+            "あか(るい)",
+            "あき(らか)"
+          ],
+          "on": null,
           "meanings": [
             "lumineux",
             "clair"
           ]
         },
         {
-          "kun": null,
-          "on": "ミョウ",
-          "meanings": [
-            "prochain",
-            "suivant"
-          ]
-        },
-        {
-          "kun": "あ(ける)",
+          "kun": [
+            "あ(ける)",
+            "あか(るむ)",
+            "あか(らむ)"
+          ],
           "on": null,
           "meanings": [
-            "se lever (jour)",
-            "s'éclaircir",
-            "se terminer"
+            "devenir lumineux"
           ]
         },
         {
-          "kun": "あ(く)",
+          "kun": [
+            "あ(く)"
+          ],
           "on": null,
           "meanings": [
-            "s'ouvrir (jour)",
-            "commencer"
+            "être ouvert"
           ]
         },
         {
-          "kun": "あ(かす)",
+          "kun": [
+            "あ(かす)"
+          ],
           "on": null,
           "meanings": [
-            "passer (la nuit) éveillé",
-            "révéler"
+            "passer (la nuit)"
           ]
         },
         {
-          "kun": "あ(くる)",
+          "kun": [
+            "あ(くる)"
+          ],
           "on": null,
           "meanings": [
             "prochain",

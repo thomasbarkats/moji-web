@@ -152,9 +152,14 @@ export const useGameActions = () => {
 
     const isLastStep = currentStep === KANJI_STEPS.MEANINGS;
 
+    let newProgress = progress;
+    let newStats = sessionStats;
+
     if (!isCorrect || isLastStep) {
       const timeSpent = calculateTimeSpent();
-      const { newProgress, newStats } = updateStats(currentItem, isCorrect, timeSpent);
+      const stats = updateStats(currentItem, isCorrect, timeSpent);
+      newProgress = stats.newProgress;
+      newStats = stats.newStats;
       setProgress(newProgress);
       setSessionStats(newStats);
       currentItemStartRef.current = null;
@@ -164,11 +169,9 @@ export const useGameActions = () => {
     const nextDelay = isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : (TIMING.ERROR_FEEDBACK_DELAY + (correctAnswer.length * 40));
 
     const proceedToNext = () => {
-      if (!isCorrect) {
-        resetSteps();
-        proceedToNextItem(progress);
-      } else if (isLastStep) {
-        proceedToNextItem(progress);
+      if (!isCorrect || isLastStep) {
+        proceedToNextItem(newProgress);
+        proceedToNextItem(newProgress);
       } else {
         setUserInput('');
         setFeedback(null);

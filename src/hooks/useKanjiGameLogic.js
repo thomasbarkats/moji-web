@@ -81,7 +81,7 @@ export const useKanjiGameLogic = () => {
     setCurrentItem(newItem);
     setUserInput('');
     setFeedback(null);
-    resetSteps();
+    resetSteps(nextKanji);
     currentItemStartRef.current = Date.now();
 
     return newItem;

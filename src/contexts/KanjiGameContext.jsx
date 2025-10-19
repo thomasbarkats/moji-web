@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 import { KANJI_STEPS } from '../constants';
+import { getFirstStepForKanji, getNextStepForKanji, getReadingGroupsForDisplay } from '../utils';
 
 
 const KanjiGameContext = createContext();
@@ -18,24 +19,28 @@ export const KanjiGameProvider = ({ children }) => {
 
 
   // Reset steps when moving to a new kanji
-  const resetSteps = () => {
-    setCurrentStep(KANJI_STEPS.KUN_READINGS);
-    setStepData({ kunReadings: [], onReadings: [] });
+  const resetSteps = (currentKanji = null) => {
+    if (!currentKanji) {
+      setCurrentStep(KANJI_STEPS.KUN_READINGS);
+      setStepData({ readingGroups: [] });
+      return;
+    }
+
+    const firstStep = getFirstStepForKanji(currentKanji.readings);
+    setCurrentStep(firstStep);
+    setStepData({ readingGroups: [] });
   };
 
-  // Proceed to next step and store validated answer
   const proceedToNextStep = (validatedAnswer, currentKanji) => {
-    if (currentStep === KANJI_STEPS.KUN_READINGS) {
-      // Store kun readings with null preservation for alignment
-      const kunReadings = currentKanji.readings.map(r => r.kun || null);
-      setStepData(prev => ({ ...prev, kunReadings }));
-      setCurrentStep(KANJI_STEPS.ON_READINGS);
-    } else if (currentStep === KANJI_STEPS.ON_READINGS) {
-      // Store on readings with null preservation for alignment
-      const onReadings = currentKanji.readings.map(r => r.on || null);
-      setStepData(prev => ({ ...prev, onReadings }));
-      setCurrentStep(KANJI_STEPS.MEANINGS);
+    const nextStep = getNextStepForKanji(currentStep, currentKanji.readings);
+
+    // Store complete reading groups ONLY when transitioning to meanings step
+    if (nextStep === KANJI_STEPS.MEANINGS) {
+      const readingGroups = getReadingGroupsForDisplay(currentKanji.readings);
+      setStepData({ readingGroups });
     }
+
+    setCurrentStep(nextStep);
   };
 
   const value = {

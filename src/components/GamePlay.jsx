@@ -5,7 +5,7 @@ import { usePreferences } from '../contexts/PreferencesContext';
 import { useKanjiGameContext } from '../contexts/KanjiGameContext';
 import { useGameActions } from '../hooks';
 import { ProgressBar } from '.';
-import { formatTime, cleanJapaneseText, getChipsForMeaningsStep } from '../utils';
+import { formatTime, cleanJapaneseText } from '../utils';
 import {
   FEEDBACK_TYPES,
   GAME_MODES,
@@ -292,29 +292,66 @@ const JapaneseTextDisplay = ({ parts, theme }) => {
 };
 
 const KanjiReadingsChips = ({ stepData, theme }) => {
-  const { kunRow, onRow } = getChipsForMeaningsStep(stepData);
+  const groups = stepData.readingGroups || [];
 
   return (
-    <div className="pt-2 space-y-2">
-      <div className="flex justify-left gap-2 flex-wrap">
-        {kunRow.map((reading, idx) => (
-          <span key={`kun-${idx}`} className={
-            `${reading ? theme.statsBg.green : theme.sectionBg} ${theme.text}
-              inline-flex items-center justify-center w-20 h-8 rounded-lg text-sm`
-          }>
-            {reading || ''}
-          </span>
-        ))}
-      </div>
-      <div className="flex justify-left gap-2 flex-wrap">
-        {onRow.map((reading, idx) => (
-          <span key={`on-${idx}`} className={
-            `${reading ? theme.statsBg.blue : theme.sectionBg} ${theme.text}
-            inline-flex items-center justify-center w-20 h-8 rounded-lg text-sm`
-          }>
-            {reading || ''}
-          </span>
-        ))}
+    <div className="pt-2 w-full overflow-x-auto">
+      <div className="inline-flex flex-col gap-2 min-w-full">
+        {/* Row for KUN readings */}
+        <div className="flex gap-2">
+          {groups.map((group, groupIdx) => (
+            <div key={`kun-group-${groupIdx}`} className="flex items-end gap-2">
+              {/* Column of KUN chips for this group */}
+              <div className="flex flex-col gap-1">
+                {group.kun ? (
+                  group.kun.map((reading, readingIdx) => (
+                    <span
+                      key={`kun-${groupIdx}-${readingIdx}`}
+                      className={`inline-flex items-center justify-center w-20 h-8 ${theme.statsBg.green} ${theme.text} rounded-lg text-sm`}
+                    >
+                      {reading}
+                    </span>
+                  ))
+                ) : (
+                  <span className={`inline-flex items-center justify-center w-20 h-8 ${theme.emptyBg} rounded-lg`}>
+                  </span>
+                )}
+              </div>
+              {/* Separator line */}
+              {groupIdx < groups.length - 1 && (
+                <div className={`w-px self-stretch ${theme.borderColor || 'bg-gray-300'}`} />
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Row for ON readings */}
+        <div className="flex gap-2">
+          {groups.map((group, groupIdx) => (
+            <div key={`on-group-${groupIdx}`} className="flex items-top gap-2">
+              {/* Column of ON chips for this group */}
+              <div className="flex flex-col gap-1">
+                {group.on ? (
+                  group.on.map((reading, readingIdx) => (
+                    <span
+                      key={`on-${groupIdx}-${readingIdx}`}
+                      className={`inline-flex items-center justify-center w-20 h-8 ${theme.statsBg.blue} ${theme.text} rounded-lg text-sm`}
+                    >
+                      {reading}
+                    </span>
+                  ))
+                ) : (
+                  <span className={`inline-flex items-center justify-center w-20 h-8 ${theme.emptyBg} rounded-lg`}>
+                  </span>
+                )}
+              </div>
+              {/* Separator line */}
+              {groupIdx < groups.length - 1 && (
+                <div className={`w-px self-stretch ${theme.borderColor || 'bg-gray-300'}`} />
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
