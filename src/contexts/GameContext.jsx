@@ -43,8 +43,7 @@ export const GameProvider = ({ children }) => {
     setGameState(GAME_STATES.REVIEW);
   };
 
-  const openKanjiReview = (lists) => {
-    setSelectedLists(lists);
+  const openKanjiReview = () => {
     setGameMode(GAME_MODES.KANJI);
     setGameState(GAME_STATES.REVIEW);
   };

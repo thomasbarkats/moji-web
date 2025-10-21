@@ -1,0 +1,188 @@
+{
+  "name": "N5 - Éléments de la nature",
+  "kanji": [
+    {
+      "character": "火",
+      "readings": [
+        {
+          "kun": [
+            "ひ"
+          ],
+          "on": [
+            "カ"
+          ],
+          "meanings": [
+            "feu"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "水",
+      "readings": [
+        {
+          "kun": [
+            "みず"
+          ],
+          "on": [
+            "スイ"
+          ],
+          "meanings": [
+            "eau"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "木",
+      "readings": [
+        {
+          "kun": [
+            "き"
+          ],
+          "on": [
+            "モク",
+            "ボク"
+          ],
+          "meanings": [
+            "arbre",
+            "bois"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "金",
+      "readings": [
+        {
+          "kun": [
+            "かね"
+          ],
+          "on": null,
+          "meanings": [
+            "argent"
+          ]
+        },
+        {
+          "kun": null,
+          "on": [
+            "キン",
+            "コン"
+          ],
+          "meanings": [
+            "or",
+            "métal",
+            "argent"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "土",
+      "readings": [
+        {
+          "kun": [
+            "つち"
+          ],
+          "on": [
+            "ド",
+            "ト"
+          ],
+          "meanings": [
+            "terre",
+            "sol"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "風",
+      "readings": [
+        {
+          "kun": [
+            "かぜ"
+          ],
+          "on": null,
+          "meanings": [
+            "vent"
+          ]
+        },
+        {
+          "kun": null,
+          "on": [
+            "フウ"
+          ],
+          "meanings": [
+            "vent",
+            "style",
+            "apparence"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "雨",
+      "readings": [
+        {
+          "kun": [
+            "あめ"
+          ],
+          "on": [
+            "ウ"
+          ],
+          "meanings": [
+            "pluie"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "川",
+      "readings": [
+        {
+          "kun": [
+            "かわ"
+          ],
+          "on": [
+            "セン"
+          ],
+          "meanings": [
+            "rivière"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "山",
+      "readings": [
+        {
+          "kun": [
+            "やま"
+          ],
+          "on": [
+            "サン"
+          ],
+          "meanings": [
+            "montagne"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "田",
+      "readings": [
+        {
+          "kun": [
+            "た"
+          ],
+          "on": [
+            "デン"
+          ],
+          "meanings": [
+            "rizière"
+          ]
+        }
+      ]
+    }
+  ]
+}

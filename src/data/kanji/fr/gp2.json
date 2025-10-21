@@ -37,24 +37,6 @@
       ]
     },
     {
-      "character": "木",
-      "readings": [
-        {
-          "kun": [
-            "き"
-          ],
-          "on": [
-            "モク",
-            "ボク"
-          ],
-          "meanings": [
-            "arbre",
-            "bois"
-          ]
-        }
-      ]
-    },
-    {
       "character": "日",
       "readings": [
         {
@@ -152,132 +134,111 @@
       ]
     },
     {
-      "character": "百",
+      "character": "大",
       "readings": [
         {
-          "kun": null,
+          "kun": [
+            "おお(きい)"
+          ],
           "on": [
-            "ヒャク"
+            "ダイ",
+            "タイ"
           ],
           "meanings": [
-            "cent"
+            "grand",
+            "large"
+          ]
+        },
+        {
+          "kun": [
+            "おお(いに)"
+          ],
+          "on": null,
+          "meanings": [
+            "beaucoup",
+            "grandement"
           ]
         }
       ]
     },
     {
-      "character": "千",
+      "character": "小",
       "readings": [
         {
           "kun": [
-            "ち"
+            "ちい(さい)",
+            "こ-",
+            "お-"
           ],
           "on": [
-            "セン"
+            "ショウ"
           ],
           "meanings": [
-            "mille"
+            "petit",
+            "peu"
           ]
         }
       ]
     },
     {
-      "character": "万",
+      "character": "中",
       "readings": [
         {
           "kun": null,
           "on": [
-            "マン"
+            "チュウ"
           ],
           "meanings": [
-            "dix mille"
+            "milieu"
           ]
         },
         {
           "kun": null,
           "on": [
-            "バン"
+            "-チュウ",
+            "-ジュウ"
           ],
           "meanings": [
-            "plusieurs",
-            "tous"
+            "pendant",
+            "tout au long",
+            "dans"
+          ]
+        },
+        {
+          "kun": [
+            "なか"
+          ],
+          "on": null,
+          "meanings": [
+            "dedans",
+            "au milieu"
           ]
         }
       ]
     },
     {
-      "character": "明",
+      "character": "本",
       "readings": [
         {
           "kun": [
-            "あ(かり)"
+            "もと"
           ],
-          "on": [
-            "メイ"
-          ],
+          "on": null,
           "meanings": [
-            "lumière",
-            "clarté"
+            "origine"
           ]
         },
         {
           "kun": null,
           "on": [
-            "ミョウ"
+            "ホン"
           ],
           "meanings": [
-            "lumière",
-            "prochain"
-          ]
-        },
-        {
-          "kun": [
-            "あか(るい)",
-            "あき(らか)"
-          ],
-          "on": null,
-          "meanings": [
-            "lumineux",
-            "clair"
-          ]
-        },
-        {
-          "kun": [
-            "あ(ける)",
-            "あか(るむ)",
-            "あか(らむ)"
-          ],
-          "on": null,
-          "meanings": [
-            "devenir lumineux"
-          ]
-        },
-        {
-          "kun": [
-            "あ(く)"
-          ],
-          "on": null,
-          "meanings": [
-            "être ouvert"
-          ]
-        },
-        {
-          "kun": [
-            "あ(かす)"
-          ],
-          "on": null,
-          "meanings": [
-            "passer (la nuit)"
-          ]
-        },
-        {
-          "kun": [
-            "あ(くる)"
-          ],
-          "on": null,
-          "meanings": [
-            "prochain",
-            "suivant"
+            "livre",
+            "principal",
+            "origine",
+            "vrai",
+            "compteur pour les objets longs et cylindriques"
           ]
         }
       ]

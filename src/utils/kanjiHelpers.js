@@ -55,12 +55,17 @@ const toKatakana = (text) => {
   });
 };
 
+const removeAccents = (text) => {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+};
+
 const normalizeAnswerItem = (item, isMeanings = false) => {
   let trimmed = item.trim();
   trimmed = trimmed.replace(/^-+|-+$/g, '');
 
   if (isMeanings) {
-    return trimmed.toLowerCase();
+    // Remove accents and convert to lowercase for meanings
+    return removeAccents(trimmed).toLowerCase();
   }
 
   // Convert romaji to hiragana if input contains latin characters
@@ -124,7 +129,8 @@ const validateMeanings = (userAnswers, kanjiItem) => {
   for (const group of meaningGroups) {
     const groupSize = group.length;
     const userGroup = userAnswers.slice(userIndex, userIndex + groupSize);
-    const normalizedExpectedGroup = group.map(m => m.toLowerCase());
+    // Normalize expected meanings: lowercase + remove accents
+    const normalizedExpectedGroup = group.map(m => removeAccents(m.toLowerCase()));
 
     const userGroupSorted = [...userGroup].sort();
     const expectedGroupSorted = [...normalizedExpectedGroup].sort();

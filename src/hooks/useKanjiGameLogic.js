@@ -1,5 +1,6 @@
 import { useGameContext } from '../contexts/GameContext';
 import { useKanjiGameContext } from '../contexts/KanjiGameContext';
+import { selectNextItem } from '../utils';
 import { GAME_STATES, GAME_MODES } from '../constants';
 
 
@@ -13,6 +14,7 @@ export const useKanjiGameLogic = () => {
     setFeedback,
     setProgress,
     setSessionStats,
+    currentItem,
     setCurrentItem,
     currentItemStartRef,
   } = useGameContext();
@@ -67,8 +69,9 @@ export const useKanjiGameLogic = () => {
       return null;
     }
 
-    const randomIndex = Math.floor(Math.random() * availableKanji.length);
-    const nextKanji = availableKanji[randomIndex];
+    const nextKanji = selectNextItem(availableKanji, currentProgress, currentItem?.key);
+  
+    if (!nextKanji) return null;
 
     const newItem = {
       key: nextKanji.character,
@@ -83,6 +86,14 @@ export const useKanjiGameLogic = () => {
     setFeedback(null);
     resetSteps(nextKanji);
     currentItemStartRef.current = Date.now();
+
+    setProgress(prev => ({
+      ...prev,
+      [nextKanji.character]: {
+        ...prev[nextKanji.character],
+        lastSeen: Date.now()
+      }
+    }));
 
     return newItem;
   };

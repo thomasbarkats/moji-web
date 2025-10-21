@@ -47,22 +47,23 @@ export const getAllKanaForMode = (mode, kanaData, options = {}) => {
   return result;
 };
 
-export const initializeKanaData = (allKana) => {
+export const initializeKanaData = (kanaArray) => {
   const initialProgress = {};
   const initialStats = {};
 
-  allKana.forEach(kana => {
+  kanaArray.forEach(kana => {
     initialProgress[kana.char] = {
       successes: 0,
       failures: 0,
-      mastered: false
+      mastered: false,
+      lastSeen: null
     };
     initialStats[kana.char] = {
       key: kana.char,
       question: kana.char,
       answer: kana.reading,
-      failures: 0,
       successes: 0,
+      failures: 0,
       timeSpent: 0
     };
   });
@@ -92,4 +93,43 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
   });
 
   return { initialProgress, initialStats };
+};
+
+/**
+ * Simple selection that prioritizes never-seen items
+ * Ensures all items are seen at least once before repeating any
+ */
+export const selectNextItem = (availableItems, currentProgress, currentItemKey = null) => {
+  if (availableItems.length === 0) return null;
+  if (availableItems.length === 1) return availableItems[0];
+
+  // Get item key based on type (kana/vocabulary/kanji)
+  const getItemKey = (item) => item.char || item.japanese || item.character;
+
+  // Split into never-seen and already-seen items
+  const neverSeen = availableItems.filter(item => {
+    const key = getItemKey(item);
+    return !currentProgress[key]?.lastSeen;
+  });
+
+  const alreadySeen = availableItems.filter(item => {
+    const key = getItemKey(item);
+    return currentProgress[key]?.lastSeen;
+  });
+
+  // Prioritize never-seen items
+  const poolToUse = neverSeen.length > 0 ? neverSeen : alreadySeen;
+
+  // Avoid repeating current item if possible
+  let candidates = poolToUse;
+  if (currentItemKey && poolToUse.length > 1) {
+    const filtered = poolToUse.filter(item => getItemKey(item) !== currentItemKey);
+    if (filtered.length > 0) {
+      candidates = filtered;
+    }
+  }
+
+  // Random selection from candidates
+  const randomIndex = Math.floor(Math.random() * candidates.length);
+  return candidates[randomIndex];
 };

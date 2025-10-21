@@ -78,6 +78,7 @@ export const useGameActions = () => {
     const newStats = { ...sessionStats };
 
     newProgress[item.key] = { ...newProgress[item.key] };
+
     if (isCorrect) {
       newProgress[item.key].successes += 1;
       if (newProgress[item.key].successes >= requiredSuccesses) {
@@ -99,6 +100,7 @@ export const useGameActions = () => {
     } else {
       newStats[item.key].failures += 1;
     }
+
     newStats[item.key].timeSpent = (newStats[item.key].timeSpent || 0) + timeSpent;
 
     return { newProgress, newStats };

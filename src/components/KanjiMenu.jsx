@@ -68,7 +68,7 @@ export const KanjiMenu = () => {
         {selectedLists.length > 0 && (
           <div className="space-y-4">
             <button
-              onClick={() => openKanjiReview(selectedLists)}
+              onClick={() => openKanjiReview()}
               className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
             >
               <div className="flex items-center justify-center gap-2">

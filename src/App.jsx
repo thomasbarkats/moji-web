@@ -2,6 +2,7 @@ import { useGameContext } from './contexts/GameContext';
 import { usePreferences } from './contexts/PreferencesContext';
 import { getSortedStats } from './services/statsService';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
+import { useKeyboardNavigation } from './hooks';
 import {
   useGameActions,
   useVocabularyGameLogic,
@@ -34,6 +35,8 @@ function App() {
     sortBy,
     currentVocabularyWords,
   } = useGameContext();
+
+  useKeyboardNavigation();
 
   const { initializeKanaGame } = useKanaGameLogic();
   const { initializeVocabularyGame } = useVocabularyGameLogic();

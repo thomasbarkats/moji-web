@@ -1,6 +1,6 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { getAllKanaForMode, initializeKanaData } from '../utils';
+import { getAllKanaForMode, initializeKanaData, selectNextItem } from '../utils';
 import { GAME_STATES } from '../constants';
 
 
@@ -14,6 +14,7 @@ export const useKanaGameLogic = () => {
     setFeedback,
     setProgress,
     setSessionStats,
+    currentItem,
     setCurrentItem,
     currentItemStartRef,
   } = useGameContext();
@@ -42,11 +43,13 @@ export const useKanaGameLogic = () => {
     const availableKana = allKana.filter(kana => !currentProgress[kana.char].mastered);
 
     if (availableKana.length === 0) {
-      return null; // Signal to finish session
+      return null;
     }
 
-    const randomIndex = Math.floor(Math.random() * availableKana.length);
-    const nextKana = availableKana[randomIndex];
+    const nextKana = selectNextItem(availableKana, currentProgress, currentItem?.key);
+
+    if (!nextKana) return null;
+
     const newItem = {
       key: nextKana.char,
       question: nextKana.char,
@@ -57,6 +60,14 @@ export const useKanaGameLogic = () => {
     setUserInput('');
     setFeedback(null);
     currentItemStartRef.current = Date.now();
+
+    setProgress(prev => ({
+      ...prev,
+      [nextKana.char]: {
+        ...prev[nextKana.char],
+        lastSeen: Date.now()
+      }
+    }));
 
     return newItem;
   };

@@ -7,3 +7,4 @@ export { useKanaGameLogic } from './useKanaGameLogic';
 export { useVocabularyGameLogic } from './useVocabularyGameLogic';
 export { useGameActions } from './useGameActions';
 export { useKanjiGameLogic } from './useKanjiGameLogic';
+export { useKeyboardNavigation } from './useKeyboardNavigation.js';

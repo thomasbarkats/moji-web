@@ -54,7 +54,8 @@
       "readings": [
         {
           "kun": [
-            "よ, よん"
+            "よ",
+            "よん"
           ],
           "on": [
             "シ"
@@ -137,7 +138,8 @@
             "ここの"
           ],
           "on": [
-            "キュウ, ク"
+            "キュウ",
+            "ク"
           ],
           "meanings": [
             "neuf"
@@ -157,6 +159,60 @@
           ],
           "meanings": [
             "dix"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "百",
+      "readings": [
+        {
+          "kun": null,
+          "on": [
+            "ヒャク"
+          ],
+          "meanings": [
+            "cent"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "千",
+      "readings": [
+        {
+          "kun": [
+            "ち"
+          ],
+          "on": [
+            "セン"
+          ],
+          "meanings": [
+            "mille"
+          ]
+        }
+      ]
+    },
+    {
+      "character": "万",
+      "readings": [
+        {
+          "kun": null,
+          "on": [
+            "マン"
+          ],
+          "meanings": [
+            "dix mille"
+          ]
+        },
+        {
+          "kun": null,
+          "on": [
+            "バン"
+          ],
+          "meanings": [
+            "plusieurs",
+            "tous"
           ]
         }
       ]

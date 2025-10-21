@@ -1,6 +1,6 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { speakKanaReading } from '../utils';
+import { speakKanaReading, selectNextItem } from '../utils';
 import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
 import { GAME_STATES, GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
 
@@ -15,6 +15,7 @@ export const useVocabularyGameLogic = () => {
     setFeedback,
     setProgress,
     setSessionStats,
+    currentItem,
     setCurrentItem,
     setCurrentVocabularyWords,
     currentItemStartRef,
@@ -47,7 +48,12 @@ export const useVocabularyGameLogic = () => {
     const initialProgress = {};
     const initialStats = {};
     words.forEach(word => {
-      initialProgress[word.japanese] = { successes: 0, failures: 0, mastered: false };
+      initialProgress[word.japanese] = {
+        successes: 0,
+        failures: 0,
+        mastered: false,
+        lastSeen: null,
+      };
       initialStats[word.japanese] = {
         key: word.japanese,
         question: word.displayText,
@@ -71,8 +77,9 @@ export const useVocabularyGameLogic = () => {
       return null; // Signal to finish session
     }
 
-    const randomIndex = Math.floor(Math.random() * availableWords.length);
-    const nextWord = availableWords[randomIndex];
+    const nextWord = selectNextItem(availableWords, currentProgress, currentItem?.key);
+
+    if (!nextWord) return null;
 
     const newItem = {
       key: nextWord.japanese,
@@ -99,6 +106,14 @@ export const useVocabularyGameLogic = () => {
     setUserInput('');
     setFeedback(null);
     currentItemStartRef.current = Date.now();
+
+    setProgress(prev => ({
+      ...prev,
+      [nextWord.japanese]: {
+        ...prev[nextWord.japanese],
+        lastSeen: Date.now()
+      }
+    }));
 
     return newItem;
   };

@@ -1,5 +1,6 @@
 export const APP_MODES = {
   KANA: 'kana',
+  KANJI: 'kanji',
   VOCABULARY: 'vocabulary'
 };
 
