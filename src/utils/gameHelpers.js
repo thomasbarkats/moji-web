@@ -95,41 +95,60 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
   return { initialProgress, initialStats };
 };
 
+const getItemKey = (item) => item.char || item.japanese || item.character;
+
 /**
- * Simple selection that prioritizes never-seen items
- * Ensures all items are seen at least once before repeating any
+ * Calculate weight based on time since last seen
+ * Never seen = max weight
+ * Recently seen = lower weight
+ * Long time ago = higher weight
+ */
+const calculateWeight = (lastSeen) => {
+  if (!lastSeen) return 10; // Never seen gets max weight
+
+  const timeSinceLastSeen = Date.now() - lastSeen;
+  const minutesAgo = timeSinceLastSeen / (1000 * 60);
+
+  // Weight increases with time: 1 at 0 min, 10 at 5+ min
+  return Math.min(10, 1 + (minutesAgo / 5) * 9);
+};
+
+/**
+ * Weighted random selection
+ * Items not seen for longer get higher probability
  */
 export const selectNextItem = (availableItems, currentProgress, currentItemKey = null) => {
   if (availableItems.length === 0) return null;
   if (availableItems.length === 1) return availableItems[0];
 
-  // Get item key based on type (kana/vocabulary/kanji)
-  const getItemKey = (item) => item.char || item.japanese || item.character;
-
-  // Split into never-seen and already-seen items
-  const neverSeen = availableItems.filter(item => {
-    const key = getItemKey(item);
-    return !currentProgress[key]?.lastSeen;
-  });
-
-  const alreadySeen = availableItems.filter(item => {
-    const key = getItemKey(item);
-    return currentProgress[key]?.lastSeen;
-  });
-
-  // Prioritize never-seen items
-  const poolToUse = neverSeen.length > 0 ? neverSeen : alreadySeen;
-
-  // Avoid repeating current item if possible
-  let candidates = poolToUse;
-  if (currentItemKey && poolToUse.length > 1) {
-    const filtered = poolToUse.filter(item => getItemKey(item) !== currentItemKey);
+  // Filter out current item to avoid consecutive repeats
+  let candidates = availableItems;
+  if (currentItemKey && availableItems.length > 1) {
+    const filtered = availableItems.filter(item => getItemKey(item) !== currentItemKey);
     if (filtered.length > 0) {
       candidates = filtered;
     }
   }
 
-  // Random selection from candidates
-  const randomIndex = Math.floor(Math.random() * candidates.length);
-  return candidates[randomIndex];
+  // Calculate weights for all candidates
+  const itemsWithWeights = candidates.map(item => {
+    const key = getItemKey(item);
+    const lastSeen = currentProgress[key]?.lastSeen;
+    const weight = calculateWeight(lastSeen);
+    return { item, weight };
+  });
+
+  // Weighted random selection
+  const totalWeight = itemsWithWeights.reduce((sum, { weight }) => sum + weight, 0);
+  let random = Math.random() * totalWeight;
+
+  for (const { item, weight } of itemsWithWeights) {
+    random -= weight;
+    if (random <= 0) {
+      return item;
+    }
+  }
+
+  // Fallback (should never reach here)
+  return itemsWithWeights[itemsWithWeights.length - 1].item;
 };

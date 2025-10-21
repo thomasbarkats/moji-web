@@ -11,7 +11,7 @@ import {
   triggerConfetti,
   checkVocabularyAnswer,
   validateKanjiAnswer,
-  getExpectedAnswerForStep,
+  getExpectedReadingsForStep,
   getKunReadingsForAudio,
   getOnReadingsForAudio,
 } from '../utils';
@@ -140,7 +140,7 @@ export const useGameActions = () => {
     if (!currentItem || !userInput.trim()) return;
 
     const isCorrect = validateKanjiAnswer(userInput, currentItem, currentStep);
-    const expectedAnswers = getExpectedAnswerForStep(currentItem, currentStep);
+    const expectedAnswers = getExpectedReadingsForStep(currentItem, currentStep);
     const correctAnswer = expectedAnswers.join(', ');
     const feedbackType = isCorrect ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
 

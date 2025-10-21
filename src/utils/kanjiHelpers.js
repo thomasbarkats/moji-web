@@ -11,19 +11,59 @@ export const hasOnReadings = (readingGroup) => {
   return readingGroup.on && Array.isArray(readingGroup.on) && readingGroup.on.length > 0;
 };
 
-// Get all readings flattened and deduplicated (for validation)
+// Get all readings flattened (EXHAUSTIVE - for display/feedback)
 export const getAllKunReadings = (readings) => {
   const allKun = readings.flatMap(r => hasKunReadings(r) ? r.kun : []);
-  return [...new Set(allKun)]; // Deduplicate
+  return [...new Set(allKun)];
 };
 
 export const getAllOnReadings = (readings) => {
   const allOn = readings.flatMap(r => hasOnReadings(r) ? r.on : []);
-  return [...new Set(allOn)]; // Deduplicate
+  return [...new Set(allOn)];
 };
 
 export const getAllMeaningsInOrder = (readings) => {
   return readings.flatMap(r => r.meanings || []);
+};
+
+// Helper to normalize a reading for deduplication (remove dashes and parentheses)
+const normalizeReadingForDedup = (reading) => {
+  return reading.replace(/^-+|-+$/g, '').replace(/[()（）]/g, '');
+};
+
+// Get deduplicated readings (for validation - ignores dashes/parentheses)
+export const getDeduplicatedKunReadings = (readings) => {
+  const allKun = readings.flatMap(r => hasKunReadings(r) ? r.kun : []);
+  
+  const seen = new Set();
+  const deduplicated = [];
+  
+  for (const reading of allKun) {
+    const normalized = normalizeReadingForDedup(reading);
+    if (!seen.has(normalized)) {
+      seen.add(normalized);
+      deduplicated.push(reading);
+    }
+  }
+  
+  return deduplicated;
+};
+
+export const getDeduplicatedOnReadings = (readings) => {
+  const allOn = readings.flatMap(r => hasOnReadings(r) ? r.on : []);
+  
+  const seen = new Set();
+  const deduplicated = [];
+  
+  for (const reading of allOn) {
+    const normalized = normalizeReadingForDedup(reading);
+    if (!seen.has(normalized)) {
+      seen.add(normalized);
+      deduplicated.push(reading);
+    }
+  }
+  
+  return deduplicated;
 };
 
 // Get reading groups for display (preserves structure with nulls)
@@ -38,9 +78,23 @@ export const getReadingGroupsForDisplay = (readings) => {
 export const getExpectedAnswerForStep = (kanjiItem, step) => {
   switch (step) {
     case KANJI_STEPS.KUN_READINGS:
-      return getAllKunReadings(kanjiItem.readings);
+      return getDeduplicatedKunReadings(kanjiItem.readings);
     case KANJI_STEPS.ON_READINGS:
-      return getAllOnReadings(kanjiItem.readings);
+      return getDeduplicatedOnReadings(kanjiItem.readings);
+    case KANJI_STEPS.MEANINGS:
+      return getAllMeaningsInOrder(kanjiItem.readings);
+    default:
+      return [];
+  }
+};
+
+// Get expected reading for current step feedback displaying
+export const getExpectedReadingsForStep = (kanjiItem, step) => {
+  switch (step) {
+    case KANJI_STEPS.KUN_READINGS:
+      return getKunReadings(kanjiItem.readings);
+    case KANJI_STEPS.ON_READINGS:
+      return getOnReadings(kanjiItem.readings);
     case KANJI_STEPS.MEANINGS:
       return getAllMeaningsInOrder(kanjiItem.readings);
     default:
@@ -73,8 +127,8 @@ const normalizeAnswerItem = (item, isMeanings = false) => {
     trimmed = wanakana.toHiragana(trimmed);
   }
 
-  // Remove parentheses from user input too (to match normalized expected)
-  trimmed = trimmed.replace(/[()]/g, '');
+  // Remove BOTH latin AND japanese parentheses
+  trimmed = trimmed.replace(/[()（）]/g, '');
 
   return toKatakana(trimmed);
 };
@@ -96,6 +150,10 @@ const validateReadings = (userAnswers, expectedReadings) => {
     const fullVersion = withoutDash.replace(/[()]/g, '');
     return toKatakana(fullVersion);
   });
+
+  console.log('User answers:', userAnswers);
+  console.log('Expected (normalized):', normalizedExpected);
+  console.log('Lengths:', userAnswers.length, expectedReadings.length);
 
   if (userAnswers.length !== expectedReadings.length) return false;
 
