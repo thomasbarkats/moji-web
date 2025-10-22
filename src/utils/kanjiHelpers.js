@@ -2,7 +2,10 @@ import * as wanakana from 'wanakana';
 import { KANJI_STEPS } from '../constants';
 
 
-// Helper functions
+// ============================================
+// READING GROUP CHECKS
+// ============================================
+
 export const hasKunReadings = (readingGroup) => {
   return readingGroup.kun && Array.isArray(readingGroup.kun) && readingGroup.kun.length > 0;
 };
@@ -11,62 +14,77 @@ export const hasOnReadings = (readingGroup) => {
   return readingGroup.on && Array.isArray(readingGroup.on) && readingGroup.on.length > 0;
 };
 
-// Get all readings flattened (EXHAUSTIVE - for display/feedback)
-export const getAllKunReadings = (readings) => {
-  const allKun = readings.flatMap(r => hasKunReadings(r) ? r.kun : []);
-  return [...new Set(allKun)];
+
+// ============================================
+// NORMALIZATION HELPERS
+// ============================================
+
+const removeAccents = (text) => {
+  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 };
 
-export const getAllOnReadings = (readings) => {
-  const allOn = readings.flatMap(r => hasOnReadings(r) ? r.on : []);
-  return [...new Set(allOn)];
+// Normalize reading for deduplication (removes dashes and parentheses)
+const normalizeReadingForDedup = (reading) => {
+  return reading.replace(/^-+|-+$/g, '').replace(/[()（）]/g, '');
 };
+
+// Normalize user input item
+const normalizeAnswerItem = (item, isMeanings = false) => {
+  let trimmed = item.trim();
+  trimmed = trimmed.replace(/^-+|-+$/g, '');
+
+  if (isMeanings) {
+    return removeAccents(trimmed).toLowerCase();
+  }
+
+  if (/[a-zA-Z]/.test(trimmed)) {
+    trimmed = wanakana.toHiragana(trimmed);
+  }
+
+  trimmed = trimmed.replace(/[()（）]/g, '');
+  return wanakana.toKatakana(trimmed);
+};
+
+
+// ============================================
+// READING EXTRACTION (with options)
+// ============================================
+
+// Generic function to get readings with optional deduplication
+const getReadings = (readings, type, deduplicate = false) => {
+  const hasReadings = type === 'kun' ? hasKunReadings : hasOnReadings;
+  const allReadings = readings.flatMap(r => hasReadings(r) ? r[type] : []);
+
+  if (!deduplicate) {
+    return [...new Set(allReadings)]; // Remove exact duplicates only
+  }
+
+  // Deduplicate based on normalized form
+  const seen = new Set();
+  const deduplicated = [];
+
+  for (const reading of allReadings) {
+    const normalized = normalizeReadingForDedup(reading);
+    if (!seen.has(normalized)) {
+      seen.add(normalized);
+      deduplicated.push(reading);
+    }
+  }
+
+  return deduplicated;
+};
+
+// Public APIs for readings
+export const getAllKunReadings = (readings) => getReadings(readings, 'kun', false);
+export const getAllOnReadings = (readings) => getReadings(readings, 'on', false);
+export const getDeduplicatedKunReadings = (readings) => getReadings(readings, 'kun', true);
+export const getDeduplicatedOnReadings = (readings) => getReadings(readings, 'on', true);
 
 export const getAllMeaningsInOrder = (readings) => {
   return readings.flatMap(r => r.meanings || []);
 };
 
-// Helper to normalize a reading for deduplication (remove dashes and parentheses)
-const normalizeReadingForDedup = (reading) => {
-  return reading.replace(/^-+|-+$/g, '').replace(/[()（）]/g, '');
-};
-
-// Get deduplicated readings (for validation - ignores dashes/parentheses)
-export const getDeduplicatedKunReadings = (readings) => {
-  const allKun = readings.flatMap(r => hasKunReadings(r) ? r.kun : []);
-  
-  const seen = new Set();
-  const deduplicated = [];
-  
-  for (const reading of allKun) {
-    const normalized = normalizeReadingForDedup(reading);
-    if (!seen.has(normalized)) {
-      seen.add(normalized);
-      deduplicated.push(reading);
-    }
-  }
-  
-  return deduplicated;
-};
-
-export const getDeduplicatedOnReadings = (readings) => {
-  const allOn = readings.flatMap(r => hasOnReadings(r) ? r.on : []);
-  
-  const seen = new Set();
-  const deduplicated = [];
-  
-  for (const reading of allOn) {
-    const normalized = normalizeReadingForDedup(reading);
-    if (!seen.has(normalized)) {
-      seen.add(normalized);
-      deduplicated.push(reading);
-    }
-  }
-  
-  return deduplicated;
-};
-
-// Get reading groups for display (preserves structure with nulls)
+// Reading groups for display (preserves structure with nulls)
 export const getReadingGroupsForDisplay = (readings) => {
   return readings.map(r => ({
     kun: hasKunReadings(r) ? r.kun : null,
@@ -74,8 +92,13 @@ export const getReadingGroupsForDisplay = (readings) => {
   }));
 };
 
-// Get expected answer for current step
-export const getExpectedAnswerForStep = (kanjiItem, step) => {
+
+// ============================================
+// STEP-BASED HELPERS
+// ============================================
+
+// Get expected answer for validation (deduplicated for readings)
+export const getExpectedAnswerForValidation = (kanjiItem, step) => {
   switch (step) {
     case KANJI_STEPS.KUN_READINGS:
       return getDeduplicatedKunReadings(kanjiItem.readings);
@@ -88,13 +111,13 @@ export const getExpectedAnswerForStep = (kanjiItem, step) => {
   }
 };
 
-// Get expected reading for current step feedback displaying
-export const getExpectedReadingsForStep = (kanjiItem, step) => {
+// Get readings for feedback display (exhaustive)
+export const getExpectedAnswerForFeedback = (kanjiItem, step) => {
   switch (step) {
     case KANJI_STEPS.KUN_READINGS:
-      return getKunReadings(kanjiItem.readings);
+      return getAllKunReadings(kanjiItem.readings);
     case KANJI_STEPS.ON_READINGS:
-      return getOnReadings(kanjiItem.readings);
+      return getAllOnReadings(kanjiItem.readings);
     case KANJI_STEPS.MEANINGS:
       return getAllMeaningsInOrder(kanjiItem.readings);
     default:
@@ -102,58 +125,34 @@ export const getExpectedReadingsForStep = (kanjiItem, step) => {
   }
 };
 
-// Normalization helpers
-const toKatakana = (text) => {
-  return text.replace(/[\u3041-\u3096]/g, (char) => {
-    return String.fromCharCode(char.charCodeAt(0) + 0x60);
-  });
-};
+// Aliases for audio (same as exhaustive feedback)
+export const getKunReadingsForAudio = getAllKunReadings;
+export const getOnReadingsForAudio = getAllOnReadings;
 
-const removeAccents = (text) => {
-  return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-};
 
-const normalizeAnswerItem = (item, isMeanings = false) => {
-  let trimmed = item.trim();
-  trimmed = trimmed.replace(/^-+|-+$/g, '');
+// ============================================
+// USER INPUT PARSING
+// ============================================
 
-  if (isMeanings) {
-    // Remove accents and convert to lowercase for meanings
-    return removeAccents(trimmed).toLowerCase();
-  }
-
-  // Convert romaji to hiragana if input contains latin characters
-  if (/[a-zA-Z]/.test(trimmed)) {
-    trimmed = wanakana.toHiragana(trimmed);
-  }
-
-  // Remove BOTH latin AND japanese parentheses
-  trimmed = trimmed.replace(/[()（）]/g, '');
-
-  return toKatakana(trimmed);
-};
-
-// Parse user input
 export const parseUserAnswers = (userInput, isMeanings = false) => {
   if (!userInput || !userInput.trim()) return [];
 
   return userInput
-    .split(/[,、]+/) // Split on comma/japanese comma only
+    .split(/[,、]+/)
     .map(item => normalizeAnswerItem(item, isMeanings))
     .filter(item => item.length > 0);
 };
 
-// Validation functions
+
+// ============================================
+// VALIDATION
+// ============================================
+
 const validateReadings = (userAnswers, expectedReadings) => {
   const normalizedExpected = expectedReadings.map(r => {
-    const withoutDash = r.replace(/^-+|-+$/g, '');
-    const fullVersion = withoutDash.replace(/[()]/g, '');
-    return toKatakana(fullVersion);
+    const normalized = normalizeReadingForDedup(r);
+    return wanakana.toKatakana(normalized);
   });
-
-  console.log('User answers:', userAnswers);
-  console.log('Expected (normalized):', normalizedExpected);
-  console.log('Lengths:', userAnswers.length, expectedReadings.length);
 
   if (userAnswers.length !== expectedReadings.length) return false;
 
@@ -187,7 +186,6 @@ const validateMeanings = (userAnswers, kanjiItem) => {
   for (const group of meaningGroups) {
     const groupSize = group.length;
     const userGroup = userAnswers.slice(userIndex, userIndex + groupSize);
-    // Normalize expected meanings: lowercase + remove accents
     const normalizedExpectedGroup = group.map(m => removeAccents(m.toLowerCase()));
 
     const userGroupSorted = [...userGroup].sort();
@@ -215,21 +213,16 @@ export const validateKanjiAnswer = (userInput, kanjiItem, step) => {
   if (step === KANJI_STEPS.MEANINGS) {
     return validateMeanings(userAnswers, kanjiItem);
   } else {
-    const expectedAnswers = getExpectedAnswerForStep(kanjiItem, step);
+    const expectedAnswers = getExpectedAnswerForValidation(kanjiItem, step);
     return validateReadings(userAnswers, expectedAnswers);
   }
 };
 
-// Audio helpers
-export const getKunReadingsForAudio = (readings) => {
-  return getAllKunReadings(readings);
-};
 
-export const getOnReadingsForAudio = (readings) => {
-  return getAllOnReadings(readings);
-};
+// ============================================
+// STEP NAVIGATION
+// ============================================
 
-// Step navigation
 export const getFirstStepForKanji = (readings) => {
   const hasKun = readings.some(r => hasKunReadings(r));
   const hasOn = readings.some(r => hasOnReadings(r));
@@ -253,7 +246,11 @@ export const getNextStepForKanji = (currentStep, readings) => {
   return KANJI_STEPS.MEANINGS;
 };
 
-// Review formatting
+
+// ============================================
+// REVIEW FORMATTING
+// ============================================
+
 export const formatKanjiForReview = (kanji) => {
   const kunReadings = getAllKunReadings(kanji.readings);
   const onReadings = getAllOnReadings(kanji.readings);

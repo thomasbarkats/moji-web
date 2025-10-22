@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { GameProvider } from './contexts/GameContext';
 import { PreferencesProvider } from './contexts/PreferencesContext';
-import { KanjiGameProvider } from './contexts/KanjiGameContext';
+import { KanjiGameProvider } from './contexts/GameContextKanji';
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

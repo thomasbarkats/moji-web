@@ -1,9 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Keyboard, X } from 'lucide-react';
 
 
 export const KeyboardHint = ({ theme }) => {
   const [showHint, setShowHint] = useState(false);
+
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && showHint) {
+        setShowHint(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [showHint]);
 
 
   return (
@@ -43,7 +54,7 @@ export const KeyboardHint = ({ theme }) => {
                   1. Press <kbd>Win + Space</kbd> to switch input methods<br/>
                   2. Or click the language icon in taskbar<br/>
                   3. Select Japanese IME<br/>
-                  4. Press <kbd>Alt + ~</kbd> to toggle hiragana/romaji
+                  4. Press <kbd>Capslock</kbd> to toggle hiragana/romaji
                 </p>
               </div>
               

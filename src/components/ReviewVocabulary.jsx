@@ -2,11 +2,11 @@ import { Volume2, ArrowLeft, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContext } from '../contexts/GameContext';
-import { speakKanaReading, parseVocabularyEntry } from '../utils';
+import { speakReading, parseVocabularyEntry } from '../utils';
 import { GAME_STATES, SORT_MODES } from '../constants';
 
 
-export const VocabularyReview = () => {
+export const ReviewVocabulary = () => {
   const { theme } = usePreferences();
   const { vocabularyLists, selectedLists, setGameState } = useGameContext();
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
@@ -41,7 +41,7 @@ export const VocabularyReview = () => {
         <td className="p-4">
           <div className="flex items-center gap-3">
             <button
-              onClick={() => speakKanaReading(parsed.speechText, 1)}
+              onClick={() => speakReading(parsed.speechText, 1)}
               className={`${theme.textMuted} hover:${theme.text} transition-colors flex-shrink-0 cursor-pointer`}
             >
               <Volume2 className="w-4 h-4" />

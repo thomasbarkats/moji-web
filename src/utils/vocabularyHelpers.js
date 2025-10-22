@@ -1,10 +1,13 @@
+// ============================================
+// PARSING
+// ============================================
+
 export const parseVocabularyEntry = (entry) => {
   if (!Array.isArray(entry) || entry.length < 2) {
     throw new Error('Invalid vocabulary entry format');
   }
 
   const [japaneseRaw, translation, infoText = null] = entry;
-
   const parts = parseJapaneseText(japaneseRaw);
 
   const speechText = parts.map(part => {
@@ -14,16 +17,16 @@ export const parseVocabularyEntry = (entry) => {
   }).join('');
 
   const displayText = japaneseRaw
-    .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1') // Replace {kanji}[reading] by kanji
-    .replace(/\{([^}]+)\}/g, '$1'); // Remove orphans {}
+    .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1')
+    .replace(/\{([^}]+)\}/g, '$1');
 
   return {
-    japanese: japaneseRaw, // Uniq key
+    japanese: japaneseRaw,
     displayText,
     speechText,
     translation,
     infoText,
-    parts, // For tooltips
+    parts,
   };
 };
 
@@ -34,21 +37,19 @@ export const parseJapaneseText = (text) => {
   while (i < text.length) {
     const char = text[i];
 
-    // Optional parts (...)
     if (char === '(') {
       const closeIdx = text.indexOf(')', i);
       if (closeIdx === -1) throw new Error(`Unmatched '(' at position ${i}`);
 
       parts.push({
         type: 'optional',
-        text: text.substring(i, closeIdx + 1), // Keep the ()
+        text: text.substring(i, closeIdx + 1),
         isOptional: true,
       });
       i = closeIdx + 1;
       continue;
     }
 
-    // {kanji}[reading] format
     if (char === '{') {
       const closeBraceIdx = text.indexOf('}', i);
       if (closeBraceIdx === -1) throw new Error(`Unmatched '{' at position ${i}`);
@@ -73,7 +74,6 @@ export const parseJapaneseText = (text) => {
       continue;
     }
 
-    // Normal char
     parts.push({
       type: 'text',
       text: char,
@@ -84,32 +84,38 @@ export const parseJapaneseText = (text) => {
   return parts;
 };
 
+
+// ============================================
+// TEXT CLEANING
+// ============================================
+
+export const cleanJapaneseText = (text) => {
+  return text
+    .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1')
+    .replace(/\{([^}]+)\}/g, '$1')
+    .replace(/\[([^\]]+)\]/g, '');
+};
+
+
+// ============================================
+// NORMALIZATION
+// ============================================
+
 export const normalizeAnswer = (text) => {
   return text
     .toLowerCase()
     .trim()
-    .normalize('NFD') // Ignore accents
-    .replace(/[\u0300-\u036f]/g, '') // Ignore diacritiques
-    .replace(/[.,;:!?'"(){}[\]]/g, '') // Ignore punctuation
-    .replace(/\s+/g, ' ') // Ignore spaces
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[.,;:!?'"(){}[\]]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 };
 
-export const checkVocabularyAnswer = (userAnswer, correctAnswer) => {
-  const cleanedCorrectAnswer = cleanJapaneseText(correctAnswer);
 
-  const normalizedUser = normalizeAnswer(userAnswer);
-  const normalizedCorrect = normalizeAnswer(cleanedCorrectAnswer);
-
-  if (normalizedUser === normalizedCorrect) return true;
-
-  if (cleanedCorrectAnswer.includes('(') && cleanedCorrectAnswer.includes(')')) {
-    const variants = generateOptionalVariants(cleanedCorrectAnswer);
-    return variants.some(variant => normalizeAnswer(variant) === normalizedUser);
-  }
-
-  return false;
-};
+// ============================================
+// OPTIONAL VARIANTS GENERATION
+// ============================================
 
 export const generateOptionalVariants = (text) => {
   const variants = [text];
@@ -131,9 +137,23 @@ export const generateOptionalVariants = (text) => {
   return [...new Set(variants)];
 };
 
-export const cleanJapaneseText = (text) => {
-  return text
-    .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1') // Remplace {kanji}[lecture] par kanji
-    .replace(/\{([^}]+)\}/g, '$1') // Enlève les accolades orphelines
-    .replace(/\[([^\]]+)\]/g, ''); // Enlève les crochets orphelins
+
+// ============================================
+// VALIDATION
+// ============================================
+
+export const checkVocabularyAnswer = (userAnswer, correctAnswer) => {
+  const cleanedCorrectAnswer = cleanJapaneseText(correctAnswer);
+
+  const normalizedUser = normalizeAnswer(userAnswer);
+  const normalizedCorrect = normalizeAnswer(cleanedCorrectAnswer);
+
+  if (normalizedUser === normalizedCorrect) return true;
+
+  if (cleanedCorrectAnswer.includes('(') && cleanedCorrectAnswer.includes(')')) {
+    const variants = generateOptionalVariants(cleanedCorrectAnswer);
+    return variants.some(variant => normalizeAnswer(variant) === normalizedUser);
+  }
+
+  return false;
 };

@@ -1,9 +1,8 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 
-export const MenuLayout = ({
+export const GameMenu = ({
   theme,
-  darkMode,
   children,
   title,
   subtitle,

@@ -1,11 +1,17 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { speakKanaReading, selectNextItem } from '../utils';
 import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
-import { GAME_STATES, GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
+import { GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
+import {
+  speakReading,
+  selectNextItem,
+  initializeGameState,
+  finalizeItemSelection,
+  initializeVocabularyData
+} from '../utils';
 
 
-export const useVocabularyGameLogic = () => {
+export const useGameLogicVocabulary = () => {
   const {
     vocabularyLists,
     setGameMode,
@@ -25,44 +31,21 @@ export const useVocabularyGameLogic = () => {
 
 
   const initializeVocabularyGame = (selectedListKeys) => {
-    if (!selectedListKeys || selectedListKeys.length === 0) {
-      return;
-    }
+    if (!selectedListKeys || selectedListKeys.length === 0) return;
 
     const words = selectedListKeys.flatMap(listKey => {
       const rawWords = vocabularyLists[listKey]?.words || [];
       return rawWords.map(parseVocabularyEntry);
     });
 
-    if (words.length === 0) {
-      return;
-    }
+    if (words.length === 0) return;
 
     setCurrentVocabularyWords(words);
-    setGameMode(GAME_MODES.VOCABULARY);
-    setGameState(GAME_STATES.PLAYING);
-    setUserInput('');
-    setStartTime(Date.now());
-    setFeedback(null);
 
-    const initialProgress = {};
-    const initialStats = {};
-    words.forEach(word => {
-      initialProgress[word.japanese] = {
-        successes: 0,
-        failures: 0,
-        mastered: false,
-        lastSeen: null,
-      };
-      initialStats[word.japanese] = {
-        key: word.japanese,
-        question: word.displayText,
-        answer: word.translation,
-        successes: 0,
-        failures: 0,
-        timeSpent: 0
-      };
-    });
+    const setters = { setGameMode, setGameState, setUserInput, setStartTime, setFeedback };
+    initializeGameState(setters, GAME_MODES.VOCABULARY);
+
+    const { initialProgress, initialStats } = initializeVocabularyData(words, vocabularyMode);
 
     setProgress(initialProgress);
     setSessionStats(initialStats);
@@ -73,9 +56,7 @@ export const useVocabularyGameLogic = () => {
   const selectNextVocabularyWord = (allWords, currentProgress) => {
     const availableWords = allWords.filter(word => !currentProgress[word.japanese].mastered);
 
-    if (availableWords.length === 0) {
-      return null; // Signal to finish session
-    }
+    if (availableWords.length === 0) return null;
 
     const nextWord = selectNextItem(availableWords, currentProgress, currentItem?.key);
 
@@ -95,25 +76,15 @@ export const useVocabularyGameLogic = () => {
       speechText: nextWord.speechText,
     };
 
-    setCurrentItem(newItem);
+    const setters = { setCurrentItem, setUserInput, setFeedback, setProgress };
+    const refs = { currentItemStartRef };
+    finalizeItemSelection(newItem, nextWord.japanese, setters, refs);
 
     // Speak word when showing Japanese (from Japanese mode)
     if ((soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
       vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE) {
-      setTimeout(() => speakKanaReading(nextWord.speechText, 1), 100);
+      setTimeout(() => speakReading(nextWord.speechText, 1), 100);
     }
-
-    setUserInput('');
-    setFeedback(null);
-    currentItemStartRef.current = Date.now();
-
-    setProgress(prev => ({
-      ...prev,
-      [nextWord.japanese]: {
-        ...prev[nextWord.japanese],
-        lastSeen: Date.now()
-      }
-    }));
 
     return newItem;
   };

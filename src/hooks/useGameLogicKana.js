@@ -1,10 +1,15 @@
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { getAllKanaForMode, initializeKanaData, selectNextItem } from '../utils';
-import { GAME_STATES } from '../constants';
+import {
+  getAllKanaForMode,
+  initializeKanaData,
+  selectNextItem,
+  initializeGameState,
+  finalizeItemSelection
+} from '../utils';
 
 
-export const useKanaGameLogic = () => {
+export const useGameLogicKana = () => {
   const {
     kanaData,
     setGameMode,
@@ -23,11 +28,8 @@ export const useKanaGameLogic = () => {
 
 
   const initializeKanaGame = (mode) => {
-    setGameMode(mode);
-    setGameState(GAME_STATES.PLAYING);
-    setUserInput('');
-    setStartTime(Date.now());
-    setFeedback(null);
+    const setters = { setGameMode, setGameState, setUserInput, setStartTime, setFeedback };
+    initializeGameState(setters, mode);
 
     const options = { dakutenMode, combinationsMode };
     const allKana = getAllKanaForMode(mode, kanaData, options);
@@ -42,9 +44,7 @@ export const useKanaGameLogic = () => {
   const selectNextKana = (allKana, currentProgress) => {
     const availableKana = allKana.filter(kana => !currentProgress[kana.char].mastered);
 
-    if (availableKana.length === 0) {
-      return null;
-    }
+    if (availableKana.length === 0) return null;
 
     const nextKana = selectNextItem(availableKana, currentProgress, currentItem?.key);
 
@@ -56,18 +56,9 @@ export const useKanaGameLogic = () => {
       answer: nextKana.reading,
     };
 
-    setCurrentItem(newItem);
-    setUserInput('');
-    setFeedback(null);
-    currentItemStartRef.current = Date.now();
-
-    setProgress(prev => ({
-      ...prev,
-      [nextKana.char]: {
-        ...prev[nextKana.char],
-        lastSeen: Date.now()
-      }
-    }));
+    const setters = { setCurrentItem, setUserInput, setFeedback, setProgress };
+    const refs = { currentItemStartRef };
+    finalizeItemSelection(newItem, nextKana.char, setters, refs);
 
     return newItem;
   };

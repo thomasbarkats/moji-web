@@ -5,20 +5,20 @@ import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useKeyboardNavigation } from './hooks';
 import {
   useGameActions,
-  useVocabularyGameLogic,
-  useKanaGameLogic,
-  useKanjiGameLogic,
+  useGameLogicVocabulary,
+  useGameLogicKana,
+  useGameLogicKanji,
 } from './hooks';
 import {
-  KanaMenu,
+  GameMenuKana,
   GamePlay,
   Summary,
-  VocabularyMenu,
-  KanjiMenu,
+  GameMenuVocabulary,
+  GameMenuKanji,
   KeyboardHint,
-  VocabularyReview,
-  KanaReview,
-  KanjiReview,
+  ReviewVocabulary,
+  ReviewKana,
+  ReviewKanji,
 } from './components';
 
 
@@ -38,9 +38,9 @@ function App() {
 
   useKeyboardNavigation();
 
-  const { initializeKanaGame } = useKanaGameLogic();
-  const { initializeVocabularyGame } = useVocabularyGameLogic();
-  const { initializeKanjiGame } = useKanjiGameLogic();
+  const { initializeKanaGame } = useGameLogicKana();
+  const { initializeVocabularyGame } = useGameLogicVocabulary();
+  const { initializeKanjiGame } = useGameLogicKanji();
   const { resetGame } = useGameActions();
 
 
@@ -48,13 +48,13 @@ function App() {
     case GAME_STATES.MENU:
       switch (appMode) {
         case APP_MODES.KANA:
-          return <KanaMenu />;
+          return <GameMenuKana />;
         case APP_MODES.VOCABULARY:
           if (vocabularyLoading) {
             return <div>Loading vocabulary...</div>;
           }
           return (<>
-            <VocabularyMenu />
+            <GameMenuVocabulary />
             <KeyboardHint theme={theme} />
           </>);
         case APP_MODES.KANJI:
@@ -62,7 +62,7 @@ function App() {
             return <div>Loading kanji...</div>;
           }
           return (<>
-            <KanjiMenu />
+            <GameMenuKanji />
             <KeyboardHint theme={theme} />
           </>);
         default:
@@ -93,11 +93,11 @@ function App() {
     case GAME_STATES.REVIEW:
       switch (appMode) {
         case APP_MODES.KANA:
-          return <KanaReview />;
+          return <ReviewKana />;
         case APP_MODES.VOCABULARY:
-          return <VocabularyReview />;
+          return <ReviewVocabulary />;
         case APP_MODES.KANJI:
-          return <KanjiReview />;
+          return <ReviewKanji />;
         default:
           return null;
       }

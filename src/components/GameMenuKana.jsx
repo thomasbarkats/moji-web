@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useKanaGameLogic } from '../hooks';
+import { useGameLogicKana } from '../hooks';
 import { GAME_MODES, KANA_INCLUSION } from '../constants';
 import { getAllKanaForMode } from '../utils';
-import { MenuLayout, MenuControls, SegmentedControl } from '.';
+import { GameMenu, MenuControls, SegmentedControl } from '.';
 
 
-export const KanaMenu = () => {
-  const { initializeKanaGame } = useKanaGameLogic();
+export const GameMenuKana = () => {
+  const { initializeKanaGame } = useGameLogicKana();
 
   const {
     kanaData,
     switchToKanji,
-    openKanaReview,
+    openReviewKana,
   } = useGameContext();
 
   const {
@@ -89,9 +89,8 @@ export const KanaMenu = () => {
   };
 
   return (
-    <MenuLayout
+    <GameMenu
       theme={theme}
-      darkMode={darkMode}
       title="学習カナ"
       subtitle="Kana Learning"
       onNext={switchToKanji}
@@ -99,7 +98,7 @@ export const KanaMenu = () => {
     >
       <div className="space-y-4">
         <button
-          onClick={openKanaReview}
+          onClick={openReviewKana}
           className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
         >
           <div className="flex items-center justify-center gap-2">
@@ -146,6 +145,6 @@ export const KanaMenu = () => {
         requiredSuccesses={requiredSuccesses}
         onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
-    </MenuLayout>
+    </GameMenu>
   );
 };

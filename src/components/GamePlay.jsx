@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useKanjiGameContext } from '../contexts/KanjiGameContext';
+import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useGameActions } from '../hooks';
 import { ProgressBar } from '.';
 import { formatTime, cleanJapaneseText } from '../utils';
@@ -16,7 +16,7 @@ import {
 
 export const GamePlay = () => {
   const { handleSubmit, resetGame } = useGameActions();
-  const { currentStep, stepData } = useKanjiGameContext();
+  const { currentStep, stepData } = useGameContextKanji();
 
   const {
     requiredSuccesses,

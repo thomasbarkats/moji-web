@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { ArrowLeft, Volume2, ChevronDown } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
-import { useKanjiGameContext } from '../contexts/KanjiGameContext';
+import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { formatKanjiForReview, speakKanaReading } from '../utils';
+import { formatKanjiForReview, speakReading } from '../utils';
 import { GAME_STATES, SORT_MODES } from '../constants';
 
 
-export const KanjiReview = () => {
+export const ReviewKanji = () => {
   const { theme } = usePreferences();
   const { kanjiLists, setGameState } = useGameContext();
-  const { selectedLists } = useKanjiGameContext();
+  const { selectedLists } = useGameContextKanji();
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
 
 
@@ -34,7 +34,7 @@ export const KanjiReview = () => {
     ];
 
     if (allReadings.length > 0) {
-      speakKanaReading(allReadings.join(','), 0.85);
+      speakReading(allReadings.join(','), 0.85);
     }
   };
 

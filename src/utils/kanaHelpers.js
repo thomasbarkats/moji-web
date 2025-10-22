@@ -1,115 +1,153 @@
 import { KANA_TYPES, KANA_INCLUSION } from '../constants';
 
-export const organizeKanaByRows = (baseKana, dakutenKana, combinationKana) => {
-  // Sort all arrays by Japanese alphabetical order
-  const sortedBase = [...baseKana].sort((a, b) => a.char.localeCompare(b.char, 'ja'));
-  const sortedDakuten = [...dakutenKana].sort((a, b) => a.char.localeCompare(b.char, 'ja'));
-  const sortedCombinations = [...combinationKana].sort((a, b) => a.char.localeCompare(b.char, 'ja'));
 
-  const rows = [];
+// ============================================
+// CONSTANTS
+// ============================================
 
-  // Process base kana - create complete 5-column rows with proper gaps
-  let currentRow = [];
-  let lastReading = null;
+const VOWEL_ORDER = ['a', 'i', 'u', 'e', 'o'];
+const COLUMNS_PER_ROW = 5;
 
-  sortedBase.forEach((kana) => {
-    const currentReading = kana.reading;
-
-    // Check if we need to add gaps based on vowel position
-    if (lastReading) {
-      const lastVowel = lastReading[lastReading.length - 1];
-      const currentVowel = currentReading[currentReading.length - 1];
-      const vowelOrder = ['a', 'i', 'u', 'e', 'o'];
-      const lastIdx = vowelOrder.indexOf(lastVowel);
-      const currentIdx = vowelOrder.indexOf(currentVowel);
-
-      if (currentIdx !== -1 && lastIdx !== -1) {
-        const gap = currentIdx - lastIdx - 1;
-        for (let i = 0; i < gap; i++) {
-          currentRow.push(null);
-          if (currentRow.length === 5) {
-            rows.push({ type: 'main', cells: [...currentRow] });
-            checkAndAddDakutenRow(currentRow, sortedDakuten, rows);
-            currentRow = [];
-          }
-        }
-      }
-    }
-
-    currentRow.push(kana);
-    lastReading = currentReading;
-
-    if (currentRow.length === 5) {
-      rows.push({ type: 'main', cells: [...currentRow] });
-      checkAndAddDakutenRow(currentRow, sortedDakuten, rows);
-      currentRow = [];
-    }
-  });
-
-  // Add remaining kana in current row
-  if (currentRow.length > 0) {
-    while (currentRow.length < 5) currentRow.push(null);
-    rows.push({ type: 'main', cells: currentRow });
-    checkAndAddDakutenRow(currentRow, sortedDakuten, rows);
-  }
-
-  // Add combinations in rows of 5
-  if (sortedCombinations.length > 0) {
-    for (let i = 0; i < sortedCombinations.length; i += 5) {
-      const combRow = sortedCombinations.slice(i, i + 5);
-      while (combRow.length < 5) combRow.push(null);
-      rows.push({ type: KANA_TYPES.COMBINATION, cells: combRow });
-    }
-  }
-
-  return rows;
+const DAKUTEN_VARIANTS = {
+  'ka': ['ga'], 'ki': ['gi'], 'ku': ['gu'], 'ke': ['ge'], 'ko': ['go'],
+  'sa': ['za'], 'shi': ['ji'], 'su': ['zu'], 'se': ['ze'], 'so': ['zo'],
+  'ta': ['da'], 'chi': ['ji'], 'tsu': ['zu'], 'te': ['de'], 'to': ['do'],
+  'ha': ['ba', 'pa'], 'hi': ['bi', 'pi'], 'fu': ['bu', 'pu'], 'he': ['be', 'pe'], 'ho': ['bo', 'po']
 };
 
-const checkAndAddDakutenRow = (baseRow, sortedDakuten, rows) => {
-  const dakutenRow = [];
-  let hasDakuten = false;
 
-  baseRow.forEach(kana => {
-    if (!kana) {
-      dakutenRow.push(null);
-      return;
-    }
+// ============================================
+// KANA ORGANIZATION FOR DISPLAY
+// ============================================
 
-    const baseReading = kana.reading;
-    const dakutenVariants = getDakutenReadings(baseReading);
-    const foundDakuten = sortedDakuten.find(dk => dakutenVariants.includes(dk.reading));
+const sortKanaByJapaneseOrder = (kanaArray) => {
+  return [...kanaArray].sort((a, b) => a.char.localeCompare(b.char, 'ja'));
+};
 
-    if (foundDakuten) {
-      dakutenRow.push(foundDakuten);
-      hasDakuten = true;
-    } else {
-      dakutenRow.push(null);
-    }
-  });
+const getVowelFromReading = (reading) => {
+  return reading[reading.length - 1];
+};
+
+const calculateVowelGap = (lastReading, currentReading) => {
+  const lastVowel = getVowelFromReading(lastReading);
+  const currentVowel = getVowelFromReading(currentReading);
+
+  const lastIdx = VOWEL_ORDER.indexOf(lastVowel);
+  const currentIdx = VOWEL_ORDER.indexOf(currentVowel);
+
+  if (currentIdx === -1 || lastIdx === -1) return 0;
+
+  return Math.max(0, currentIdx - lastIdx - 1);
+};
+
+const addNullsToRow = (row, count) => {
+  for (let i = 0; i < count; i++) {
+    row.push(null);
+  }
+};
+
+const padRowToFull = (row) => {
+  while (row.length < COLUMNS_PER_ROW) {
+    row.push(null);
+  }
+};
+
+const isRowFull = (row) => {
+  return row.length === COLUMNS_PER_ROW;
+};
+
+const getDakutenReadings = (baseReading) => {
+  return DAKUTEN_VARIANTS[baseReading] || [];
+};
+
+const findDakutenForKana = (kana, sortedDakuten) => {
+  if (!kana) return null;
+
+  const dakutenVariants = getDakutenReadings(kana.reading);
+  return sortedDakuten.find(dk => dakutenVariants.includes(dk.reading)) || null;
+};
+
+const addDakutenRowIfNeeded = (baseRow, sortedDakuten, rows) => {
+  const dakutenRow = baseRow.map(kana => findDakutenForKana(kana, sortedDakuten));
+  const hasDakuten = dakutenRow.some(kana => kana !== null);
 
   if (hasDakuten) {
     rows.push({ type: KANA_TYPES.DAKUTEN, cells: dakutenRow });
   }
 };
 
-const getDakutenReadings = (baseReading) => {
-  const variants = {
-    'ka': ['ga'], 'ki': ['gi'], 'ku': ['gu'], 'ke': ['ge'], 'ko': ['go'],
-    'sa': ['za'], 'shi': ['ji'], 'su': ['zu'], 'se': ['ze'], 'so': ['zo'],
-    'ta': ['da'], 'chi': ['ji'], 'tsu': ['zu'], 'te': ['de'], 'to': ['do'],
-    'ha': ['ba', 'pa'], 'hi': ['bi', 'pi'], 'fu': ['bu', 'pu'], 'he': ['be', 'pe'], 'ho': ['bo', 'po']
-  };
-
-  return variants[baseReading] || [];
+const finalizeRow = (row, rows, sortedDakuten) => {
+  padRowToFull(row);
+  rows.push({ type: 'main', cells: [...row] });
+  addDakutenRowIfNeeded(row, sortedDakuten, rows);
+  return [];
 };
+
+const processBaseKana = (sortedBase, sortedDakuten, rows) => {
+  let currentRow = [];
+  let lastReading = null;
+
+  sortedBase.forEach((kana) => {
+    if (lastReading) {
+      const gap = calculateVowelGap(lastReading, kana.reading);
+      addNullsToRow(currentRow, gap);
+
+      if (isRowFull(currentRow)) {
+        currentRow = finalizeRow(currentRow, rows, sortedDakuten);
+      }
+    }
+
+    currentRow.push(kana);
+    lastReading = kana.reading;
+
+    if (isRowFull(currentRow)) {
+      currentRow = finalizeRow(currentRow, rows, sortedDakuten);
+    }
+  });
+
+  if (currentRow.length > 0) {
+    finalizeRow(currentRow, rows, sortedDakuten);
+  }
+};
+
+const processCombinations = (sortedCombinations, rows) => {
+  if (sortedCombinations.length === 0) return;
+
+  for (let i = 0; i < sortedCombinations.length; i += COLUMNS_PER_ROW) {
+    const combRow = sortedCombinations.slice(i, i + COLUMNS_PER_ROW);
+    padRowToFull(combRow);
+    rows.push({ type: KANA_TYPES.COMBINATION, cells: combRow });
+  }
+};
+
+export const organizeKanaByRows = (baseKana, dakutenKana, combinationKana) => {
+  const sortedBase = sortKanaByJapaneseOrder(baseKana);
+  const sortedDakuten = sortKanaByJapaneseOrder(dakutenKana);
+  const sortedCombinations = sortKanaByJapaneseOrder(combinationKana);
+
+  const rows = [];
+
+  processBaseKana(sortedBase, sortedDakuten, rows);
+  processCombinations(sortedCombinations, rows);
+
+  return rows;
+};
+
+
+// ============================================
+// FILTER INITIALIZATION
+// ============================================
 
 export const initFilterSelection = (dakutenMode, combinationsMode) => {
   const options = [];
+
   if (dakutenMode !== KANA_INCLUSION.OFF) {
-    options.push(KANA_TYPES.DAKUTEN)
+    options.push(KANA_TYPES.DAKUTEN);
   }
+
   if (combinationsMode !== KANA_INCLUSION.OFF) {
-    options.push(KANA_TYPES.COMBINATION)
+    options.push(KANA_TYPES.COMBINATION);
   }
+
   return options;
-}
+};

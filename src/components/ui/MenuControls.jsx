@@ -1,5 +1,5 @@
 import { Sun, Moon } from 'lucide-react';
-import { REQUIRED_SUCCESSES_LIMITS } from '../constants';
+import { REQUIRED_SUCCESSES_LIMITS } from '../../constants';
 
 
 export const MenuControls = ({

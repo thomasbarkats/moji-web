@@ -1,10 +1,10 @@
 export { useTheme } from './useTheme';
-export { useKanaData } from './useKanaData';
-export { useVocabularyData } from './useVocabularyData';
-export { useKanjiData } from './useKanjiData';
+export { useDataKana } from './useDataKana';
+export { useDataVocabulary } from './useDataVocabulary';
+export { useDataKanji } from './useDataKanji';
 export { useSound } from './useSound';
-export { useKanaGameLogic } from './useKanaGameLogic';
-export { useVocabularyGameLogic } from './useVocabularyGameLogic';
+export { useGameLogicKana } from './useGameLogicKana.js';
+export { useGameLogicVocabulary } from './useGameLogicVocabulary.js';
 export { useGameActions } from './useGameActions';
-export { useKanjiGameLogic } from './useKanjiGameLogic';
+export { useGameLogicKanji } from './useGameLogicKanji.js';
 export { useKeyboardNavigation } from './useKeyboardNavigation.js';

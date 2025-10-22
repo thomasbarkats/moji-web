@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 
-export const useVocabularyData = (language = 'fr') => {
+export const useDataVocabulary = (language = 'fr') => {
   const [vocabularyLists, setVocabularyLists] = useState({});
   const [loading, setLoading] = useState(true);
 

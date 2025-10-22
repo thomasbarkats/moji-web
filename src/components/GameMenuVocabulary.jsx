@@ -1,19 +1,19 @@
 import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme, useVocabularyGameLogic } from '../hooks';
+import { useTheme, useGameLogicVocabulary } from '../hooks';
 import { VOCABULARY_MODES } from '../constants';
-import { MenuLayout, MenuControls, MultiSelection, SegmentedControl } from './';
+import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 
-export const VocabularyMenu = () => {
-  const { initializeVocabularyGame } = useVocabularyGameLogic();
+export const GameMenuVocabulary = () => {
+  const { initializeVocabularyGame } = useGameLogicVocabulary();
 
   const {
     vocabularyLists,
     selectedLists,
     setSelectedLists,
-    openVocabularyReview,
+    openReviewVocabulary,
     switchToKanji,
   } = useGameContext();
 
@@ -54,9 +54,8 @@ export const VocabularyMenu = () => {
   }, 0);
 
   return (
-    <MenuLayout
+    <GameMenu
       theme={theme}
-      darkMode={darkMode}
       title="語彙学習"
       subtitle="Vocabulary Learning"
       onPrevious={switchToKanji}
@@ -69,14 +68,15 @@ export const VocabularyMenu = () => {
           onChange={setSelectedLists}
           placeholder="Select vocabulary lists..."
           theme={theme}
-          itemLabel="list"
+          optionLabel="list"
+          subItemsLabel="words"
           py={3}
         />
 
         {selectedLists.length > 0 && (
           <div className="space-y-4">
             <button
-              onClick={() => openVocabularyReview(selectedLists)}
+              onClick={() => openReviewVocabulary(selectedLists)}
               className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
             >
               <div className="flex items-center justify-center gap-2">
@@ -126,6 +126,6 @@ export const VocabularyMenu = () => {
         requiredSuccesses={requiredSuccesses}
         onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
-    </MenuLayout>
+    </GameMenu>
   );
 };

@@ -1,14 +1,14 @@
 import { createContext, useContext, useState, useRef } from 'react';
-import { useKanaData, useVocabularyData, useKanjiData, useSound } from '../hooks';
+import { useDataKana, useDataVocabulary, useDataKanji, useSound } from '../hooks';
 import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 
 
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
-  const kanaData = useKanaData();
-  const { vocabularyLists, loading: vocabularyLoading } = useVocabularyData('fr');
-  const { kanjiLists, loading: kanjiLoading } = useKanjiData();
+  const kanaData = useDataKana();
+  const { vocabularyLists, loading: vocabularyLoading } = useDataVocabulary('fr');
+  const { kanjiLists, loading: kanjiLoading } = useDataKanji();
 
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
@@ -34,16 +34,16 @@ export const GameProvider = ({ children }) => {
   // Mode switching
   const switchToVocabulary = () => setAppMode(APP_MODES.VOCABULARY);
   const switchToKana = () => setAppMode(APP_MODES.KANA);
-  const openKanaReview = () => setGameState(GAME_STATES.REVIEW);
+  const openReviewKana = () => setGameState(GAME_STATES.REVIEW);
   const switchToKanji = () => setAppMode(APP_MODES.KANJI);
 
-  const openVocabularyReview = (lists) => {
+  const openReviewVocabulary = (lists) => {
     setSelectedLists(lists);
     setGameMode(GAME_MODES.VOCABULARY);
     setGameState(GAME_STATES.REVIEW);
   };
 
-  const openKanjiReview = () => {
+  const openReviewKanji = () => {
     setGameMode(GAME_MODES.KANJI);
     setGameState(GAME_STATES.REVIEW);
   };
@@ -93,9 +93,9 @@ export const GameProvider = ({ children }) => {
     switchToVocabulary,
     switchToKana,
     switchToKanji,
-    openKanaReview,
-    openVocabularyReview,
-    openKanjiReview,
+    openReviewKana,
+    openReviewVocabulary,
+    openReviewKanji,
   };
 
   return (

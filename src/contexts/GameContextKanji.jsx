@@ -3,7 +3,7 @@ import { KANJI_STEPS } from '../constants';
 import { getFirstStepForKanji, getNextStepForKanji, getReadingGroupsForDisplay } from '../utils';
 
 
-const KanjiGameContext = createContext();
+const GameContextKanji = createContext();
 
 export const KanjiGameProvider = ({ children }) => {
   // Step management for multi-step kanji validation
@@ -62,16 +62,16 @@ export const KanjiGameProvider = ({ children }) => {
   };
 
   return (
-    <KanjiGameContext.Provider value={value}>
+    <GameContextKanji.Provider value={value}>
       {children}
-    </KanjiGameContext.Provider>
+    </GameContextKanji.Provider>
   );
 };
 
-export const useKanjiGameContext = () => {
-  const context = useContext(KanjiGameContext);
+export const useGameContextKanji = () => {
+  const context = useContext(GameContextKanji);
   if (!context) {
-    throw new Error('useKanjiGameContext must be used within KanjiGameProvider');
+    throw new Error('useGameContextKanji must be used within KanjiGameProvider');
   }
   return context;
 };

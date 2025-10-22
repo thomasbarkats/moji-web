@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 
-export const useKanjiData = () => {
+export const useDataKanji = () => {
   const [kanjiLists, setKanjiLists] = useState({});
   const [loading, setLoading] = useState(true);
 

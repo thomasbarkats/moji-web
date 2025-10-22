@@ -2,7 +2,16 @@ import { useState } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
 
 
-export const MultiSelection = ({ options, selectedValues, onChange, placeholder, theme, py, itemLabel }) => {
+export const MultiSelection = ({
+  options,
+  selectedValues,
+  onChange,
+  placeholder,
+  theme,
+  py,
+  optionLabel,
+  subItemsLabel
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
 
@@ -31,7 +40,7 @@ export const MultiSelection = ({ options, selectedValues, onChange, placeholder,
       >
         <span className={selectedLabels.length > 0 ? '' : theme.textMuted}>
           {selectedLabels.length > 0
-            ? `${selectedLabels.length} ${itemLabel}${selectedLabels.length > 1 ? 's' : ''} selected`
+            ? `${selectedLabels.length} ${optionLabel}${selectedLabels.length > 1 ? 's' : ''} selected`
             : placeholder}
         </span>
         <ChevronDown className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
@@ -60,9 +69,11 @@ export const MultiSelection = ({ options, selectedValues, onChange, placeholder,
               >
                 <div>
                   <div className="font-medium">{option.label}</div>
-                  <div className={`text-xs ${theme.textMuted}`}>
-                    {option.count} words
-                  </div>
+                  {option.count > 0 && (
+                    <div className={`text-xs ${theme.textMuted}`}>
+                      {option.count} {subItemsLabel}
+                    </div>
+                  )}
                 </div>
                 {selectedValues.includes(option.value) && (
                   <Check className="w-5 h-5 text-blue-500" />

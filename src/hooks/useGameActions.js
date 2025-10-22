@@ -1,17 +1,17 @@
 import { useGameContext } from '../contexts/GameContext';
-import { useKanjiGameContext } from '../contexts/KanjiGameContext';
+import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useKanaGameLogic } from './useKanaGameLogic';
-import { useVocabularyGameLogic } from './useVocabularyGameLogic';
-import { useKanjiGameLogic } from './useKanjiGameLogic';
+import { useGameLogicKana } from './useGameLogicKana';
+import { useGameLogicVocabulary } from './useGameLogicVocabulary';
+import { useGameLogicKanji } from './useGameLogicKanji';
 import {
   getAllKanaForMode,
-  speakKanaReading,
+  speakReading,
   playFeedbackSound,
   triggerConfetti,
   checkVocabularyAnswer,
   validateKanjiAnswer,
-  getExpectedReadingsForStep,
+  getExpectedAnswerForFeedback,
   getKunReadingsForAudio,
   getOnReadingsForAudio,
 } from '../utils';
@@ -52,7 +52,7 @@ export const useGameActions = () => {
     currentKanjiList,
     proceedToNextStep,
     resetSteps,
-  } = useKanjiGameContext();
+  } = useGameContextKanji();
 
   const {
     requiredSuccesses,
@@ -62,9 +62,9 @@ export const useGameActions = () => {
     soundMode,
   } = usePreferences();
 
-  const { selectNextKana } = useKanaGameLogic();
-  const { selectNextVocabularyWord } = useVocabularyGameLogic();
-  const { selectNextKanji } = useKanjiGameLogic();
+  const { selectNextKana } = useGameLogicKana();
+  const { selectNextVocabularyWord } = useGameLogicVocabulary();
+  const { selectNextKanji } = useGameLogicKanji();
 
 
   const calculateTimeSpent = () => {
@@ -140,7 +140,7 @@ export const useGameActions = () => {
     if (!currentItem || !userInput.trim()) return;
 
     const isCorrect = validateKanjiAnswer(userInput, currentItem, currentStep);
-    const expectedAnswers = getExpectedReadingsForStep(currentItem, currentStep);
+    const expectedAnswers = getExpectedAnswerForFeedback(currentItem, currentStep);
     const correctAnswer = expectedAnswers.join(', ');
     const feedbackType = isCorrect ? FEEDBACK_TYPES.SUCCESS : FEEDBACK_TYPES.ERROR;
 
@@ -188,11 +188,11 @@ export const useGameActions = () => {
       const textToSpeak = readingsToSpeak.join(',').replace(/[()]/g, '');
 
       if (soundMode === SOUND_MODES.SPEECH_ONLY) {
-        speakKanaReading(textToSpeak, 1, proceedToNext);
+        speakReading(textToSpeak, 1, proceedToNext);
       } else {
         const speechDelay = isCorrect ? 150 : 280;
         setTimeout(() => {
-          speakKanaReading(textToSpeak, 1, proceedToNext);
+          speakReading(textToSpeak, 1, proceedToNext);
         }, speechDelay);
       }
     } else {
@@ -245,13 +245,13 @@ export const useGameActions = () => {
         : currentItem.question;
 
       if (soundMode === SOUND_MODES.SPEECH_ONLY) {
-        speakKanaReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
+        speakReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
           setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
         });
       } else {
         const speechDelay = (isCorrect && !isVocabularyMode) ? 150 : 280;
         setTimeout(() => {
-          speakKanaReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
+          speakReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
             setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
           });
         }, speechDelay);

@@ -1,25 +1,25 @@
 import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
-import { useKanjiGameContext } from '../contexts/KanjiGameContext';
+import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useKanjiGameLogic } from '../hooks';
-import { MenuLayout, MenuControls, MultiSelection } from './';
+import { useGameLogicKanji } from '../hooks';
+import { GameMenu, MenuControls, MultiSelection } from '.';
 
 
-export const KanjiMenu = () => {
-  const { initializeKanjiGame } = useKanjiGameLogic();
+export const GameMenuKanji = () => {
+  const { initializeKanjiGame } = useGameLogicKanji();
 
   const {
     kanjiLists,
     switchToKana,
     switchToVocabulary,
-    openKanjiReview,
+    openReviewKanji,
   } = useGameContext();
 
   const {
     selectedLists,
     setSelectedLists,
-  } = useKanjiGameContext();
+  } = useGameContextKanji();
 
   const {
     requiredSuccesses,
@@ -44,9 +44,8 @@ export const KanjiMenu = () => {
 
 
   return (
-    <MenuLayout
+    <GameMenu
       theme={theme}
-      darkMode={darkMode}
       title="漢字学習"
       subtitle="Kanji Learning"
       onPrevious={switchToKana}
@@ -61,14 +60,15 @@ export const KanjiMenu = () => {
           onChange={setSelectedLists}
           placeholder="Select kanji lists..."
           theme={theme}
-          itemLabel="list"
+          optionLabel="list"
+          subItemsLabel="kanji"
           py={3}
         />
 
         {selectedLists.length > 0 && (
           <div className="space-y-4">
             <button
-              onClick={() => openKanjiReview()}
+              onClick={() => openReviewKanji()}
               className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
             >
               <div className="flex items-center justify-center gap-2">
@@ -103,6 +103,6 @@ export const KanjiMenu = () => {
         requiredSuccesses={requiredSuccesses}
         onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
-    </MenuLayout>
+    </GameMenu>
   );
 };

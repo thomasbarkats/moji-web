@@ -2,12 +2,12 @@ import { Volume2, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { speakKanaReading, organizeKanaByRows, initFilterSelection } from '../utils';
+import { speakReading, organizeKanaByRows, initFilterSelection } from '../utils';
 import { GAME_STATES, KANA_TYPES } from '../constants';
-import { MultiSelection } from './';
+import { MultiSelection } from '.';
 
 
-export const KanaReview = () => {
+export const ReviewKana = () => {
   const { kanaData, setGameState } = useGameContext();
   const { dakutenMode, combinationsMode, theme } = usePreferences();
   const [selectedOptions, setSelectedOptions] = useState(initFilterSelection(dakutenMode, combinationsMode));
@@ -57,7 +57,7 @@ export const KanaReview = () => {
                   rounded-lg p-4 flex flex-col items-center justify-center min-h-[100px] 
                   ${kana ? 'cursor-pointer hover:scale-105 transition-transform' : 'invisible'}
                 `}
-                onClick={() => kana && speakKanaReading(kana.char, 0.5)}
+                onClick={() => kana && speakReading(kana.char, 0.5)}
               >
                 {kana && (
                   <>
@@ -95,7 +95,8 @@ export const KanaReview = () => {
                 onChange={setSelectedOptions}
                 placeholder="Filter options..."
                 theme={theme}
-                itemLabel="option"
+                optionLabel="option"
+                subItemsLabel="kana"
                 py={2}
               />
             </div>

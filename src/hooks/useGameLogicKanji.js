@@ -1,10 +1,15 @@
 import { useGameContext } from '../contexts/GameContext';
-import { useKanjiGameContext } from '../contexts/KanjiGameContext';
-import { selectNextItem } from '../utils';
-import { GAME_STATES, GAME_MODES } from '../constants';
+import { useGameContextKanji } from '../contexts/GameContextKanji';
+import { GAME_MODES } from '../constants';
+import {
+  selectNextItem,
+  initializeGameState,
+  finalizeItemSelection,
+  initializeKanjiData
+} from '../utils';
 
 
-export const useKanjiGameLogic = () => {
+export const useGameLogicKanji = () => {
   const {
     kanjiLists,
     setGameMode,
@@ -19,15 +24,12 @@ export const useKanjiGameLogic = () => {
     currentItemStartRef,
   } = useGameContext();
 
-  const { setCurrentKanjiList, resetSteps } = useKanjiGameContext();
+  const { setCurrentKanjiList, resetSteps } = useGameContextKanji();
 
 
   const initializeKanjiGame = (selectedLists) => {
-    setGameMode(GAME_MODES.KANJI);
-    setGameState(GAME_STATES.PLAYING);
-    setUserInput('');
-    setStartTime(Date.now());
-    setFeedback(null);
+    const setters = { setGameMode, setGameState, setUserInput, setStartTime, setFeedback };
+    initializeGameState(setters, GAME_MODES.KANJI);
 
     const allKanji = selectedLists.flatMap(listKey =>
       kanjiLists[listKey]?.kanji || []
@@ -35,24 +37,7 @@ export const useKanjiGameLogic = () => {
 
     setCurrentKanjiList(allKanji);
 
-    const initialProgress = {};
-    const initialStats = {};
-
-    allKanji.forEach(kanji => {
-      initialProgress[kanji.character] = {
-        successes: 0,
-        failures: 0,
-        mastered: false,
-      };
-      initialStats[kanji.character] = {
-        key: kanji.character,
-        question: kanji.character,
-        answer: '',
-        successes: 0,
-        failures: 0,
-        timeSpent: 0,
-      };
-    });
+    const { initialProgress, initialStats } = initializeKanjiData(allKanji);
 
     setProgress(initialProgress);
     setSessionStats(initialStats);
@@ -65,12 +50,10 @@ export const useKanjiGameLogic = () => {
       kanji => !currentProgress[kanji.character].mastered
     );
 
-    if (availableKanji.length === 0) {
-      return null;
-    }
+    if (availableKanji.length === 0) return null;
 
     const nextKanji = selectNextItem(availableKanji, currentProgress, currentItem?.key);
-  
+
     if (!nextKanji) return null;
 
     const newItem = {
@@ -81,19 +64,11 @@ export const useKanjiGameLogic = () => {
       notes: nextKanji.notes,
     };
 
-    setCurrentItem(newItem);
-    setUserInput('');
-    setFeedback(null);
     resetSteps(nextKanji);
-    currentItemStartRef.current = Date.now();
 
-    setProgress(prev => ({
-      ...prev,
-      [nextKanji.character]: {
-        ...prev[nextKanji.character],
-        lastSeen: Date.now()
-      }
-    }));
+    const setters = { setCurrentItem, setUserInput, setFeedback, setProgress };
+    const refs = { currentItemStartRef };
+    finalizeItemSelection(newItem, nextKanji.character, setters, refs);
 
     return newItem;
   };
