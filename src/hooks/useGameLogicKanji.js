@@ -11,7 +11,6 @@ import {
 
 export const useGameLogicKanji = () => {
   const {
-    kanjiLists,
     setGameMode,
     setGameState,
     setUserInput,
@@ -24,7 +23,11 @@ export const useGameLogicKanji = () => {
     currentItemStartRef,
   } = useGameContext();
 
-  const { setCurrentKanjiList, resetSteps } = useGameContextKanji();
+  const {
+    kanjiLists,
+    setCurrentKanjiList,
+    resetSteps,
+  } = useGameContextKanji();
 
 
   const initializeKanjiGame = (selectedLists) => {

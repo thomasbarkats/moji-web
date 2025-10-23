@@ -10,9 +10,11 @@ export const GameMenuVocabulary = () => {
   const { initializeVocabularyGame } = useGameLogicVocabulary();
 
   const {
+    appMode,
+    setAppMode,
     vocabularyLists,
-    selectedLists,
-    setSelectedLists,
+    wordsSelectedLists,
+    setWordsSelectedLists,
     openReviewVocabulary,
     switchToKanji,
   } = useGameContext();
@@ -49,7 +51,7 @@ export const GameMenuVocabulary = () => {
     }
   ];
 
-  const totalWords = selectedLists.reduce((sum, listKey) => {
+  const totalWords = wordsSelectedLists.reduce((sum, listKey) => {
     return sum + (vocabularyLists[listKey]?.words.length || 0);
   }, 0);
 
@@ -60,12 +62,14 @@ export const GameMenuVocabulary = () => {
       subtitle="Vocabulary Learning"
       onPrevious={switchToKanji}
       previousTooltip="Switch to Kanji Learning"
+      currentMode={appMode}
+      onModeChange={setAppMode}
     >
       <div className="space-y-4">
         <MultiSelection
           options={listOptions}
-          selectedValues={selectedLists}
-          onChange={setSelectedLists}
+          selectedValues={wordsSelectedLists}
+          onChange={setWordsSelectedLists}
           placeholder="Select vocabulary lists..."
           theme={theme}
           optionLabel="list"
@@ -73,10 +77,10 @@ export const GameMenuVocabulary = () => {
           py={3}
         />
 
-        {selectedLists.length > 0 && (
+        {wordsSelectedLists.length > 0 && (
           <div className="space-y-4">
             <button
-              onClick={() => openReviewVocabulary(selectedLists)}
+              onClick={() => openReviewVocabulary(wordsSelectedLists)}
               className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
             >
               <div className="flex items-center justify-center gap-2">
@@ -86,7 +90,7 @@ export const GameMenuVocabulary = () => {
             </button>
 
             <button
-              onClick={() => initializeVocabularyGame(selectedLists)}
+              onClick={() => initializeVocabularyGame(wordsSelectedLists)}
               className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
             >
               <div className="flex items-center justify-center">

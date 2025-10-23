@@ -9,12 +9,13 @@ import { GAME_STATES, SORT_MODES } from '../constants';
 
 export const ReviewKanji = () => {
   const { theme } = usePreferences();
-  const { kanjiLists, setGameState } = useGameContext();
-  const { selectedLists } = useGameContextKanji();
+  const { setGameState } = useGameContext();
+  const { kanjiLists, kanjiSelectedLists } = useGameContextKanji();
+
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
 
 
-  const allKanji = selectedLists.flatMap(listKey =>
+  const allKanji = kanjiSelectedLists.flatMap(listKey =>
     kanjiLists[listKey]?.kanji || []
   );
 
@@ -38,7 +39,7 @@ export const ReviewKanji = () => {
     }
   };
 
-  const kanjiByList = selectedLists.map(listKey => ({
+  const kanjiByList = kanjiSelectedLists.map(listKey => ({
     name: kanjiLists[listKey]?.name || listKey,
     kanji: sortedKanji.filter(k =>
       kanjiLists[listKey]?.kanji.some(original => original.character === k.character)
@@ -72,7 +73,7 @@ export const ReviewKanji = () => {
 
         {kanjiByList.map((list, listIdx) => (
           <div key={listIdx} className="mb-12">
-            {selectedLists.length > 1 && (
+            {kanjiSelectedLists.length > 1 && (
               <h3 className={`text-xl font-semibold ${theme.text} mb-4`}>{list.name}</h3>
             )}
 

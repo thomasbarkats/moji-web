@@ -8,7 +8,7 @@ import { GAME_STATES, SORT_MODES } from '../constants';
 
 export const ReviewVocabulary = () => {
   const { theme } = usePreferences();
-  const { vocabularyLists, selectedLists, setGameState } = useGameContext();
+  const { vocabularyLists, wordsSelectedLists, setGameState } = useGameContext();
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
 
 
@@ -105,7 +105,7 @@ export const ReviewVocabulary = () => {
           </div>
 
           <div className="space-y-8">
-            {selectedLists.map(listKey => {
+            {wordsSelectedLists.map(listKey => {
               const list = vocabularyLists[listKey];
               if (!list) return null;
 
@@ -113,7 +113,7 @@ export const ReviewVocabulary = () => {
 
               return (
                 <div key={listKey}>
-                  {selectedLists.length > 1 && (
+                  {wordsSelectedLists.length > 1 && (
                     <h3 className={`text-sm font-medium ${theme.textMuted} mb-3 uppercase tracking-wide`}>
                       {list.name}
                     </h3>

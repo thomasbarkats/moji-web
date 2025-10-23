@@ -296,7 +296,7 @@ const KanjiReadingsChips = ({ stepData, theme }) => {
 
   return (
     <div className="pt-2 w-full overflow-x-auto">
-      <div className="inline-flex flex-col gap-2 min-w-full">
+      <div className={`inline-flex flex-col gap-2 min-w-full border-2 ${theme.border} rounded-xl p-2`}>
         {/* Row for KUN readings */}
         <div className="flex gap-2">
           {groups.map((group, groupIdx) => (

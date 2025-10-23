@@ -1,5 +1,5 @@
 import * as wanakana from 'wanakana';
-import { KANJI_STEPS } from '../constants';
+import { KANJI_STEPS, KANJI_MODES } from '../constants';
 
 
 // ============================================
@@ -223,7 +223,11 @@ export const validateKanjiAnswer = (userInput, kanjiItem, step) => {
 // STEP NAVIGATION
 // ============================================
 
-export const getFirstStepForKanji = (readings) => {
+export const getFirstStepForKanji = (readings, kanjiMode = KANJI_MODES.ALL) => {
+  if (kanjiMode === KANJI_MODES.MEANINGS_ONLY) {
+    return KANJI_STEPS.MEANINGS;
+  }
+
   const hasKun = readings.some(r => hasKunReadings(r));
   const hasOn = readings.some(r => hasOnReadings(r));
 
@@ -232,7 +236,11 @@ export const getFirstStepForKanji = (readings) => {
   return KANJI_STEPS.MEANINGS;
 };
 
-export const getNextStepForKanji = (currentStep, readings) => {
+export const getNextStepForKanji = (currentStep, readings, kanjiMode = KANJI_MODES.ALL) => {
+  if (kanjiMode === KANJI_MODES.MEANINGS_ONLY) {
+    return KANJI_STEPS.MEANINGS;
+  }
+
   const hasOn = readings.some(r => hasOnReadings(r));
 
   if (currentStep === KANJI_STEPS.KUN_READINGS) {

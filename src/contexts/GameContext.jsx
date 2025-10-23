@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useRef } from 'react';
-import { useDataKana, useDataVocabulary, useDataKanji, useSound } from '../hooks';
+import { useDataKana, useDataVocabulary } from '../hooks';
 import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 
 
@@ -8,7 +8,6 @@ const GameContext = createContext();
 export const GameProvider = ({ children }) => {
   const kanaData = useDataKana();
   const { vocabularyLists, loading: vocabularyLoading } = useDataVocabulary('fr');
-  const { kanjiLists, loading: kanjiLoading } = useDataKanji();
 
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
@@ -28,21 +27,20 @@ export const GameProvider = ({ children }) => {
   const [startTime, setStartTime] = useState(null);
 
   // Vocabulary specific
-  const [selectedLists, setSelectedLists] = useState([]);
+  const [wordsSelectedLists, setWordsSelectedLists] = useState([]);
   const [currentVocabularyWords, setCurrentVocabularyWords] = useState([]);
 
   // Mode switching
   const switchToVocabulary = () => setAppMode(APP_MODES.VOCABULARY);
   const switchToKana = () => setAppMode(APP_MODES.KANA);
-  const openReviewKana = () => setGameState(GAME_STATES.REVIEW);
   const switchToKanji = () => setAppMode(APP_MODES.KANJI);
 
+  const openReviewKana = () => setGameState(GAME_STATES.REVIEW);
   const openReviewVocabulary = (lists) => {
-    setSelectedLists(lists);
+    setWordsSelectedLists(lists);
     setGameMode(GAME_MODES.VOCABULARY);
     setGameState(GAME_STATES.REVIEW);
   };
-
   const openReviewKanji = () => {
     setGameMode(GAME_MODES.KANJI);
     setGameState(GAME_STATES.REVIEW);
@@ -53,8 +51,6 @@ export const GameProvider = ({ children }) => {
     kanaData,
     vocabularyLists,
     vocabularyLoading,
-    kanjiLists,
-    kanjiLoading,
 
     // Game state
     gameState,
@@ -84,8 +80,8 @@ export const GameProvider = ({ children }) => {
     setStartTime,
 
     // Vocabulary
-    selectedLists,
-    setSelectedLists,
+    wordsSelectedLists,
+    setWordsSelectedLists,
     currentVocabularyWords,
     setCurrentVocabularyWords,
 

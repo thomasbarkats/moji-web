@@ -15,7 +15,8 @@ export const GAME_MODES = {
   HIRAGANA: 'hiragana',
   KATAKANA: 'katakana',
   BOTH: 'both',
-  VOCABULARY: 'vocabulary'
+  VOCABULARY: 'vocabulary',
+  KANJI: 'kanji'
 };
 
 export const KANA_TYPES = {
@@ -39,6 +40,11 @@ export const SORT_MODES = {
 export const VOCABULARY_MODES = {
   TO_JAPANESE: 'to_japanese',
   FROM_JAPANESE: 'from_japanese'
+};
+
+export const KANJI_MODES = {
+  ALL: 'all',
+  MEANINGS_ONLY: 'meanings_only'
 };
 
 export const SOUND_MODES = {

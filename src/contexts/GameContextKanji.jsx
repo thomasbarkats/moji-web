@@ -1,11 +1,20 @@
 import { createContext, useContext, useState } from 'react';
+import { usePreferences } from './PreferencesContext';
+import { useDataKanji } from '../hooks';
 import { KANJI_STEPS } from '../constants';
-import { getFirstStepForKanji, getNextStepForKanji, getReadingGroupsForDisplay } from '../utils';
+import {
+  getFirstStepForKanji,
+  getNextStepForKanji,
+  getReadingGroupsForDisplay,
+} from '../utils';
 
 
 const GameContextKanji = createContext();
 
 export const KanjiGameProvider = ({ children }) => {
+  const { kanjiLists, loading: kanjiLoading } = useDataKanji();
+  const { kanjiMode } = usePreferences();
+
   // Step management for multi-step kanji validation
   const [currentStep, setCurrentStep] = useState(KANJI_STEPS.KUN_READINGS);
   const [stepData, setStepData] = useState({
@@ -14,7 +23,7 @@ export const KanjiGameProvider = ({ children }) => {
   });
 
   // Kanji-specific selections
-  const [selectedLists, setSelectedLists] = useState([]);
+  const [kanjiSelectedLists, setKanjiSelectedLists] = useState([]);
   const [currentKanjiList, setCurrentKanjiList] = useState([]);
 
 
@@ -26,13 +35,20 @@ export const KanjiGameProvider = ({ children }) => {
       return;
     }
 
-    const firstStep = getFirstStepForKanji(currentKanji.readings);
+    const firstStep = getFirstStepForKanji(currentKanji.readings, kanjiMode);
+
+    if (firstStep === KANJI_STEPS.MEANINGS) {
+      const readingGroups = getReadingGroupsForDisplay(currentKanji.readings);
+      setStepData({ readingGroups });
+    } else {
+      setStepData({ readingGroups: [] });
+    }
+
     setCurrentStep(firstStep);
-    setStepData({ readingGroups: [] });
   };
 
-  const proceedToNextStep = (validatedAnswer, currentKanji) => {
-    const nextStep = getNextStepForKanji(currentStep, currentKanji.readings);
+  const proceedToNextStep = (currentKanji) => {
+    const nextStep = getNextStepForKanji(currentStep, currentKanji.readings, kanjiMode);
 
     // Store complete reading groups ONLY when transitioning to meanings step
     if (nextStep === KANJI_STEPS.MEANINGS) {
@@ -44,6 +60,10 @@ export const KanjiGameProvider = ({ children }) => {
   };
 
   const value = {
+    // Data
+    kanjiLists,
+    kanjiLoading,
+
     // Step state
     currentStep,
     setCurrentStep,
@@ -51,8 +71,8 @@ export const KanjiGameProvider = ({ children }) => {
     setStepData,
 
     // Kanji selection
-    selectedLists,
-    setSelectedLists,
+    kanjiSelectedLists,
+    setKanjiSelectedLists,
     currentKanjiList,
     setCurrentKanjiList,
 

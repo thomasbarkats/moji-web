@@ -121,7 +121,7 @@ export const useGameActions = () => {
       case GAME_MODES.VOCABULARY:
         nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress);
         break;
-      case GAME_MODES.VOCAKANJIBULARY:
+      case GAME_MODES.KANJI:
         nextItem = selectNextKanji(currentKanjiList, newProgress);
         break;
       default:
@@ -173,11 +173,10 @@ export const useGameActions = () => {
     const proceedToNext = () => {
       if (!isCorrect || isLastStep) {
         proceedToNextItem(newProgress);
-        proceedToNextItem(newProgress);
       } else {
         setUserInput('');
         setFeedback(null);
-        proceedToNextStep(expectedAnswers, currentItem);
+        proceedToNextStep(currentItem);
       }
     };
 

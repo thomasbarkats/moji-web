@@ -1,4 +1,5 @@
 import { useGameContext } from './contexts/GameContext';
+import { useGameContextKanji } from './contexts/GameContextKanji';
 import { usePreferences } from './contexts/PreferencesContext';
 import { getSortedStats } from './services/statsService';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
@@ -24,13 +25,14 @@ import {
 
 function App() {
   const { theme } = usePreferences();
+  const { kanjiSelectedLists } = useGameContextKanji();
   const {
     gameState,
     appMode,
     gameMode,
     vocabularyLoading,
     kanjiLoading,
-    selectedLists,
+    wordsSelectedLists,
     sessionStats,
     sortBy,
     currentVocabularyWords,
@@ -79,9 +81,11 @@ function App() {
           onRestartSameMode={() => {
             switch (gameMode) {
               case GAME_MODES.VOCABULARY:
-                initializeVocabularyGame(selectedLists);
+                initializeVocabularyGame(wordsSelectedLists);
+                break;
               case GAME_MODES.KANJI:
-                initializeKanjiGame(selectedLists);
+                initializeKanjiGame(kanjiSelectedLists);
+                break;
               default:
                 initializeKanaGame(gameMode);
             }

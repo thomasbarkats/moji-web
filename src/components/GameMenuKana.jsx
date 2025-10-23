@@ -12,6 +12,8 @@ export const GameMenuKana = () => {
   const { initializeKanaGame } = useGameLogicKana();
 
   const {
+    appMode,
+    setAppMode,
     kanaData,
     switchToKanji,
     openReviewKana,
@@ -95,6 +97,8 @@ export const GameMenuKana = () => {
       subtitle="Kana Learning"
       onNext={switchToKanji}
       nextTooltip="Switch to Kanji Learning"
+      currentMode={appMode}
+      onModeChange={setAppMode}
     >
       <div className="space-y-4">
         <button

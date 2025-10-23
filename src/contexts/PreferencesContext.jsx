@@ -1,6 +1,11 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { REQUIRED_SUCCESSES_LIMITS, KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
 import { useTheme, useSound } from '../hooks';
+import {
+  REQUIRED_SUCCESSES_LIMITS,
+  KANA_INCLUSION,
+  VOCABULARY_MODES,
+  KANJI_MODES,
+} from '../constants';
 
 
 const PreferencesContext = createContext();
@@ -12,6 +17,7 @@ const DEFAULT_PREFERENCES = {
   dakutenMode: KANA_INCLUSION.OFF,
   combinationsMode: KANA_INCLUSION.OFF,
   vocabularyMode: VOCABULARY_MODES.FROM_JAPANESE,
+  kanjiMode: KANJI_MODES.ALL,
 };
 
 export const PreferencesProvider = ({ children }) => {
@@ -60,6 +66,10 @@ export const PreferencesProvider = ({ children }) => {
     updatePreferences({ vocabularyMode: value });
   };
 
+  const handleKanjiModeChange = (value) => {
+    updatePreferences({ kanjiMode: value });
+  };
+
   const value = {
     preferences,
     theme,
@@ -71,6 +81,7 @@ export const PreferencesProvider = ({ children }) => {
     dakutenMode: preferences.dakutenMode,
     combinationsMode: preferences.combinationsMode,
     vocabularyMode: preferences.vocabularyMode,
+    kanjiMode: preferences.kanjiMode,
 
     // Handlers
     updatePreferences,
@@ -78,6 +89,7 @@ export const PreferencesProvider = ({ children }) => {
     handleDakutenModeChange,
     handleCombinationsModeChange,
     handleVocabularyModeChange,
+    handleKanjiModeChange,
     toggleDarkMode,
     cycleSoundMode,
     getSoundModeIcon,

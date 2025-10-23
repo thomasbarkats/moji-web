@@ -3,22 +3,25 @@ import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKanji } from '../hooks';
-import { GameMenu, MenuControls, MultiSelection } from '.';
+import { KANJI_MODES } from '../constants';
+import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 
 export const GameMenuKanji = () => {
   const { initializeKanjiGame } = useGameLogicKanji();
 
   const {
-    kanjiLists,
+    appMode,
+    setAppMode,
     switchToKana,
     switchToVocabulary,
     openReviewKanji,
   } = useGameContext();
 
   const {
-    selectedLists,
-    setSelectedLists,
+    kanjiLists,
+    kanjiSelectedLists,
+    setKanjiSelectedLists,
   } = useGameContextKanji();
 
   const {
@@ -29,6 +32,8 @@ export const GameMenuKanji = () => {
     theme,
     darkMode,
     toggleDarkMode,
+    kanjiMode,
+    handleKanjiModeChange,
   } = usePreferences();
 
 
@@ -38,7 +43,20 @@ export const GameMenuKanji = () => {
     count: list.kanji.length
   }));
 
-  const totalKanji = selectedLists.reduce((sum, listKey) => {
+  const modeOptions = [
+    {
+      value: KANJI_MODES.ALL,
+      label: 'All',
+      tooltip: 'Find readings & meanings'
+    },
+    {
+      value: KANJI_MODES.MEANINGS_ONLY,
+      label: 'Meanings',
+      tooltip: 'Find meanings only, for each given reading group'
+    }
+  ];
+
+  const totalKanji = kanjiSelectedLists.reduce((sum, listKey) => {
     return sum + (kanjiLists[listKey]?.kanji.length || 0);
   }, 0);
 
@@ -52,12 +70,14 @@ export const GameMenuKanji = () => {
       previousTooltip="Switch to Kana Learning"
       onNext={switchToVocabulary}
       nextTooltip="Switch to Vocabulary Learning"
+      currentMode={appMode}
+      onModeChange={setAppMode}
     >
       <div className="space-y-4">
         <MultiSelection
           options={listOptions}
-          selectedValues={selectedLists}
-          onChange={setSelectedLists}
+          selectedValues={kanjiSelectedLists}
+          onChange={setKanjiSelectedLists}
           placeholder="Select kanji lists..."
           theme={theme}
           optionLabel="list"
@@ -65,7 +85,7 @@ export const GameMenuKanji = () => {
           py={3}
         />
 
-        {selectedLists.length > 0 && (
+        {kanjiSelectedLists.length > 0 && (
           <div className="space-y-4">
             <button
               onClick={() => openReviewKanji()}
@@ -78,7 +98,7 @@ export const GameMenuKanji = () => {
             </button>
 
             <button
-              onClick={() => initializeKanjiGame(selectedLists)}
+              onClick={() => initializeKanjiGame(kanjiSelectedLists)}
               className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
             >
               <div className="flex items-center justify-center">
@@ -92,6 +112,21 @@ export const GameMenuKanji = () => {
             </button>
           </div>
         )}
+      </div>
+
+      {/* Advanced options */}
+      <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
+        <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
+          <div className={`px-4 divide-y ${theme.divider}`}>
+            <SegmentedControl
+              value={kanjiMode}
+              onChange={handleKanjiModeChange}
+              options={modeOptions}
+              label="Find from Kanji"
+              theme={{ ...theme, darkMode }}
+            />
+          </div>
+        </div>
       </div>
 
       <MenuControls
