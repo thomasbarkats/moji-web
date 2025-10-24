@@ -1,82 +1,95 @@
 {
-  "name": "N5 - Éléments de la nature",
+  "fr": "N5 - Éléments de la nature",
+  "en": "N5 - Elements of nature",
   "kanji": [{
     "character": "火",
     "readings": [{
       "kun": ["ひ"],
       "on": ["カ"],
-      "meanings": ["feu"]
+      "fr": ["feu"],
+      "en": ["fire"]
     }]
   }, {
     "character": "水",
     "readings": [{
       "kun": ["みず"],
       "on": ["スイ"],
-      "meanings": ["eau"]
+      "fr": ["eau"],
+      "en": ["water"]
     }]
   }, {
     "character": "木",
     "readings": [{
       "kun": ["き"],
       "on": ["モク", "ボク"],
-      "meanings": ["arbre", "bois"]
+      "fr": ["arbre", "bois"],
+      "en": ["tree", "wood"]
     }]
   }, {
     "character": "金",
     "readings": [{
       "kun": ["かね"],
       "on": null,
-      "meanings": ["argent"]
+      "fr": ["argent"],
+      "en": ["money"]
     }, {
       "kun": null,
       "on": ["キン", "コン"],
-      "meanings": ["or", "métal", "argent"]
+      "fr": ["or", "métal", "argent"],
+      "en": ["gold", "metal", "money"]
     }]
   }, {
     "character": "土",
     "readings": [{
       "kun": ["つち"],
       "on": ["ド", "ト"],
-      "meanings": ["terre", "sol"]
+      "fr": ["terre", "sol"],
+      "en": ["earth", "soil"]
     }]
   }, {
     "character": "風",
     "readings": [{
       "kun": ["かぜ"],
       "on": null,
-      "meanings": ["vent"]
+      "fr": ["vent"],
+      "en": ["wind"]
     }, {
       "kun": null,
       "on": ["フウ"],
-      "meanings": ["vent", "style", "apparence"]
+      "fr": ["vent", "style", "apparence"],
+      "en": ["wind", "style", "appearance"]
     }]
   }, {
     "character": "雨",
     "readings": [{
       "kun": ["あめ"],
       "on": ["ウ"],
-      "meanings": ["pluie"]
+      "fr": ["pluie"],
+      "en": ["rain"]
     }]
   }, {
     "character": "川",
     "readings": [{
       "kun": ["かわ"],
       "on": ["セン"],
-      "meanings": ["rivière"]
+      "fr": ["rivière"],
+      "en": ["river"]
     }]
   }, {
     "character": "山",
     "readings": [{
       "kun": ["やま"],
       "on": ["サン"],
-      "meanings": ["montagne"]
+      "fr": ["montagne"],
+      "en": ["mountain"]
     }]
   }, {
     "character": "田",
     "readings": [{
       "kun": ["た"],
       "on": ["デン"],
-      "meanings": ["rizière"]
+      "fr": ["rizière"],
+      "en": ["rice field"]
     }]
   }]
 }

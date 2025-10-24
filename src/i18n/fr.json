@@ -1,0 +1,153 @@
+{
+  "modes": {
+    "kana": "Kana",
+    "vocabulary": "Vocabulaire",
+    "kanji": "Kanji",
+    "hiragana": "Hiragana",
+    "katakana": "Katakana",
+    "both": "Hiragana + Katakana"
+  },
+  "vocabularyModes": {
+    "fromJapanese": "JP → FR",
+    "toJapanese": "FR → JP"
+  },
+  "kanjiModes": {
+    "all": "Tout",
+    "meaningsOnly": "Significations"
+  },
+  "gameplay": {
+    "typeTranslation": "Tapez la traduction...",
+    "typeReading": "Tapez la lecture...",
+    "commaSeparated": "... (séparé par des virgules)",
+    "validate": "Valider (Entrée)",
+    "correct": "Correct !",
+    "incorrect": "Incorrect",
+    "youWrote": "Vous avez écrit :",
+    "correctAnswer": "Bonne réponse :",
+    "mastered": "maîtrisé",
+    "errors": "erreurs",
+    "enterAll": "Entrez toutes les",
+    "readings": "lectures",
+    "enterMeanings": "Entrez toutes les significations",
+    "inReadingOrder": "(dans l'ordre des lectures)",
+    "switchToLightMode": "Passer en mode clair",
+    "switchToDarkMode": "Passer en mode sombre"
+  },
+  "menu": {
+    "selectListsOf": "Sélectionner des listes de",
+    "selected": "sélectionné(es)",
+    "filterOptions": "Options de filtrage...",
+    "difficulty": "Difficulté",
+    "requiredSuccesses": "Succès requis",
+    "dakutenMode": "Dakuten & Handakuten",
+    "combinationsMode": "Combinaisons",
+    "vocabularyMode": "Lecture et frappe",
+    "kanjiMode": "À partir du kanji",
+    "sound": "Son",
+    "theme": "Thème",
+    "include": "Inclure les",
+    "kanaLearning": "Apprendre les kana",
+    "kanjiLearning": "Apprendre les kanji",
+    "vocabularyLearning": "Apprendre le vocabulaire",
+    "switchToKana": "Passer aux kana",
+    "switchToKanji": "Passer aux kanji",
+    "switchToVocabulary": "Passer au vocabulaire"
+  },
+  "options": {
+    "off": "Non",
+    "on": "Oui",
+    "only": "Seulement"
+  },
+  "soundModes": {
+    "both": "Les deux",
+    "speech_only": "Voix uniquement",
+    "none": "Aucun"
+  },
+  "themeModes": {
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "summary": {
+    "title": "Résumé de la session",
+    "congratulations": "Félicitations !",
+    "masteredKana": "Vous avez maîtrisé tous les kana de cette session",
+    "masteredHiragana": "Vous avez maîtrisé tous les hiragana de cette session",
+    "masteredKatakana": "Vous avez maîtrisé tous les katakana de cette session",
+    "masteredVocabulary": "Vous avez maîtrisé tous les mots de vocabulaire de cette session",
+    "masteredKanji": "Vous avez maîtrisé tous les kanji de cette session",
+    "sessionCompleted": "Session terminée !",
+    "totalAttempts": "Tentatives totales",
+    "correctAnswers": "Réponses correctes",
+    "accuracy": "Précision",
+    "masteredItems": "Éléments maîtrisés",
+    "kanaStudied": "Kana étudiés",
+    "wordsStudied": "Mots étudiés",
+    "kanjiStudied": "Kanji étudiés",
+    "totalErrors": "Erreurs totales",
+    "totalTime": "Temps total",
+    "breakdownByKana": "Détail par kana",
+    "breakdownByWord": "Détail par mot",
+    "breakdownByKanji": "Détail par kanji",
+    "sortByErrors": "Trier par erreurs",
+    "sortByTime": "Trier par temps",
+    "sortByKana": "Trier par kana",
+    "sortByWord": "Trier par mot",
+    "sortByKanji": "Trier par kanji",
+    "restart": "Recommencer",
+    "newSession": "Nouvelle session",
+    "restartSameMode": "Recommencer le même mode",
+    "changeSettings": "Changer les paramètres"
+  },
+  "sortModes": {
+    "default": "Ordre par défaut",
+    "alphabetical": "Alphabétique"
+  },
+  "common": {
+    "startPractice": "Commencer l'entraînement",
+    "reviewAllKana": "Réviser tous les kana",
+    "reviewSelectedWords": "Réviser les mots sélectionnés",
+    "reviewSelectedKanji": "Réviser les kanji sélectionnés",
+    "cancel": "Annuler",
+    "continue": "Continuer",
+    "close": "Fermer",
+    "save": "Enregistrer",
+    "kana": "kana",
+    "words": "mots",
+    "kanji": "kanji",
+    "option": "option",
+    "list": "liste",
+    "wordsSelected": "mots sélectionnés",
+    "kanjiSelected": "kanji sélectionnés",
+    "backToMenu": "Retour au menu"
+  },
+  "titles": {
+    "japanese": "Japonais",
+    "translation": "Traduction",
+    "notes": "Notes",
+    "kanji": "Kanji",
+    "kun": "Kun",
+    "on": "On",
+    "meanings": "Significations",
+    "errors": "Erreurs",
+    "success": "Succès"
+  },
+  "settings": {
+    "language": "Langue",
+    "selectLanguage": "Sélectionner la langue"
+  },
+  "tooltips": {
+    "typeJapanese": "Tapez en japonais",
+    "typeTranslation": "Tapez la traduction",
+    "jpKeyboardHelp": "Aide clavier japonais",
+    "playAudio": "Lire l'audio",
+    "noDakuten": "Pas de dakuten/handakuten",
+    "addToKana": "Ajouter aux kana sélectionnés",
+    "dakutenOnly": "Dakuten/handakuten uniquement",
+    "noCombinations": "Pas de combinaisons",
+    "combinationsOnly": "Combinaisons uniquement"
+  },
+  "languages": {
+    "fr": "Français",
+    "en": "English"
+  }
+}

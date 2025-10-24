@@ -3,6 +3,7 @@ import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
+import { useTranslation } from '../contexts/I18nContext';
 import { useGameActions } from '../hooks';
 import { ProgressBar } from '.';
 import { formatTime, cleanJapaneseText } from '../utils';
@@ -15,6 +16,7 @@ import {
 
 
 export const GamePlay = () => {
+  const { t } = useTranslation();
   const { handleSubmit, resetGame } = useGameActions();
   const { currentStep, stepData } = useGameContextKanji();
 
@@ -83,21 +85,27 @@ export const GamePlay = () => {
       case KANJI_STEPS.KUN_READINGS:
         return (
           <span>
-            Enter all
+            {t('gameplay.enterAll')}
             <span className={`px-4 py-2 mx-2 ${theme.statsBg.green} ${theme.text} rounded-lg text-md`}>kun</span>
-            readings
+            {t('gameplay.readings')}
           </span>
         );
       case KANJI_STEPS.ON_READINGS:
         return (
           <span>
-            Enter all
+            {t('gameplay.enterAll')}
             <span className={`px-4 py-2 mx-2 ${theme.statsBg.blue} ${theme.text} rounded-lg text-md`}>ON</span>
-            readings
+            {t('gameplay.readings')}
           </span>
         );
       case KANJI_STEPS.MEANINGS:
-        return <span>Enter all meanings <b>(in reading order)</b></span>;
+        return (
+          <span>
+            <span>{t('gameplay.enterMeanings')}</span>
+            <br />
+            <b>{t('gameplay.inReadingOrder')}</b>
+          </span>
+        );
     }
   };
 
@@ -114,7 +122,7 @@ export const GamePlay = () => {
               <button
                 onClick={toggleDarkMode}
                 className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
-                title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+                title={darkMode ? t('gameplay.switchToLightMode') : t('gameplay.switchToDarkMode')}
               >
                 {darkMode
                   ? <Sun className="w-5 h-5" />
@@ -140,8 +148,8 @@ export const GamePlay = () => {
           <ProgressBar percentage={progressPercentage} theme={theme} />
 
           <div className={`flex justify-between text-sm ${theme.textSecondary}`}>
-            <span>{mastered}/{total} mastered</span>
-            <span>{totalFailures} errors</span>
+            <span>{mastered}/{total} {t('gameplay.mastered')}</span>
+            <span>{totalFailures} {t('gameplay.errors')}</span>
           </div>
         </div>
 
@@ -183,7 +191,7 @@ export const GamePlay = () => {
                 {feedback.type === FEEDBACK_TYPES.SUCCESS ? (
                   <div className={`${theme.feedbackSuccess.bg} border-2 rounded-xl p-6 animate-pulse`}>
                     <div className="text-6xl mb-2">✅</div>
-                    <div className={`text-2xl font-bold ${theme.feedbackSuccess.title} mb-2`}>Correct!</div>
+                    <div className={`text-2xl font-bold ${theme.feedbackSuccess.title} mb-2`}>{t('gameplay.correct')}</div>
                     <div className={`text-lg ${theme.feedbackSuccess.text}`}>"{displayCorrectAnswer}"</div>
                     {
                       isVocabularyMode &&
@@ -198,9 +206,9 @@ export const GamePlay = () => {
                 ) : (
                   <div className={`${theme.feedbackError.bg} border-2 rounded-xl p-6 animate-pulse`}>
                     <div className="text-6xl mb-2">❌</div>
-                    <div className={`text-2xl font-bold ${theme.feedbackError.title} mb-2`}>Incorrect</div>
-                    <div className={`text-lg ${theme.feedbackError.text} mb-1`}>You wrote: "{feedback.userAnswer}"</div>
-                    <div className={`text-lg ${theme.feedbackError.title} font-semibold`}>Correct answer: "{displayCorrectAnswer}"</div>
+                    <div className={`text-2xl font-bold ${theme.feedbackError.title} mb-2`}>{t('gameplay.incorrect')}</div>
+                    <div className={`text-lg ${theme.feedbackError.text} mb-1`}>{t('gameplay.youWrote')} "{feedback.userAnswer}"</div>
+                    <div className={`text-lg ${theme.feedbackError.title} font-semibold`}>{t('gameplay.correctAnswer')} "{displayCorrectAnswer}"</div>
                     {
                       isVocabularyMode &&
                       vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE &&
@@ -223,10 +231,10 @@ export const GamePlay = () => {
                   onKeyDown={handleKeyDown}
                   placeholder={
                     isKanjiMode
-                      ? '... (comma separated)'
+                      ? t('gameplay.commaSeparated')
                       : isVocabularyMode
-                        ? "Type the translation..."
-                        : "Type the reading..."
+                        ? t('gameplay.typeTranslation')
+                        : t('gameplay.typeReading')
                   }
                   className={`w-full text-2xl text-center py-4 px-6 border-2 ${theme.inputBorder} ${theme.inputBg} ${theme.text} rounded-xl focus:ring-4 focus:ring-blue-200 outline-none transition-all`}
                   autoComplete="off"
@@ -241,13 +249,12 @@ export const GamePlay = () => {
                 disabled={!userInput.trim()}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-8 rounded-xl hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
               >
-                Validate (Enter)
+                {t('gameplay.validate')}
               </button>
             )}
 
             <div className={`mt-4 text-sm ${theme.textMuted}`}>
-              Success: {progress[currentItem.question]?.successes || 0}/{requiredSuccesses} |
-              Errors: {progress[currentItem.question]?.failures || 0}
+              {t('titles.success')}: {progress[currentItem.question]?.successes || 0}/{requiredSuccesses} | {t('titles.errors')}: {progress[currentItem.question]?.failures || 0}
             </div>
           </div>
         )}

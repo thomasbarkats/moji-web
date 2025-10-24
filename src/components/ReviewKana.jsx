@@ -2,20 +2,22 @@ import { Volume2, ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useTranslation } from '../contexts/I18nContext';
 import { speakReading, organizeKanaByRows, initFilterSelection } from '../utils';
 import { GAME_STATES, KANA_TYPES } from '../constants';
 import { MultiSelection } from '.';
 
 
 export const ReviewKana = () => {
+  const { t } = useTranslation();
   const { kanaData, setGameState } = useGameContext();
   const { dakutenMode, combinationsMode, theme } = usePreferences();
   const [selectedOptions, setSelectedOptions] = useState(initFilterSelection(dakutenMode, combinationsMode));
 
 
   const filterOptions = [
-    { value: KANA_TYPES.DAKUTEN, label: 'Include Dakuten & Handakuten', count: null },
-    { value: KANA_TYPES.COMBINATION, label: 'Include Combinations', count: null }
+    { value: KANA_TYPES.DAKUTEN, label: `${t('menu.include')} ${t('menu.dakutenMode')}`, count: null },
+    { value: KANA_TYPES.COMBINATION, label: `${t('menu.include')} ${t('menu.combinationsMode')}`, count: null }
   ];
 
   const getFilteredKana = (base, dakuten, combinations) => {
@@ -85,7 +87,7 @@ export const ReviewKana = () => {
               className={`flex items-center gap-2 ${theme.text} hover:${theme.textSecondary} transition-colors cursor-pointer`}
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Back to menu</span>
+              <span>{t('common.backToMenu')}</span>
             </button>
 
             <div className="w-80">
@@ -93,10 +95,10 @@ export const ReviewKana = () => {
                 options={filterOptions}
                 selectedValues={selectedOptions}
                 onChange={setSelectedOptions}
-                placeholder="Filter options..."
+                placeholder={t('menu.filterOptions')}
                 theme={theme}
-                optionLabel="option"
-                subItemsLabel="kana"
+                optionLabel={t('common.option')}
+                subItemsLabel={t('common.kana')}
                 py={2}
               />
             </div>

@@ -1,107 +1,127 @@
 {
-  "name": "N5 - Kanji de base 1",
+  "fr": "N5 - Kanji de base 1",
+  "en": "N5 - Basic kanji 1",
   "kanji": [{
     "character": "人",
     "readings": [{
       "kun": ["ひと"],
       "on": ["ジン"],
-      "meanings": ["personne"]
+      "fr": ["personne"],
+      "en": ["person"]
     }, {
       "kun": null,
       "on": ["ニン"],
-      "meanings": ["personne", "compteur de personnes >2"]
+      "fr": ["personne", "compteur de personnes >2"],
+      "en": ["person", "counter for people >2"]
     }, {
       "kun": ["-り"],
       "on": null,
-      "meanings": ["compteur de 1 et 2 personnes"]
+      "fr": ["compteur de 1 et 2 personnes"],
+      "en": ["counter for 1 and 2 people"]
     }]
   }, {
     "character": "日",
     "readings": [{
       "kun": ["ひ"],
       "on": ["ニチ"],
-      "meanings": ["jour", "soleil"]
+      "fr": ["jour", "soleil"],
+      "en": ["day", "sun"]
     }, {
       "kun": null,
       "on": ["ジツ"],
-      "meanings": ["jour"]
+      "fr": ["jour"],
+      "en": ["day"]
     }, {
       "kun": ["か"],
       "on": null,
-      "meanings": ["compteur de jours"]
+      "fr": ["compteur de jours"],
+      "en": ["counter for days"]
     }]
   }, {
     "character": "月",
     "readings": [{
       "kun": ["つき"],
       "on": null,
-      "meanings": ["lune"]
+      "fr": ["lune"],
+      "en": ["moon"]
     }, {
       "kun": null,
       "on": ["ゲツ", "ガツ"],
-      "meanings": ["mois"]
+      "fr": ["mois"],
+      "en": ["month"]
     }]
   }, {
     "character": "曜",
     "readings": [{
       "kun": null,
       "on": ["ヨウ"],
-      "meanings": ["jour de la semaine"]
+      "fr": ["jour de la semaine"],
+      "en": ["day of the week"]
     }]
   }, {
     "character": "円",
     "readings": [{
       "kun": ["まる(い)"],
       "on": null,
-      "meanings": ["rond"]
+      "fr": ["rond"],
+      "en": ["round"]
     }, {
       "kun": null,
       "on": ["エン"],
-      "meanings": ["cercle", "yen"]
+      "fr": ["cercle", "yen"],
+      "en": ["circle", "yen"]
     }]
   }, {
     "character": "大",
     "readings": [{
       "kun": ["おお(きい)"],
       "on": ["ダイ", "タイ"],
-      "meanings": ["grand", "large"]
+      "fr": ["grand", "large"],
+      "en": ["big", "large"]
     }, {
       "kun": ["おお(いに)"],
       "on": null,
-      "meanings": ["beaucoup", "grandement"]
+      "fr": ["beaucoup", "grandement"],
+      "en": ["very much", "greatly"]
     }]
   }, {
     "character": "小",
     "readings": [{
       "kun": ["ちい(さい)", "こ-", "お-"],
       "on": ["ショウ"],
-      "meanings": ["petit", "peu"]
+      "fr": ["petit", "peu"],
+      "en": ["small", "little"]
     }]
   }, {
     "character": "中",
     "readings": [{
       "kun": null,
       "on": ["チュウ"],
-      "meanings": ["milieu"]
+      "fr": ["milieu"],
+      "en": ["middle"]
     }, {
       "kun": null,
       "on": ["-チュウ", "-ジュウ"],
-      "meanings": ["pendant", "tout au long", "dans"]
+      "fr": ["pendant", "tout au long", "dans"],
+      "en": ["during", "throughout", "in"]
     }, {
       "kun": ["なか"],
       "on": null,
-      "meanings": ["dedans", "au milieu"]
+      "fr": ["dedans", "au milieu"],
+      "en": ["inside", "in the middle"]
     }]
   }, {
     "character": "本",
     "readings": [{
       "kun": ["もと"],
       "on": null,
-      "meanings": ["origine"]
+      "fr": ["origine"],
+      "en": ["origin"]
     }, {
       "kun": null,
       "on": ["ホン"],
-      "meanings": ["livre", "principal", "origine", "vrai", "compteur pour les objets longs et cylindriques"]
+      "fr": ["livre", "principal", "origine", "vrai", "compteur pour les objets longs et cylindriques"],
+      "en": ["book", "main", "origin", "true", "counter for long cylindrical objects"]
     }]
   }]
 }

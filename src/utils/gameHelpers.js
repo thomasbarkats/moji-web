@@ -101,7 +101,7 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
   const initialStats = {};
 
   words.forEach(word => {
-    const key = word.japanese;
+    const key = word.jp;
     initialProgress[key] = {
       successes: 0,
       failures: 0,
@@ -109,9 +109,9 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
       lastSeen: null
     };
     initialStats[key] = {
-      key: word.japanese,
-      question: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.japanese : word.translation,
-      answer: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.translation : word.japanese,
+      key: word.jp,
+      question: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.jp : word.translation,
+      answer: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.translation : word.jp,
       successes: 0,
       failures: 0,
       timeSpent: 0
@@ -136,7 +136,7 @@ export const initializeGameState = (setters, mode) => {
 // ITEM SELECTION
 // ============================================
 
-const getItemKey = (item) => item.char || item.japanese || item.character;
+const getItemKey = (item) => item.char || item.jp || item.character;
 
 const calculateWeight = (lastSeen) => {
   if (!lastSeen) return 10;

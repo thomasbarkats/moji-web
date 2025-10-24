@@ -12,8 +12,8 @@ import {
 const GameContextKanji = createContext();
 
 export const KanjiGameProvider = ({ children }) => {
-  const { kanjiLists, loading: kanjiLoading } = useDataKanji();
-  const { kanjiMode } = usePreferences();
+  const { kanjiMode, language } = usePreferences();
+  const { kanjiLists, loading: kanjiLoading } = useDataKanji(language);
 
   // Step management for multi-step kanji validation
   const [currentStep, setCurrentStep] = useState(KANJI_STEPS.KUN_READINGS);

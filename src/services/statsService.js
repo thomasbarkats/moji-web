@@ -139,7 +139,7 @@ const sortAlphabetically = (stats) => {
 
 const enrichStatsWithVocabulary = (sessionStats, currentVocabularyWords) => {
   return Object.values(sessionStats).map(stat => {
-    const vocabularyItem = currentVocabularyWords.find(word => word.japanese === stat.key);
+    const vocabularyItem = currentVocabularyWords.find(word => word.jp === stat.key);
     return {
       ...stat,
       infoText: vocabularyItem?.infoText || null,

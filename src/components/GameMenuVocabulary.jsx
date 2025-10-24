@@ -1,17 +1,17 @@
 import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useTheme, useGameLogicVocabulary } from '../hooks';
+import { useTranslation } from '../contexts/I18nContext';
+import { useGameLogicVocabulary } from '../hooks';
 import { VOCABULARY_MODES } from '../constants';
 import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 
 export const GameMenuVocabulary = () => {
+  const { t } = useTranslation();
   const { initializeVocabularyGame } = useGameLogicVocabulary();
 
   const {
-    appMode,
-    setAppMode,
     vocabularyLists,
     wordsSelectedLists,
     setWordsSelectedLists,
@@ -41,13 +41,13 @@ export const GameMenuVocabulary = () => {
   const modeOptions = [
     {
       value: VOCABULARY_MODES.TO_JAPANESE,
-      label: 'FR → JP',
-      tooltip: 'Type Japanese from French'
+      label: t('vocabularyModes.toJapanese'),
+      tooltip: t('tooltips.typeJapanese')
     },
     {
       value: VOCABULARY_MODES.FROM_JAPANESE,
-      label: 'JP → FR',
-      tooltip: 'Type French from Japanese'
+      label: t('vocabularyModes.fromJapanese'),
+      tooltip: t('tooltips.typeTranslation')
     }
   ];
 
@@ -59,21 +59,18 @@ export const GameMenuVocabulary = () => {
     <GameMenu
       theme={theme}
       title="語彙学習"
-      subtitle="Vocabulary Learning"
+      subtitle={t('menu.vocabularyLearning')}
       onPrevious={switchToKanji}
-      previousTooltip="Switch to Kanji Learning"
-      currentMode={appMode}
-      onModeChange={setAppMode}
+      previousTooltip={t('modes.kanji')}
     >
       <div className="space-y-4">
         <MultiSelection
           options={listOptions}
           selectedValues={wordsSelectedLists}
           onChange={setWordsSelectedLists}
-          placeholder="Select vocabulary lists..."
           theme={theme}
-          optionLabel="list"
-          subItemsLabel="words"
+          optionLabel={t('common.list')}
+          subItemsLabel={t('common.words')}
           py={3}
         />
 
@@ -85,7 +82,7 @@ export const GameMenuVocabulary = () => {
             >
               <div className="flex items-center justify-center gap-2">
                 <BookOpen className="w-4 h-4" />
-                <span className="text-sm">Review selected words</span>
+                <span className="text-sm">{t('common.reviewSelectedWords')}</span>
               </div>
             </button>
 
@@ -95,9 +92,9 @@ export const GameMenuVocabulary = () => {
             >
               <div className="flex items-center justify-center">
                 <div className="flex flex-col text-left mb-1">
-                  <span className="text-lg">Start Practice</span>
+                  <span className="text-lg">{t('common.startPractice')}</span>
                   <div className="text-xs opacity-80">
-                    {totalWords} words selected
+                    {totalWords} {t('common.wordsSelected')}
                   </div>
                 </div>
               </div>
@@ -114,7 +111,7 @@ export const GameMenuVocabulary = () => {
               value={vocabularyMode}
               onChange={handleVocabularyModeChange}
               options={modeOptions}
-              label="Reading and typing"
+              label={t('menu.vocabularyMode')}
               theme={{ ...theme, darkMode }}
             />
           </div>

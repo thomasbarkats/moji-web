@@ -1,5 +1,7 @@
-import { Sun, Moon } from 'lucide-react';
-import { REQUIRED_SUCCESSES_LIMITS } from '../../constants';
+import { Sun, Moon, Globe } from 'lucide-react';
+import { LANGUAGES, REQUIRED_SUCCESSES_LIMITS } from '../../constants';
+import { usePreferences } from '../../contexts/PreferencesContext';
+import { useTranslation } from '../../contexts/I18nContext';
 
 
 export const MenuControls = ({
@@ -11,9 +13,26 @@ export const MenuControls = ({
   requiredSuccesses,
   onRequiredSuccessesChange
 }) => {
+  const { language, handleLanguageChange } = usePreferences();
+  const { t } = useTranslation();
+
+  const toggleLanguage = () => {
+    handleLanguageChange(language === LANGUAGES.FR ? LANGUAGES.EN : LANGUAGES.FR);
+  };
+
   return (
     <div className="mt-8 flex justify-between items-center">
       <div className="flex items-center space-x-2">
+        <button
+          onClick={toggleLanguage}
+          className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+          title={t('settings.language')}
+        >
+          <div className="flex items-center gap-1">
+            <Globe className="w-5 h-5" />
+            <span className="text-xs font-medium">{language.toUpperCase()}</span>
+          </div>
+        </button>
         <button
           onClick={toggleDarkMode}
           className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
@@ -32,7 +51,7 @@ export const MenuControls = ({
 
       <div className="flex items-center space-x-3">
         <label className={`text-sm font-medium ${theme.textSecondary}`}>
-          Repetitions:
+          {t('menu.requiredSuccesses')}:
         </label>
         <input
           type="number"

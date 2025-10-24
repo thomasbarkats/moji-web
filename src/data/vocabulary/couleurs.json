@@ -1,0 +1,123 @@
+{
+  "fr": "Les couleurs (≠ des adjectifs)",
+  "en": "Colors (≠ adjectives)",
+  "words": [
+    {
+      "jp": "{色}[いろ]",
+      "fr": "couleur",
+      "en": "color"
+    },
+    {
+      "jp": "{赤}[あか]",
+      "fr": "rouge",
+      "en": "red"
+    },
+    {
+      "jp": "{青}[あお]",
+      "fr": "bleu",
+      "en": "blue"
+    },
+    {
+      "jp": "{黄}[き]{色}[いろ]",
+      "fr": "jaune",
+      "en": "yellow"
+    },
+    {
+      "jp": "オレンジ{色}[いろ]",
+      "fr": "orange",
+      "en": "orange"
+    },
+    {
+      "jp": "{紫}[むらさき]",
+      "fr": "violet",
+      "en": "purple"
+    },
+    {
+      "jp": "{白}[しろ]",
+      "fr": "blanc",
+      "en": "white"
+    },
+    {
+      "jp": "{黒}[くろ]",
+      "fr": "noir",
+      "en": "black"
+    },
+    {
+      "jp": "{灰}[はい]{色}[いろ]",
+      "fr": "gris",
+      "en": "gray",
+      "note_fr": "Littéralement « la couleur des cendres »",
+      "note_en": "Literally 'the color of ashes'"
+    },
+    {
+      "jp": "ピンク",
+      "fr": "rose",
+      "en": "pink"
+    },
+    {
+      "jp": "{茶}[チャ]{色}[いろ]",
+      "fr": "marron",
+      "en": "brown",
+      "note_fr": "Littéralement « la couleur du thé »",
+      "note_en": "Literally 'the color of tea'"
+    },
+    {
+      "jp": "ベージュ",
+      "fr": "beige",
+      "en": "beige"
+    },
+    {
+      "jp": "モーブ",
+      "fr": "mauve",
+      "en": "mauve"
+    },
+    {
+      "jp": "マゼンタ",
+      "fr": "magenta",
+      "en": "magenta"
+    },
+    {
+      "jp": "{紅}[くれない]",
+      "fr": "cramoisi",
+      "en": "crimson"
+    },
+    {
+      "jp": "シアン",
+      "fr": "cyan",
+      "en": "cyan"
+    },
+    {
+      "jp": "{水}[みず]{色}[いろ]",
+      "fr": "bleu clair",
+      "en": "light blue",
+      "note_fr": "Littéralement « la couleur de l'eau »",
+      "note_en": "Literally 'the color of water'"
+    },
+    {
+      "jp": "インディゴ",
+      "fr": "indigo",
+      "en": "indigo"
+    },
+    {
+      "jp": "{虹}[にじ]{色}[いろ]",
+      "fr": "couleur arc-en-ciel",
+      "en": "rainbow color",
+      "note_fr": "Littéralement « la couleur de l'arc en ciel »",
+      "note_en": "Literally 'the color of the rainbow'"
+    },
+    {
+      "jp": "{金}[キン]{色}[いろ]",
+      "fr": "or",
+      "en": "gold",
+      "note_fr": "Littéralement « la couleur de l'or »",
+      "note_en": "Literally 'the color of gold'"
+    },
+    {
+      "jp": "{銀}[ギン]{色}[いろ]",
+      "fr": "argent",
+      "en": "silver",
+      "note_fr": "Littéralement « la couleur de l'argent »",
+      "note_en": "Literally 'the color of silver'"
+    }
+  ]
+}

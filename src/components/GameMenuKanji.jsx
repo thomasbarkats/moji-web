@@ -2,17 +2,17 @@ import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useTranslation } from '../contexts/I18nContext';
 import { useGameLogicKanji } from '../hooks';
 import { KANJI_MODES } from '../constants';
 import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 
 export const GameMenuKanji = () => {
+  const { t } = useTranslation();
   const { initializeKanjiGame } = useGameLogicKanji();
 
   const {
-    appMode,
-    setAppMode,
     switchToKana,
     switchToVocabulary,
     openReviewKanji,
@@ -46,13 +46,13 @@ export const GameMenuKanji = () => {
   const modeOptions = [
     {
       value: KANJI_MODES.ALL,
-      label: 'All',
-      tooltip: 'Find readings & meanings'
+      label: t('kanjiModes.all'),
+      tooltip: t('kanjiModes.all')
     },
     {
       value: KANJI_MODES.MEANINGS_ONLY,
-      label: 'Meanings',
-      tooltip: 'Find meanings only, for each given reading group'
+      label: t('kanjiModes.meaningsOnly'),
+      tooltip: t('kanjiModes.meaningsOnly')
     }
   ];
 
@@ -65,23 +65,20 @@ export const GameMenuKanji = () => {
     <GameMenu
       theme={theme}
       title="漢字学習"
-      subtitle="Kanji Learning"
+      subtitle={t('menu.kanjiLearning')}
       onPrevious={switchToKana}
-      previousTooltip="Switch to Kana Learning"
+      previousTooltip={t('menu.switchToKana')}
       onNext={switchToVocabulary}
-      nextTooltip="Switch to Vocabulary Learning"
-      currentMode={appMode}
-      onModeChange={setAppMode}
+      nextTooltip={t('menu.switchToVocabulary')}
     >
       <div className="space-y-4">
         <MultiSelection
           options={listOptions}
           selectedValues={kanjiSelectedLists}
           onChange={setKanjiSelectedLists}
-          placeholder="Select kanji lists..."
           theme={theme}
-          optionLabel="list"
-          subItemsLabel="kanji"
+          optionLabel={t('common.list')}
+          subItemsLabel={t('common.kanji')}
           py={3}
         />
 
@@ -93,7 +90,7 @@ export const GameMenuKanji = () => {
             >
               <div className="flex items-center justify-center gap-2">
                 <BookOpen className="w-4 h-4" />
-                <span className="text-sm">Review selected kanji</span>
+                <span className="text-sm">{t('common.reviewSelectedKanji')}</span>
               </div>
             </button>
 
@@ -103,9 +100,9 @@ export const GameMenuKanji = () => {
             >
               <div className="flex items-center justify-center">
                 <div className="flex flex-col text-left mb-1">
-                  <span className="text-lg">Start Learning</span>
+                  <span className="text-lg">{t('common.startPractice')}</span>
                   <div className="text-xs opacity-80">
-                    {totalKanji} kanji selected
+                    {totalKanji} {t('common.kanjiSelected')}
                   </div>
                 </div>
               </div>
@@ -122,7 +119,7 @@ export const GameMenuKanji = () => {
               value={kanjiMode}
               onChange={handleKanjiModeChange}
               options={modeOptions}
-              label="Find from Kanji"
+              label={t('menu.kanjiMode')}
               theme={{ ...theme, darkMode }}
             />
           </div>

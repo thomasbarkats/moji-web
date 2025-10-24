@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Keyboard, X } from 'lucide-react';
+import { useTranslation } from '../../contexts/I18nContext';
 
 
 export const KeyboardHint = ({ theme }) => {
+  const { t } = useTranslation();
   const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export const KeyboardHint = ({ theme }) => {
           shadow-lg hover:shadow-xl transition-all
           cursor-pointer
         `}
-        title="Japanese keyboard help"
+        title={t('tooltips.jpKeyboardHelp')}
       >
         <Keyboard className="w-5 h-5" />
       </button>

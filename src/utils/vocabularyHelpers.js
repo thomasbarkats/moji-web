@@ -21,7 +21,7 @@ export const parseVocabularyEntry = (entry) => {
     .replace(/\{([^}]+)\}/g, '$1');
 
   return {
-    japanese: japaneseRaw,
+    jp: japaneseRaw,
     displayText,
     speechText,
     translation,

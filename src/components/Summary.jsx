@@ -1,6 +1,7 @@
 import { Trophy, Target, BarChart3, Clock, ChevronDown } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useTranslation } from '../contexts/I18nContext';
 import { Button, StatsCard } from '.';
 import { formatTime } from '../utils';
 import { calculateTintStyle } from '../services/statsService';
@@ -8,6 +9,7 @@ import { GAME_MODES } from '../constants';
 
 
 export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
+  const { t } = useTranslation();
   const { gameMode, sessionStats, sortBy, setSortBy } = useGameContext();
   const { requiredSuccesses, theme } = usePreferences();
 
@@ -16,47 +18,60 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
   const elapsedTime = Object.values(sessionStats).reduce((sum, s) => sum + (s.timeSpent || 0), 0);
   const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
+  const isKanjiMode = gameMode === GAME_MODES.KANJI;
 
 
   const getFinalSummaryText = () => {
     if (isVocabularyMode) {
-      return 'You have mastered all the vocabulary words in this session';
+      return t('summary.masteredVocabulary');
+    }
+    if (isKanjiMode) {
+      return t('summary.masteredKanji');
     }
     switch (gameMode) {
       case GAME_MODES.HIRAGANA:
-        return 'You have mastered all the hiragana in this session';
+        return t('summary.masteredHiragana');
       case GAME_MODES.KATAKANA:
-        return 'You have mastered all the katakana in this session';
+        return t('summary.masteredKatakana');
       case GAME_MODES.BOTH:
-        return 'You have mastered all the kana in this session';
+        return t('summary.masteredKana');
       default:
-        return 'Session completed!';
+        return t('summary.sessionCompleted');
     }
   };
 
   const getStudyLabel = () => {
-    return isVocabularyMode ? 'Words studied' : 'Kana studied';
+    if (isVocabularyMode) return t('summary.wordsStudied');
+    if (isKanjiMode) return t('summary.kanjiStudied');
+    return t('summary.kanaStudied');
   };
 
   const getBreakdownTitle = () => {
-    return isVocabularyMode ? 'Breakdown by word' : 'Breakdown by kana';
+    if (isVocabularyMode) return t('summary.breakdownByWord');
+    if (isKanjiMode) return t('summary.breakdownByKanji');
+    return t('summary.breakdownByKana');
   };
 
   const getSortOptions = () => {
     const baseOptions = [
-      { value: 'failures', label: 'Sort by errors' },
-      { value: 'time', label: 'Sort by time' }
+      { value: 'failures', label: t('summary.sortByErrors') },
+      { value: 'time', label: t('summary.sortByTime') }
     ];
 
     if (isVocabularyMode) {
       return [
         ...baseOptions,
-        { value: 'alphabetical', label: 'Sort by word' }
+        { value: 'alphabetical', label: t('summary.sortByWord') }
+      ];
+    } else if (isKanjiMode) {
+      return [
+        ...baseOptions,
+        { value: 'alphabetical', label: t('summary.sortByKanji') }
       ];
     } else {
       return [
         ...baseOptions,
-        { value: 'alphabetical', label: 'Sort by kana' }
+        { value: 'alphabetical', label: t('summary.sortByKana') }
       ];
     }
   };
@@ -69,7 +84,7 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
             <div className="flex justify-center mb-4">
               <Trophy className="w-16 h-16 text-yellow-500" />
             </div>
-            <h2 className={`text-3xl font-bold ${theme.text} mb-2`}>Congratulations!</h2>
+            <h2 className={`text-3xl font-bold ${theme.text} mb-2`}>{t('summary.congratulations')}</h2>
             <p className={theme.textSecondary}>{getFinalSummaryText()}</p>
           </div>
 
@@ -84,14 +99,14 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
             <StatsCard
               icon={<BarChart3 className={`w-8 h-8 ${theme.statsText.red} mx-auto mb-2`} />}
               value={totalFailures}
-              label="Total errors"
+              label={t('summary.totalErrors')}
               bgColor={theme.statsBg.red}
               textColor={theme.statsText.red}
             />
             <StatsCard
               icon={<Clock className={`w-8 h-8 ${theme.statsText.green} mx-auto mb-2`} />}
               value={formatTime(elapsedTime)}
-              label="Total time"
+              label={t('summary.totalTime')}
               bgColor={theme.statsBg.green}
               textColor={theme.statsText.green}
             />
@@ -118,8 +133,8 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
               const bgStyle = calculateTintStyle(item, Object.values(sessionStats), sortBy, requiredSuccesses, isVocabularyMode);
 
               return (
-                <div 
-                  key={item.key} 
+                <div
+                  key={item.key}
                   className={`rounded-lg p-4 transition-colors duration-200 ${item.infoText ? 'cursor-help' : ''}`}
                   style={bgStyle}
                   title={item.infoText || ''}
@@ -143,10 +158,10 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button onClick={onNewSession} variant="primary">
-              New session
+              {t('summary.newSession')}
             </Button>
             <Button onClick={onRestartSameMode} variant="success">
-              Restart same mode
+              {t('summary.restartSameMode')}
             </Button>
           </div>
         </div>

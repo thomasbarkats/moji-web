@@ -1,99 +1,114 @@
 {
-  "name": "N5 - Les nombres",
+  "fr": "N5 - Les nombres",
+  "en": "N5 - Numbers",
   "kanji": [{
     "character": "一",
     "readings": [{
       "kun": ["ひと"],
       "on": ["イチ"],
-      "meanings": ["un"]
+      "fr": ["un"],
+      "en": ["one"]
     }]
   }, {
     "character": "二",
     "readings": [{
       "kun": ["ふた"],
       "on": ["ニ"],
-      "meanings": ["deux"]
+      "fr": ["deux"],
+      "en": ["two"]
     }]
   }, {
     "character": "三",
     "readings": [{
       "kun": ["み"],
       "on": ["サン"],
-      "meanings": ["trois"]
+      "fr": ["trois"],
+      "en": ["three"]
     }]
   }, {
     "character": "四",
     "readings": [{
       "kun": ["よ", "よん"],
       "on": ["シ"],
-      "meanings": ["quatre"]
+      "fr": ["quatre"],
+      "en": ["four"]
     }]
   }, {
     "character": "五",
     "readings": [{
       "kun": ["いつ"],
       "on": ["ゴ"],
-      "meanings": ["cinq"]
+      "fr": ["cinq"],
+      "en": ["five"]
     }]
   }, {
     "character": "六",
     "readings": [{
       "kun": ["む"],
       "on": ["ロク"],
-      "meanings": ["six"]
+      "fr": ["six"],
+      "en": ["six"]
     }]
   }, {
     "character": "七",
     "readings": [{
       "kun": ["なな"],
       "on": ["シチ"],
-      "meanings": ["sept"]
+      "fr": ["sept"],
+      "en": ["seven"]
     }]
   }, {
     "character": "八",
     "readings": [{
       "kun": ["や"],
       "on": ["ハチ"],
-      "meanings": ["huit"]
+      "fr": ["huit"],
+      "en": ["eight"]
     }]
   }, {
     "character": "九",
     "readings": [{
       "kun": ["ここの"],
       "on": ["キュウ", "ク"],
-      "meanings": ["neuf"]
+      "fr": ["neuf"],
+      "en": ["nine"]
     }]
   }, {
     "character": "十",
     "readings": [{
       "kun": ["とお"],
       "on": ["ジュウ"],
-      "meanings": ["dix"]
+      "fr": ["dix"],
+      "en": ["ten"]
     }]
   }, {
     "character": "百",
     "readings": [{
       "kun": null,
       "on": ["ヒャク"],
-      "meanings": ["cent"]
+      "fr": ["cent"],
+      "en": ["hundred"]
     }]
   }, {
     "character": "千",
     "readings": [{
       "kun": ["ち"],
       "on": ["セン"],
-      "meanings": ["mille"]
+      "fr": ["mille"],
+      "en": ["thousand"]
     }]
   }, {
     "character": "万",
     "readings": [{
       "kun": null,
       "on": ["マン"],
-      "meanings": ["dix mille"]
+      "fr": ["dix mille"],
+      "en": ["ten thousand"]
     }, {
       "kun": null,
       "on": ["バン"],
-      "meanings": ["plusieurs", "tous"]
+      "fr": ["plusieurs", "tous"],
+      "en": ["many", "all"]
     }]
   }]
 }

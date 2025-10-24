@@ -1,17 +1,18 @@
 import { useState } from 'react';
 import { ChevronDown, Check } from 'lucide-react';
+import { useTranslation } from '../../contexts/I18nContext';
 
 
 export const MultiSelection = ({
   options,
   selectedValues,
   onChange,
-  placeholder,
   theme,
   py,
   optionLabel,
   subItemsLabel
 }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
 
@@ -40,8 +41,8 @@ export const MultiSelection = ({
       >
         <span className={selectedLabels.length > 0 ? '' : theme.textMuted}>
           {selectedLabels.length > 0
-            ? `${selectedLabels.length} ${optionLabel}${selectedLabels.length > 1 ? 's' : ''} selected`
-            : placeholder}
+            ? `${selectedLabels.length} ${optionLabel}${selectedLabels.length > 1 ? 's' : ''} ${t('menu.selected')}`
+            : `${t('menu.selectListsOf')} ${subItemsLabel}...`}
         </span>
         <ChevronDown className={`w-5 h-5 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>

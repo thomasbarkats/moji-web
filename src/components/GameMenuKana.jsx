@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useTranslation } from '../contexts/I18nContext';
 import { useGameLogicKana } from '../hooks';
 import { GAME_MODES, KANA_INCLUSION } from '../constants';
 import { getAllKanaForMode } from '../utils';
@@ -9,6 +10,7 @@ import { GameMenu, MenuControls, SegmentedControl } from '.';
 
 
 export const GameMenuKana = () => {
+  const { t } = useTranslation();
   const { initializeKanaGame } = useGameLogicKana();
 
   const {
@@ -39,17 +41,17 @@ export const GameMenuKana = () => {
 
   const getDakutenOptions = () => {
     return [
-      { value: KANA_INCLUSION.OFF, label: 'Off', tooltip: 'No dakuten/handakuten' },
-      { value: KANA_INCLUSION.ADD, label: 'On', tooltip: 'Add to selected kana', disabled: dakutenOnDisabled },
-      { value: KANA_INCLUSION.ONLY, label: 'Only', tooltip: 'Dakuten/handakuten only' }
+      { value: KANA_INCLUSION.OFF, label: t('options.off'), tooltip: t('tooltips.noDakuten') },
+      { value: KANA_INCLUSION.ADD, label: t('options.on'), tooltip: t('tooltips.addToKana'), disabled: dakutenOnDisabled },
+      { value: KANA_INCLUSION.ONLY, label: t('options.only'), tooltip: t('tooltips.dakutenOnly') }
     ];
   };
 
   const getCombinationsOptions = () => {
     return [
-      { value: KANA_INCLUSION.OFF, label: 'Off', tooltip: 'No combinations' },
-      { value: KANA_INCLUSION.ADD, label: 'On', tooltip: 'Add to selected kana', disabled: combinationOnDisabled },
-      { value: KANA_INCLUSION.ONLY, label: 'Only', tooltip: 'Combinations only' }
+      { value: KANA_INCLUSION.OFF, label: t('options.off'), tooltip: t('tooltips.noCombinations') },
+      { value: KANA_INCLUSION.ADD, label: t('options.on'), tooltip: t('tooltips.addToKana'), disabled: combinationOnDisabled },
+      { value: KANA_INCLUSION.ONLY, label: t('options.only'), tooltip: t('tooltips.combinationsOnly') }
     ];
   };
 
@@ -69,7 +71,7 @@ export const GameMenuKana = () => {
     handleCombinationsModeChange(value);
   };
 
-  const renderModeSection = (mode, icon, label, gradientClass) => {
+  const renderModeSection = (mode, icon, labelKey, gradientClass) => {
     const kanaCount = getAllKanaForMode(mode, kanaData, { dakutenMode, combinationsMode })?.length;
 
     return (
@@ -80,9 +82,9 @@ export const GameMenuKana = () => {
         <div className="flex items-center justify-center">
           <span className="text-3xl mr-4 font-normal">{icon}</span>
           <div className="flex flex-col text-left mb-1">
-            <span className="text-lg">{label}</span>
+            <span className="text-lg">{t(labelKey)}</span>
             <span className="text-xs opacity-80">
-              {kanaCount} kana{requiredSuccesses > 1 && ` × ${requiredSuccesses}`}
+              {kanaCount} {t('common.kana')}{requiredSuccesses > 1 && ` × ${requiredSuccesses}`}
             </span>
           </div>
         </div>
@@ -94,9 +96,9 @@ export const GameMenuKana = () => {
     <GameMenu
       theme={theme}
       title="学習カナ"
-      subtitle="Kana Learning"
+      subtitle={t('menu.kanaLearning')}
       onNext={switchToKanji}
-      nextTooltip="Switch to Kanji Learning"
+      nextTooltip={t('menu.switchToKanji')}
       currentMode={appMode}
       onModeChange={setAppMode}
     >
@@ -107,15 +109,15 @@ export const GameMenuKana = () => {
         >
           <div className="flex items-center justify-center gap-2">
             <BookOpen className="w-4 h-4" />
-            <span className="text-sm">Review all Kana</span>
+            <span className="text-sm">{t('common.reviewAllKana')}</span>
           </div>
         </button>
 
         <div className="flex gap-4">
-          {renderModeSection(GAME_MODES.HIRAGANA, 'ひ', 'Hiragana', 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700')}
-          {renderModeSection(GAME_MODES.KATAKANA, 'カ', 'Katakana', 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700')}
+          {renderModeSection(GAME_MODES.HIRAGANA, 'ひ', 'modes.hiragana', 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700')}
+          {renderModeSection(GAME_MODES.KATAKANA, 'カ', 'modes.katakana', 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700')}
         </div>
-        {renderModeSection(GAME_MODES.BOTH, 'ひカ', 'Hiragana + Katakana', 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700')}
+        {renderModeSection(GAME_MODES.BOTH, 'ひカ', 'modes.both', 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700')}
       </div>
 
       {/* Advanced options */}
@@ -126,14 +128,14 @@ export const GameMenuKana = () => {
               value={dakutenMode}
               onChange={handleLocalDakutenModeChange}
               options={getDakutenOptions()}
-              label="Dakuten & Handakuten"
+              label={t('menu.dakutenMode')}
               theme={{ ...theme, darkMode }}
             />
             <SegmentedControl
               value={combinationsMode}
               onChange={handleLocalCombinationsModeChange}
               options={getCombinationsOptions()}
-              label="Combinations"
+              label={t('menu.combinationsMode')}
               theme={{ ...theme, darkMode }}
             />
           </div>

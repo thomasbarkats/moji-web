@@ -1,0 +1,111 @@
+{
+  "fr": "Le matériel domestique",
+  "en": "Household items",
+  "words": [
+    {
+      "jp": "ベッド",
+      "fr": "lit",
+      "en": "bed"
+    },
+    {
+      "jp": "ソファー",
+      "fr": "canapé",
+      "en": "sofa"
+    },
+    {
+      "jp": "ペン",
+      "fr": "stylo",
+      "en": "pen"
+    },
+    {
+      "jp": "ノート",
+      "fr": "cahier",
+      "en": "notebook"
+    },
+    {
+      "jp": "カレンダー",
+      "fr": "calendrier",
+      "en": "calendar"
+    },
+    {
+      "jp": "ラジオ",
+      "fr": "radio",
+      "en": "radio"
+    },
+    {
+      "jp": "ステレオ",
+      "fr": "chaîne hi-hi",
+      "en": "stereo"
+    },
+    {
+      "jp": "テレビ",
+      "fr": "TV",
+      "en": "TV"
+    },
+    {
+      "jp": "カメラ",
+      "fr": "appareil photo",
+      "en": "camera"
+    },
+    {
+      "jp": "コンピュータ",
+      "fr": "ordinateur",
+      "en": "computer"
+    },
+    {
+      "jp": "パソコン",
+      "fr": "PC",
+      "en": "PC"
+    },
+    {
+      "jp": "エアコン",
+      "fr": "clim",
+      "en": "air conditioner"
+    },
+    {
+      "jp": "リモコン",
+      "fr": "télécommande",
+      "en": "remote control"
+    },
+    {
+      "jp": "クレジットカード",
+      "fr": "carte de crédit",
+      "en": "credit card"
+    },
+    {
+      "jp": "ドア",
+      "fr": "porte",
+      "en": "door"
+    },
+    {
+      "jp": "ランプ",
+      "fr": "lampe",
+      "en": "lamp"
+    },
+    {
+      "jp": "テーブル",
+      "fr": "table",
+      "en": "table"
+    },
+    {
+      "jp": "フォーク",
+      "fr": "fourchette",
+      "en": "fork"
+    },
+    {
+      "jp": "ナイフ",
+      "fr": "couteau",
+      "en": "knife"
+    },
+    {
+      "jp": "スプーン",
+      "fr": "cuillère",
+      "en": "spoon"
+    },
+    {
+      "jp": "トイレ",
+      "fr": "toilettes",
+      "en": "toilet"
+    }
+  ]
+}

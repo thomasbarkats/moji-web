@@ -54,7 +54,7 @@ export const useGameLogicVocabulary = () => {
   };
 
   const selectNextVocabularyWord = (allWords, currentProgress) => {
-    const availableWords = allWords.filter(word => !currentProgress[word.japanese].mastered);
+    const availableWords = allWords.filter(word => !currentProgress[word.jp].mastered);
 
     if (availableWords.length === 0) return null;
 
@@ -63,12 +63,12 @@ export const useGameLogicVocabulary = () => {
     if (!nextWord) return null;
 
     const newItem = {
-      key: nextWord.japanese,
+      key: nextWord.jp,
       question: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
         ? nextWord.translation
         : nextWord.displayText,
       answer: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
-        ? nextWord.japanese
+        ? nextWord.jp
         : nextWord.translation,
       displayText: nextWord.displayText,
       parts: nextWord.parts,
@@ -78,7 +78,7 @@ export const useGameLogicVocabulary = () => {
 
     const setters = { setCurrentItem, setUserInput, setFeedback, setProgress };
     const refs = { currentItemStartRef };
-    finalizeItemSelection(newItem, nextWord.japanese, setters, refs);
+    finalizeItemSelection(newItem, nextWord.jp, setters, refs);
 
     // Speak word when showing Japanese (from Japanese mode)
     if ((soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&

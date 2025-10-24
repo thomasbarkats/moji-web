@@ -10,6 +10,7 @@ export { MultiSelection } from './ui/MultiSelection';
 export { KeyboardHint } from './ui/KeyboardHint';
 export { GameMenu } from './GameMenu';
 export { MenuControls } from './ui/MenuControls';
+export { LanguageSelector } from './ui/LanguageSelector';
 export { ReviewKana } from './ReviewKana';
 export { ReviewVocabulary } from './ReviewVocabulary';
 export { GameMenuKanji } from './GameMenuKanji';

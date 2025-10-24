@@ -1,0 +1,221 @@
+{
+  "fr": "Les pays",
+  "en": "Countries",
+  "words": [
+    {
+      "jp": "フランス",
+      "fr": "France",
+      "en": "France"
+    },
+    {
+      "jp": "スペイン",
+      "fr": "Espagne",
+      "en": "Spain"
+    },
+    {
+      "jp": "イタリア",
+      "fr": "Italie",
+      "en": "Italy"
+    },
+    {
+      "jp": "ドイシ",
+      "fr": "Allemagne",
+      "en": "Germany"
+    },
+    {
+      "jp": "イギリス",
+      "fr": "Royaume-Uni",
+      "en": "United Kingdom"
+    },
+    {
+      "jp": "イングランド",
+      "fr": "Angleterre",
+      "en": "England"
+    },
+    {
+      "jp": "ギリシャ",
+      "fr": "Grèce",
+      "en": "Greece"
+    },
+    {
+      "jp": "ポルトガル",
+      "fr": "Portugal",
+      "en": "Portugal"
+    },
+    {
+      "jp": "ベルギー",
+      "fr": "Belgique",
+      "en": "Belgium"
+    },
+    {
+      "jp": "スイス",
+      "fr": "Suisse",
+      "en": "Switzerland"
+    },
+    {
+      "jp": "ルクセンブルク",
+      "fr": "Luxembourg",
+      "en": "Luxembourg"
+    },
+    {
+      "jp": "オランダ",
+      "fr": "Pays-Bas",
+      "en": "Netherlands"
+    },
+    {
+      "jp": "オーストリア",
+      "fr": "Autriche",
+      "en": "Austria"
+    },
+    {
+      "jp": "トルコ",
+      "fr": "Turquie",
+      "en": "Turkey"
+    },
+    {
+      "jp": "シリア",
+      "fr": "Syrie",
+      "en": "Syria"
+    },
+    {
+      "jp": "イスラエル",
+      "fr": "Israel",
+      "en": "Israel"
+    },
+    {
+      "jp": "カタール",
+      "fr": "Qatar",
+      "en": "Qatar"
+    },
+    {
+      "jp": "ドバイ",
+      "fr": "Dubai",
+      "en": "Dubai"
+    },
+    {
+      "jp": "ロシア",
+      "fr": "Russie",
+      "en": "Russia"
+    },
+    {
+      "jp": "アルジェリア",
+      "fr": "Algérie",
+      "en": "Algeria"
+    },
+    {
+      "jp": "チュニジア",
+      "fr": "Tunisie",
+      "en": "Tunisia"
+    },
+    {
+      "jp": "モロッコ",
+      "fr": "Maroc",
+      "en": "Morocco"
+    },
+    {
+      "jp": "エジプト",
+      "fr": "Égypte",
+      "en": "Egypt"
+    },
+    {
+      "jp": "セネガル",
+      "fr": "Sénégal",
+      "en": "Senegal"
+    },
+    {
+      "jp": "コートジボワール",
+      "fr": "Côte D'Ivoire",
+      "en": "Ivory Coast"
+    },
+    {
+      "jp": "コンゴ",
+      "fr": "Congo",
+      "en": "Congo"
+    },
+    {
+      "jp": "{南}[みなみ]アフリカ",
+      "fr": "Afrique Du Sud",
+      "en": "South Africa"
+    },
+    {
+      "jp": "カナダ",
+      "fr": "Canada",
+      "en": "Canada"
+    },
+    {
+      "jp": "ケベック",
+      "fr": "Québec",
+      "en": "Quebec"
+    },
+    {
+      "jp": "アメリカ{合衆国}[ガッシュコク]",
+      "fr": "États-Unis",
+      "en": "United States"
+    },
+    {
+      "jp": "メキシコ",
+      "fr": "Mexique",
+      "en": "Mexico"
+    },
+    {
+      "jp": "ブラジル",
+      "fr": "Brésil",
+      "en": "Brazil"
+    },
+    {
+      "jp": "アルゼンチン",
+      "fr": "Argentine",
+      "en": "Argentina"
+    },
+    {
+      "jp": "チリ",
+      "fr": "Chili",
+      "en": "Chile"
+    },
+    {
+      "jp": "オーストラリア",
+      "fr": "Australie",
+      "en": "Australia"
+    },
+    {
+      "jp": "ニュージーランド",
+      "fr": "Nouvelle-Zélande",
+      "en": "New Zealand"
+    },
+    {
+      "jp": "シンガポール",
+      "fr": "Singapour",
+      "en": "Singapore"
+    },
+    {
+      "jp": "インド",
+      "fr": "Inde",
+      "en": "India"
+    },
+    {
+      "jp": "タイ",
+      "fr": "Thaïlande",
+      "en": "Thailand"
+    },
+    {
+      "jp": "ベトナム",
+      "fr": "Vietnam",
+      "en": "Vietnam"
+    },
+    {
+      "jp": "{中国}[チュウゴク]",
+      "fr": "Chine",
+      "en": "China"
+    },
+    {
+      "jp": "{韓国}[カンコク]",
+      "fr": "Corée Du Sud",
+      "en": "South Korea"
+    },
+    {
+      "jp": "{日本}[二ホン]",
+      "fr": "Japon",
+      "en": "Japan"
+    }
+  ]
+}

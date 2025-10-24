@@ -2,13 +2,16 @@ import { Volume2, ArrowLeft, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContext } from '../contexts/GameContext';
+import { useTranslation } from '../contexts/I18nContext';
 import { speakReading, parseVocabularyEntry } from '../utils';
 import { GAME_STATES, SORT_MODES } from '../constants';
 
 
 export const ReviewVocabulary = () => {
+  const { t } = useTranslation();
   const { theme } = usePreferences();
   const { vocabularyLists, wordsSelectedLists, setGameState } = useGameContext();
+
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
 
 
@@ -88,7 +91,7 @@ export const ReviewVocabulary = () => {
               className={`flex items-center gap-2 ${theme.text} hover:${theme.textSecondary} transition-colors cursor-pointer`}
             >
               <ArrowLeft className="w-5 h-5" />
-              <span>Back to menu</span>
+              <span>{t('common.backToMenu')}</span>
             </button>
 
             <div className="relative">
@@ -97,8 +100,8 @@ export const ReviewVocabulary = () => {
                 onChange={(e) => setSortBy(e.target.value)}
                 className={`appearance-none ${theme.sectionBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
               >
-                <option value={SORT_MODES.DEFAULT}>Default order</option>
-                <option value={SORT_MODES.ALPHABETICAL}>Alphabetical</option>
+                <option value={SORT_MODES.DEFAULT}>{t('sortModes.default')}</option>
+                <option value={SORT_MODES.ALPHABETICAL}>{t('sortModes.alphabetical')}</option>
               </select>
               <ChevronDown className={`w-5 h-5 ${theme.textMuted} absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none`} />
             </div>
@@ -122,9 +125,9 @@ export const ReviewVocabulary = () => {
                   <table className="w-full">
                     <thead>
                       <tr className={`${theme.border} border-b-2`}>
-                        <th className={`text-left p-4 ${theme.text} font-semibold`}>Japanese</th>
-                        <th className={`text-left p-4 ${theme.text} font-semibold`}>Translation</th>
-                        <th className={`text-left p-4 ${theme.text} font-semibold`}>Notes</th>
+                        <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.japanese')}</th>
+                        <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.translation')}</th>
+                        <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.notes')}</th>
                       </tr>
                     </thead>
                     <tbody>

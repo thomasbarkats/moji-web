@@ -1,0 +1,173 @@
+{
+  "modes": {
+    "kana": "Kana",
+    "vocabulary": "Vocabulary",
+    "kanji": "Kanji",
+    "hiragana": "Hiragana",
+    "katakana": "Katakana",
+    "both": "Hiragana + Katakana"
+  },
+  "vocabularyModes": {
+    "fromJapanese": "JP → EN",
+    "toJapanese": "EN → JP"
+  },
+  "kanjiModes": {
+    "all": "All",
+    "meaningsOnly": "Meanings only"
+  },
+  "gameplay": {
+    "typeTranslation": "Type the translation...",
+    "typeReading": "Type the reading...",
+    "commaSeparated": "... (comma separated)",
+    "validate": "Validate (Enter)",
+    "correct": "Correct!",
+    "incorrect": "Incorrect",
+    "youWrote": "You wrote:",
+    "correctAnswer": "Correct answer:",
+    "mastered": "mastered",
+    "errors": "errors",
+    "enterAll": "Enter all",
+    "readings": "readings",
+    "enterMeanings": "Enter all meanings",
+    "inReadingOrder": "(in reading order)",
+    "switchToLightMode": "Switch to light mode",
+    "switchToDarkMode": "Switch to dark mode"
+  },
+  "menu": {
+    "selectLists": "Select lists",
+    "selected": "selected",
+    "selectListsOf": "Select lists of",
+    "selectKanjiLists": "Select kanji lists...",
+    "filterOptions": "Filter options...",
+    "difficulty": "Difficulty",
+    "requiredSuccesses": "Required successes",
+    "dakutenMode": "Dakuten & Handakuten",
+    "combinationsMode": "Combinations",
+    "vocabularyMode": "Reading and typing",
+    "kanjiMode": "Find from Kanji",
+    "sound": "Sound",
+    "theme": "Theme",
+    "include": "Include",
+    "kanaLearning": "Kana Learning",
+    "kanjiLearning": "Kanji Learning",
+    "vocabularyLearning": "Vocabulary Learning",
+    "switchToKana": "Switch to Kana",
+    "switchToKanji": "Switch to Kanji",
+    "switchToVocabulary": "Switch to Vocabulary"
+  },
+  "dakutenModes": {
+    "off": "Off",
+    "on": "On",
+    "add": "Add",
+    "only": "Only",
+    "noDakuten": "No dakuten/handakuten",
+    "addToKana": "Add to selected kana",
+    "dakutenOnly": "Dakuten/handakuten only"
+  },
+  "combinationsModes": {
+    "off": "Off",
+    "on": "On",
+    "add": "Add",
+    "only": "Only",
+    "noCombinations": "No combinations",
+    "addToKana": "Add to selected kana",
+    "combinationsOnly": "Combinations only"
+  },
+  "options": {
+    "off": "Off",
+    "on": "On",
+    "only": "Only"
+  },
+  "soundModes": {
+    "both": "Both",
+    "speech_only": "Speech only",
+    "none": "None"
+  },
+  "themeModes": {
+    "light": "Light",
+    "dark": "Dark"
+  },
+  "summary": {
+    "title": "Session Summary",
+    "congratulations": "Congratulations!",
+    "masteredKana": "You have mastered all the kana in this session",
+    "masteredHiragana": "You have mastered all the hiragana in this session",
+    "masteredKatakana": "You have mastered all the katakana in this session",
+    "masteredVocabulary": "You have mastered all the vocabulary words in this session",
+    "masteredKanji": "You have mastered all the kanji in this session",
+    "sessionCompleted": "Session completed!",
+    "totalAttempts": "Total attempts",
+    "correctAnswers": "Correct answers",
+    "accuracy": "Accuracy",
+    "masteredItems": "Mastered items",
+    "kanaStudied": "Kana studied",
+    "wordsStudied": "Words studied",
+    "kanjiStudied": "Kanji studied",
+    "totalErrors": "Total errors",
+    "totalTime": "Total time",
+    "breakdownByKana": "Breakdown by kana",
+    "breakdownByWord": "Breakdown by word",
+    "breakdownByKanji": "Breakdown by kanji",
+    "sortByErrors": "Sort by errors",
+    "sortByTime": "Sort by time",
+    "sortByKana": "Sort by kana",
+    "sortByWord": "Sort by word",
+    "sortByKanji": "Sort by kanji",
+    "restart": "Restart",
+    "newSession": "New session",
+    "restartSameMode": "Restart same mode",
+    "changeSettings": "Change settings"
+  },
+  "sortModes": {
+    "default": "Default order",
+    "alphabetical": "Alphabetical"
+  },
+  "common": {
+    "startPractice": "Start Practice",
+    "reviewAllKana": "Review all kana",
+    "reviewSelectedWords": "Review selected words",
+    "reviewSelectedKanji": "Review selected kanji",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "close": "Close",
+    "save": "Save",
+    "kana": "kana",
+    "words": "words",
+    "kanji": "kanji",
+    "option": "option",
+    "list": "list",
+    "wordsSelected": "words selected",
+    "kanjiSelected": "kanji selected",
+    "backToMenu": "Back to menu"
+  },
+  "titles": {
+    "japanese": "Japanese",
+    "translation": "Translation",
+    "notes": "Notes",
+    "kanji": "Kanji",
+    "kun": "Kun",
+    "on": "On",
+    "meanings": "Meanings",
+    "errors": "Errors",
+    "success": "Success"
+  },
+  "settings": {
+    "language": "Language",
+    "selectLanguage": "Select language"
+  },
+  "tooltips": {
+    "typeJapanese": "Type Japanese",
+    "typeTranslation": "Type translation",
+    "jpKeyboardHelp": "Japanese keyboard help",
+    "playAudio": "Play audio",
+    "noDakuten": "No dakuten/handakuten",
+    "addToKana": "Add to selected kana",
+    "dakutenOnly": "Dakuten/handakuten only",
+    "noCombinations": "No combinations",
+    "combinationsOnly": "Combinations only"
+  },
+  "languages": {
+    "fr": "Français",
+    "en": "English"
+  }
+}

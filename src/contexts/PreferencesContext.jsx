@@ -5,6 +5,7 @@ import {
   KANA_INCLUSION,
   VOCABULARY_MODES,
   KANJI_MODES,
+  LANGUAGES,
 } from '../constants';
 
 
@@ -18,6 +19,7 @@ const DEFAULT_PREFERENCES = {
   combinationsMode: KANA_INCLUSION.OFF,
   vocabularyMode: VOCABULARY_MODES.FROM_JAPANESE,
   kanjiMode: KANJI_MODES.ALL,
+  language: LANGUAGES.EN,
 };
 
 export const PreferencesProvider = ({ children }) => {
@@ -70,6 +72,10 @@ export const PreferencesProvider = ({ children }) => {
     updatePreferences({ kanjiMode: value });
   };
 
+  const handleLanguageChange = (value) => {
+    updatePreferences({ language: value });
+  };
+
   const value = {
     preferences,
     theme,
@@ -82,6 +88,7 @@ export const PreferencesProvider = ({ children }) => {
     combinationsMode: preferences.combinationsMode,
     vocabularyMode: preferences.vocabularyMode,
     kanjiMode: preferences.kanjiMode,
+    language: preferences.language,
 
     // Handlers
     updatePreferences,
@@ -90,6 +97,7 @@ export const PreferencesProvider = ({ children }) => {
     handleCombinationsModeChange,
     handleVocabularyModeChange,
     handleKanjiModeChange,
+    handleLanguageChange,
     toggleDarkMode,
     cycleSoundMode,
     getSoundModeIcon,

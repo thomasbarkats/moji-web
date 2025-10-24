@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useRef } from 'react';
 import { useDataKana, useDataVocabulary } from '../hooks';
+import { usePreferences } from './PreferencesContext';
 import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 
 
@@ -7,7 +8,8 @@ const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const kanaData = useDataKana();
-  const { vocabularyLists, loading: vocabularyLoading } = useDataVocabulary('fr');
+  const { language } = usePreferences();
+  const { vocabularyLists, loading: vocabularyLoading } = useDataVocabulary(language);
 
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);

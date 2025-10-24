@@ -4,6 +4,11 @@ export const APP_MODES = {
   VOCABULARY: 'vocabulary'
 };
 
+export const LANGUAGES = {
+  FR: 'fr',
+  EN: 'en'
+};
+
 export const GAME_STATES = {
   MENU: 'menu',
   PLAYING: 'playing',
