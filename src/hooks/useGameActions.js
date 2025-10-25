@@ -88,13 +88,6 @@ export const useGameActions = () => {
       newProgress[item.key].failures += 1;
     }
 
-    newStats[item.key] = {
-      ...newStats[item.key],
-      key: item.key,
-      question: item.displayText || item.question,
-      answer: item.answer,
-    };
-
     if (isCorrect) {
       newStats[item.key].successes += 1;
     } else {

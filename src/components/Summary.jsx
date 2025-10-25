@@ -141,10 +141,10 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className={`${isVocabularyMode ? 'text-md font-medium' : 'text-3xl'} ${theme.text}`}>
-                      {item.question}
+                      {item.title}
                     </span>
                     <span className={`text-sm ${theme.textSecondary} ${isVocabularyMode ? 'max-w-[50%] text-right' : ''}`}>
-                      {item.answer}
+                      {item.subtitle}
                     </span>
                   </div>
                   <div className={`flex justify-between items-center text-sm ${theme.textMuted}`}>

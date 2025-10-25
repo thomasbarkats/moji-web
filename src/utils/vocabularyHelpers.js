@@ -16,13 +16,9 @@ export const parseVocabularyEntry = (entry) => {
     return part.text;
   }).join('');
 
-  const displayText = japaneseRaw
-    .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1')
-    .replace(/\{([^}]+)\}/g, '$1');
-
   return {
     jp: japaneseRaw,
-    displayText,
+    cleanedJp: cleanJapaneseText(japaneseRaw),
     speechText,
     translation,
     infoText,
@@ -92,8 +88,7 @@ export const parseJapaneseText = (text) => {
 export const cleanJapaneseText = (text) => {
   return text
     .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1')
-    .replace(/\{([^}]+)\}/g, '$1')
-    .replace(/\[([^\]]+)\]/g, '');
+    .replace(/\{([^}]+)\}/g, '$1');
 };
 
 
@@ -143,15 +138,13 @@ export const generateOptionalVariants = (text) => {
 // ============================================
 
 export const checkVocabularyAnswer = (userAnswer, correctAnswer) => {
-  const cleanedCorrectAnswer = cleanJapaneseText(correctAnswer);
-
   const normalizedUser = normalizeAnswer(userAnswer);
-  const normalizedCorrect = normalizeAnswer(cleanedCorrectAnswer);
+  const normalizedCorrect = normalizeAnswer(correctAnswer);
 
   if (normalizedUser === normalizedCorrect) return true;
 
-  if (cleanedCorrectAnswer.includes('(') && cleanedCorrectAnswer.includes(')')) {
-    const variants = generateOptionalVariants(cleanedCorrectAnswer);
+  if (correctAnswer.includes('(') && correctAnswer.includes(')')) {
+    const variants = generateOptionalVariants(correctAnswer);
     return variants.some(variant => normalizeAnswer(variant) === normalizedUser);
   }
 

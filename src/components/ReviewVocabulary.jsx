@@ -29,7 +29,7 @@ export const ReviewVocabulary = () => {
 
     if (sortBy === SORT_MODES.ALPHABETICAL) {
       return [...wordsWithKey].sort((a, b) =>
-        a.parsed.displayText.localeCompare(b.parsed.displayText, 'ja')
+        a.parsed.cleanedJp.localeCompare(b.parsed.cleanedJp, 'ja')
       );
     }
 

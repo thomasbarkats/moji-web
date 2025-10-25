@@ -52,8 +52,8 @@ export const initializeKanaData = (kanaArray) => {
     };
     initialStats[kana.char] = {
       key: kana.char,
-      question: kana.char,
-      answer: kana.reading,
+      title: kana.char,
+      subtitle: kana.reading,
       successes: 0,
       failures: 0,
       timeSpent: 0
@@ -70,10 +70,6 @@ export const initializeKanjiData = (kanjiArray) => {
   kanjiArray.forEach(kanji => {
     const key = kanji.character;
 
-    const kunReadings = getAllKunReadings(kanji.readings).join('');
-    const onReadings = getAllOnReadings(kanji.readings).join('');
-    const meanings = getAllMeaningsInOrder(kanji.readings).join(', ');
-
     initialProgress[key] = {
       successes: 0,
       failures: 0,
@@ -82,11 +78,8 @@ export const initializeKanjiData = (kanjiArray) => {
     };
     initialStats[key] = {
       key,
-      question: kanji.character,
-      answer: '',
-      kun: kunReadings,
-      on: onReadings,
-      meanings: meanings,
+      title: kanji.character,
+      subtitle: '',
       successes: 0,
       failures: 0,
       timeSpent: 0
@@ -110,8 +103,12 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
     };
     initialStats[key] = {
       key: word.jp,
-      question: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.jp : word.translation,
-      answer: vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? word.translation : word.jp,
+      title: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
+        ? word.translation
+        : word.cleanedJp,
+      subtitle: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
+        ? word.cleanedJp
+        : word.translation,
       successes: 0,
       failures: 0,
       timeSpent: 0

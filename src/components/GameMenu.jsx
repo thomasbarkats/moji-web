@@ -32,7 +32,7 @@ export const GameMenu = ({
     <div className={`min-h-screen ${theme.bg} flex items-center justify-center p-4 -mb-8`}>
       <div className="relative flex flex-col items-center gap-4">
         {/* Menu card */}
-        <div className={`${theme.cardBg} backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full`} style={{ width: '28rem' }}>
+        <div className={`${theme.cardBg} backdrop-blur-sm rounded-3xl shadow-2xl p-8 w-full z-10`} style={{ width: '28rem' }}>
           <div className="text-center mb-8 relative">
             {onPrevious && (
               <button
@@ -59,7 +59,7 @@ export const GameMenu = ({
         </div>
 
         {/* Other mode tabs below */}
-        <div className="flex gap-3" style={{ width: '28rem' }}>
+        <div className="flex gap-3 z-0" style={{ width: '28rem' }}>
           {otherModes.map((mode) => (
             <button
               key={mode.key}

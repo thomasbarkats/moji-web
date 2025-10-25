@@ -1,0 +1,44 @@
+{
+  "fr": "Les jours de la semaine",
+  "en": "Days of the week",
+  "words": [{
+    "jp": "{日}[ニチ]{曜}[ヨウ]{日}[び]",
+    "fr": "dimanche",
+    "en": "sunday",
+    "note_fr": "Au Japon, la semaine commence le dimanche",
+    "note_en": "In Japan, the week begins on Sunday"
+  }, {
+    "jp": "{月}[ゲツ]{曜}[ヨウ]{日}[び]",
+    "fr": "lundi",
+    "en": "monday"
+  }, {
+    "jp": "{火}[カ]{曜}[ヨウ]{日}[び]",
+    "fr": "mardi",
+    "en": "tuesday"
+  }, {
+    "jp": "{水}[スイ]{曜}[ヨウ]{日}[び]",
+    "fr": "mercredi",
+    "en": "wednesday"
+  }, {
+    "jp": "{木}[モク]{曜}[ヨウ]{日}[び]",
+    "fr": "jeudi",
+    "en": "thursday"
+  }, {
+    "jp": "{金}[キン]{曜}[ヨウ]{日}[び]",
+    "fr": "vendredi",
+    "en": "friday"
+  }, {
+    "jp": "{土}[ド]{曜}[ヨウ]{日}[び]",
+    "fr": "samedi",
+    "en": "saturday"
+  }, {
+    "jp": "{週}[シュウ]{末}[マツ]",
+    "fr": "week-end",
+    "en": "weekend"
+  }, {
+    "jp": "{平}[ヘイ]{日}[ジツ]",
+    "fr": "jours de la semaine",
+    "en": "weekdays",
+    "note_fr": "Hors week-end"
+  }]
+}

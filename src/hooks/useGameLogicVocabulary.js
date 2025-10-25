@@ -66,11 +66,11 @@ export const useGameLogicVocabulary = () => {
       key: nextWord.jp,
       question: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
         ? nextWord.translation
-        : nextWord.displayText,
+        : nextWord.cleanedJp,
       answer: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
-        ? nextWord.jp
+        ? nextWord.cleanedJp
         : nextWord.translation,
-      displayText: nextWord.displayText,
+      cleanedJp: nextWord.cleanedJp,
       parts: nextWord.parts,
       infoText: nextWord.infoText,
       speechText: nextWord.speechText,
