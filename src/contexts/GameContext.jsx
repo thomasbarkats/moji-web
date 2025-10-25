@@ -8,13 +8,13 @@ const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
   const kanaData = useDataKana();
-  const { language } = usePreferences();
+  const { language, updatePreferences, defaultAppMode } = usePreferences();
   const { vocabularyLists, loading: vocabularyLoading } = useDataVocabulary(language);
 
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
   const [gameMode, setGameMode] = useState('');
-  const [appMode, setAppMode] = useState(APP_MODES.KANA);
+  const [appMode, setAppMode] = useState(defaultAppMode);
 
   // Current item & input
   const [currentItem, setCurrentItem] = useState(null);
@@ -33,9 +33,14 @@ export const GameProvider = ({ children }) => {
   const [currentVocabularyWords, setCurrentVocabularyWords] = useState([]);
 
   // Mode switching
-  const switchToVocabulary = () => setAppMode(APP_MODES.VOCABULARY);
-  const switchToKana = () => setAppMode(APP_MODES.KANA);
-  const switchToKanji = () => setAppMode(APP_MODES.KANJI);
+  const updateAppMode = (appMode) => {
+    setAppMode(appMode);
+    updatePreferences({ defaultAppMode: appMode });
+  };
+
+  const switchToVocabulary = () => updateAppMode(APP_MODES.VOCABULARY);
+  const switchToKana = () => updateAppMode(APP_MODES.KANA);
+  const switchToKanji = () => updateAppMode(APP_MODES.KANJI);
 
   const openReviewKana = () => setGameState(GAME_STATES.REVIEW);
   const openReviewVocabulary = (lists) => {
@@ -60,7 +65,7 @@ export const GameProvider = ({ children }) => {
     gameMode,
     setGameMode,
     appMode,
-    setAppMode,
+    updateAppMode,
 
     // Current item
     currentItem,

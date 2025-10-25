@@ -12,6 +12,8 @@ export const GameMenuVocabulary = () => {
   const { initializeVocabularyGame } = useGameLogicVocabulary();
 
   const {
+    appMode,
+    updateAppMode,
     vocabularyLists,
     wordsSelectedLists,
     setWordsSelectedLists,
@@ -62,6 +64,8 @@ export const GameMenuVocabulary = () => {
       subtitle={t('menu.vocabularyLearning')}
       onPrevious={switchToKanji}
       previousTooltip={t('modes.kanji')}
+      currentMode={appMode}
+      onModeChange={updateAppMode}
     >
       <div className="space-y-4">
         <MultiSelection

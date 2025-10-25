@@ -6,6 +6,7 @@ import {
   VOCABULARY_MODES,
   KANJI_MODES,
   LANGUAGES,
+  APP_MODES,
 } from '../constants';
 
 
@@ -14,6 +15,7 @@ const PreferencesContext = createContext();
 const STORAGE_KEY = 'kana-trainer-preferences';
 
 const DEFAULT_PREFERENCES = {
+  defaultAppMode: APP_MODES.KANA,
   requiredSuccesses: 3,
   dakutenMode: KANA_INCLUSION.OFF,
   combinationsMode: KANA_INCLUSION.OFF,
@@ -83,6 +85,7 @@ export const PreferencesProvider = ({ children }) => {
     soundMode,
 
     // Individual preferences (shortcuts)
+    defaultAppMode: preferences.defaultAppMode,
     requiredSuccesses: preferences.requiredSuccesses,
     dakutenMode: preferences.dakutenMode,
     combinationsMode: preferences.combinationsMode,

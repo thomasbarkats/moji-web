@@ -15,7 +15,7 @@ export const GameMenuKana = () => {
 
   const {
     appMode,
-    setAppMode,
+    updateAppMode,
     kanaData,
     switchToKanji,
     openReviewKana,
@@ -100,7 +100,7 @@ export const GameMenuKana = () => {
       onNext={switchToKanji}
       nextTooltip={t('menu.switchToKanji')}
       currentMode={appMode}
-      onModeChange={setAppMode}
+      onModeChange={updateAppMode}
     >
       <div className="space-y-4">
         <button

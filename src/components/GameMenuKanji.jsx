@@ -13,6 +13,8 @@ export const GameMenuKanji = () => {
   const { initializeKanjiGame } = useGameLogicKanji();
 
   const {
+    appMode,
+    updateAppMode,
     switchToKana,
     switchToVocabulary,
     openReviewKanji,
@@ -70,6 +72,8 @@ export const GameMenuKanji = () => {
       previousTooltip={t('menu.switchToKana')}
       onNext={switchToVocabulary}
       nextTooltip={t('menu.switchToVocabulary')}
+      currentMode={appMode}
+      onModeChange={updateAppMode}
     >
       <div className="space-y-4">
         <MultiSelection
