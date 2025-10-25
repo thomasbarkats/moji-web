@@ -1,46 +1,50 @@
 const fs = require('fs');
 const path = require('path');
 
-
-// Format vocabulary/*.json: compact arrays
+// Format vocabulary/*.json: compact objects with jp, fr, en, note_fr?, note_en?
 function formatVocabularyJson(filePath) {
   const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  
+
   let output = '{\n';
-  output += `  "name": ${JSON.stringify(data.name)},\n`;
-  output += '  "words": [\n';
-  
+  output += `  "fr": ${JSON.stringify(data.fr)},\n`;
+  output += `  "en": ${JSON.stringify(data.en)},\n`;
+  output += '  "words": [';
+
   data.words.forEach((word, index) => {
-    // Manually format array with space after commas between elements
-    output += '    [';
-    word.forEach((item, itemIndex) => {
-      output += JSON.stringify(item);
-      if (itemIndex < word.length - 1) {
-        output += ', ';
-      }
-    });
-    output += ']';
-    
-    if (index < data.words.length - 1) {
-      output += ',';
+    if (index === 0) {
+      output += '{\n';
+    } else {
+      output += ', {\n';
     }
-    output += '\n';
+
+    output += `    "jp": ${JSON.stringify(word.jp)},\n`;
+    output += `    "fr": ${JSON.stringify(word.fr)},\n`;
+    output += `    "en": ${JSON.stringify(word.en)}`;
+
+    if (word.note_fr) {
+      output += `,\n    "note_fr": ${JSON.stringify(word.note_fr)}`;
+    }
+    if (word.note_en) {
+      output += `,\n    "note_en": ${JSON.stringify(word.note_en)}`;
+    }
+
+    output += '\n  }';
   });
-  
-  output += '  ]\n';
+
+  output += ']\n';
   output += '}\n';
-  
+
   fs.writeFileSync(filePath, output);
   console.log(`Formatted: ${path.relative(process.cwd(), filePath)}`);
 }
 
-// Format kanji/*.json: structured readings objects
+// Format kanji/*.json: structured readings objects with fr, en arrays
 function formatKanjiJson(filePath) {
   const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-  
+
   // Validate readings for commas (invalid format)
   let hasErrors = false;
-  data.kanji.forEach((kanji, kanjiIndex) => {
+  data.kanji.forEach((kanji) => {
     kanji.readings.forEach((reading, readingIndex) => {
       // Check kun readings
       if (reading.kun && Array.isArray(reading.kun)) {
@@ -52,7 +56,7 @@ function formatKanjiJson(filePath) {
           }
         });
       }
-      
+
       // Check on readings
       if (reading.on && Array.isArray(reading.on)) {
         reading.on.forEach((onReading, onIndex) => {
@@ -65,56 +69,58 @@ function formatKanjiJson(filePath) {
       }
     });
   });
-  
+
   if (hasErrors) {
-    console.log(''); // Empty line for readability
+    console.log('');
   }
-  
+
   // Helper to format arrays with space after commas between elements only
   const formatArray = (arr) => {
     if (arr === null) return 'null';
     return '[' + arr.map(item => JSON.stringify(item)).join(', ') + ']';
   };
-  
+
   let output = '{\n';
-  output += `  "name": ${JSON.stringify(data.name)},\n`;
+  output += `  "fr": ${JSON.stringify(data.fr)},\n`;
+  output += `  "en": ${JSON.stringify(data.en)},\n`;
   output += '  "kanji": [';
-  
+
   data.kanji.forEach((kanji, kanjiIndex) => {
     if (kanjiIndex === 0) {
       output += '{\n';
     } else {
       output += ', {\n';
     }
-    
+
     output += `    "character": ${JSON.stringify(kanji.character)},\n`;
     output += '    "readings": [';
-    
+
     kanji.readings.forEach((reading, readingIndex) => {
       if (readingIndex === 0) {
         output += '{\n';
       } else {
         output += ', {\n';
       }
-      
+
       output += `      "kun": ${formatArray(reading.kun)},\n`;
       output += `      "on": ${formatArray(reading.on)},\n`;
-      output += `      "meanings": ${formatArray(reading.meanings)}\n`;
+      output += `      "fr": ${formatArray(reading.fr)},\n`;
+      output += `      "en": ${formatArray(reading.en)}\n`;
       output += '    }';
     });
-    
+
     output += ']';
-    
+
     if (kanji.notes) {
       output += `,\n    "notes": ${JSON.stringify(kanji.notes)}`;
     }
-    
+
     output += '\n  }';
   });
-  
+
   output += ']\n';
   output += '}\n';
-  
+
   fs.writeFileSync(filePath, output);
   console.log(`Formatted: ${path.relative(process.cwd(), filePath)}`);
 }
@@ -122,25 +128,25 @@ function formatKanjiJson(filePath) {
 // Main function
 function formatAllJsonFiles() {
   const dataDir = path.join(process.cwd(), 'src/data');
-  
+
   // Format vocabulary files
-  const vocabDir = path.join(dataDir, 'vocabulary/fr');
+  const vocabDir = path.join(dataDir, 'vocabulary');
   if (fs.existsSync(vocabDir)) {
     const vocabFiles = fs.readdirSync(vocabDir).filter(f => f.endsWith('.json'));
     vocabFiles.forEach(file => {
       formatVocabularyJson(path.join(vocabDir, file));
     });
   }
-  
+
   // Format kanji files
-  const kanjiDir = path.join(dataDir, 'kanji/fr');
+  const kanjiDir = path.join(dataDir, 'kanji');
   if (fs.existsSync(kanjiDir)) {
     const kanjiFiles = fs.readdirSync(kanjiDir).filter(f => f.endsWith('.json'));
     kanjiFiles.forEach(file => {
       formatKanjiJson(path.join(kanjiDir, file));
     });
   }
-  
+
   console.log('\nAll JSON files formatted successfully');
 }
 

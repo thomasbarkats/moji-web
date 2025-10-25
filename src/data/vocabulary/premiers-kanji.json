@@ -1,110 +1,89 @@
 {
   "fr": "Premiers mots en kanji",
   "en": "First words in kanji",
-  "words": [
-    {
-      "jp": "{人}[ひと]",
-      "fr": "personne",
-      "en": "person"
-    },
-    {
-      "jp": "{男}[おとこ]",
-      "fr": "homme",
-      "en": "man"
-    },
-    {
-      "jp": "{女}[おんな]",
-      "fr": "femme",
-      "en": "woman"
-    },
-    {
-      "jp": "{子}[こ]",
-      "fr": "enfant",
-      "en": "child"
-    },
-    {
-      "jp": "{日}[ひ]",
-      "fr": "soleil",
-      "en": "sun"
-    },
-    {
-      "jp": "{月}[つき]",
-      "fr": "lune",
-      "en": "moon"
-    },
-    {
-      "jp": "{時}[とき]",
-      "fr": "temps",
-      "en": "time",
-      "note_fr": "Le temps qui passe, pas le temps qu'il fait dehors",
-      "note_en": "Time as in duration, not weather"
-    },
-    {
-      "jp": "{水}[みず]",
-      "fr": "eau",
-      "en": "water"
-    },
-    {
-      "jp": "{火}[ひ]",
-      "fr": "feu",
-      "en": "fire"
-    },
-    {
-      "jp": "{土}[つち]",
-      "fr": "terre",
-      "en": "earth",
-      "note_fr": "Précisément, la matière dans laquelle poussent les plantes",
-      "note_en": "Specifically, the soil in which plants grow"
-    },
-    {
-      "jp": "{風}[かぜ]",
-      "fr": "vent",
-      "en": "wind"
-    },
-    {
-      "jp": "{空}[そら]",
-      "fr": "ciel",
-      "en": "sky"
-    },
-    {
-      "jp": "{山}[やま]",
-      "fr": "montagne",
-      "en": "mountain"
-    },
-    {
-      "jp": "{川}[かわ]",
-      "fr": "rivière",
-      "en": "river"
-    },
-    {
-      "jp": "{木}[き]",
-      "fr": "arbre",
-      "en": "tree"
-    },
-    {
-      "jp": "{花}[はな]",
-      "fr": "fleur",
-      "en": "flower"
-    },
-    {
-      "jp": "{雨}[あめ]",
-      "fr": "pluie",
-      "en": "rain"
-    },
-    {
-      "jp": "{雪}[ゆき]",
-      "fr": "neige",
-      "en": "snow"
-    },
-    {
-      "jp": "(お){金}[かね]",
-      "fr": "argent",
-      "en": "money"
-    },
-    {
-      "jp": "{刀}[かたな]",
-      "fr": "sabre",
-      "en": "sword"
-    }
-  ]
+  "words": [{
+    "jp": "{人}[ひと]",
+    "fr": "personne",
+    "en": "person"
+  }, {
+    "jp": "{男}[おとこ]",
+    "fr": "homme",
+    "en": "man"
+  }, {
+    "jp": "{女}[おんな]",
+    "fr": "femme",
+    "en": "woman"
+  }, {
+    "jp": "{子}[こ]",
+    "fr": "enfant",
+    "en": "child"
+  }, {
+    "jp": "{日}[ひ]",
+    "fr": "soleil",
+    "en": "sun"
+  }, {
+    "jp": "{月}[つき]",
+    "fr": "lune",
+    "en": "moon"
+  }, {
+    "jp": "{時}[とき]",
+    "fr": "temps",
+    "en": "time",
+    "note_fr": "Le temps qui passe, pas le temps qu'il fait dehors",
+    "note_en": "Time as in duration, not weather"
+  }, {
+    "jp": "{水}[みず]",
+    "fr": "eau",
+    "en": "water"
+  }, {
+    "jp": "{火}[ひ]",
+    "fr": "feu",
+    "en": "fire"
+  }, {
+    "jp": "{土}[つち]",
+    "fr": "terre",
+    "en": "earth",
+    "note_fr": "Précisément, la matière dans laquelle poussent les plantes",
+    "note_en": "Specifically, the soil in which plants grow"
+  }, {
+    "jp": "{風}[かぜ]",
+    "fr": "vent",
+    "en": "wind"
+  }, {
+    "jp": "{空}[そら]",
+    "fr": "ciel",
+    "en": "sky"
+  }, {
+    "jp": "{山}[やま]",
+    "fr": "montagne",
+    "en": "mountain"
+  }, {
+    "jp": "{川}[かわ]",
+    "fr": "rivière",
+    "en": "river"
+  }, {
+    "jp": "{木}[き]",
+    "fr": "arbre",
+    "en": "tree"
+  }, {
+    "jp": "{花}[はな]",
+    "fr": "fleur",
+    "en": "flower"
+  }, {
+    "jp": "{雨}[あめ]",
+    "fr": "pluie",
+    "en": "rain"
+  }, {
+    "jp": "{雪}[ゆき]",
+    "fr": "neige",
+    "en": "snow"
+  }, {
+    "jp": "(お){金}[かね]",
+    "fr": "argent",
+    "en": "money"
+  }, {
+    "jp": "{刀}[かたな]",
+    "fr": "sabre",
+    "en": "sword"
+  }]
 }

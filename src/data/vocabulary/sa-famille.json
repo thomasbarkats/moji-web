@@ -1,179 +1,147 @@
 {
   "fr": "Les membres de sa famille (neutre)",
   "en": "Family members (neutral)",
-  "words": [
-    {
-      "jp": "{家}[カ]{族}[ゾク]",
-      "fr": "famille",
-      "en": "family"
-    },
-    {
-      "jp": "{夫}[おっと]",
-      "fr": "époux",
-      "en": "husband"
-    },
-    {
-      "jp": "{妻}[つま]",
-      "fr": "épouse",
-      "en": "wife"
-    },
-    {
-      "jp": "{両}[リョウ]{親}[シン]",
-      "fr": "parents",
-      "en": "parents"
-    },
-    {
-      "jp": "{父}[ちち]",
-      "fr": "père",
-      "en": "father"
-    },
-    {
-      "jp": "{母}[はは]",
-      "fr": "mère",
-      "en": "mother"
-    },
-    {
-      "jp": "{子}[こ]{供}[ども]",
-      "fr": "enfant",
-      "en": "child"
-    },
-    {
-      "jp": "{息子}[むすこ]",
-      "fr": "fils",
-      "en": "son"
-    },
-    {
-      "jp": "{娘}[むすめ]",
-      "fr": "fille",
-      "en": "daughter"
-    },
-    {
-      "jp": "{祖}[ソ]{父}[フ]{母}[ボ]",
-      "fr": "grands-parents",
-      "en": "grandparents"
-    },
-    {
-      "jp": "{祖}[ソ]{父}[フ]",
-      "fr": "grand-père",
-      "en": "grandfather"
-    },
-    {
-      "jp": "{祖}[ソ]{母}[ボ]",
-      "fr": "grand-mère",
-      "en": "grandmother"
-    },
-    {
-      "jp": "{孫}[まご]",
-      "fr": "petit-enfant",
-      "en": "grandchild"
-    },
-    {
-      "jp": "{双}[ふた]{子}[ご]",
-      "fr": "jumeau",
-      "en": "twin",
-      "note_fr": "ou jumelle",
-      "note_en": "or female twin"
-    },
-    {
-      "jp": "{兄}[あに]",
-      "fr": "frère aîné",
-      "en": "older brother"
-    },
-    {
-      "jp": "{弟}[おとうと]",
-      "fr": "frère cadet",
-      "en": "younger brother"
-    },
-    {
-      "jp": "{兄}[キョウ]{弟}[ダイ]",
-      "fr": "fratrie",
-      "en": "siblings"
-    },
-    {
-      "jp": "{姉}[あね]",
-      "fr": "soeur aînée",
-      "en": "older sister"
-    },
-    {
-      "jp": "{妹}[いもうと]",
-      "fr": "soeur cadette",
-      "en": "younger sister"
-    },
-    {
-      "jp": "{従兄}[いとこ]",
-      "fr": "cousin aîné",
-      "en": "older male cousin"
-    },
-    {
-      "jp": "{従弟}[いとこ]",
-      "fr": "cousin cadet",
-      "en": "younger male cousin"
-    },
-    {
-      "jp": "{従姉}[いとこ]",
-      "fr": "cousine aînée",
-      "en": "older female cousin"
-    },
-    {
-      "jp": "{従妹}[いとこ]",
-      "fr": "cousine cadette",
-      "en": "younger female cousin"
-    },
-    {
-      "jp": "{伯父}[おじ]",
-      "fr": "oncle",
-      "en": "uncle",
-      "note_fr": "frère aîné de mon parent",
-      "note_en": "older brother of my parent"
-    },
-    {
-      "jp": "{叔父}[おじ]",
-      "fr": "oncle",
-      "en": "uncle",
-      "note_fr": "frère cadet de mon parent",
-      "note_en": "younger brother of my parent"
-    },
-    {
-      "jp": "{伯母}[おば]",
-      "fr": "tante",
-      "en": "aunt",
-      "note_fr": "soeur aînée de mon parent",
-      "note_en": "older sister of my parent"
-    },
-    {
-      "jp": "{叔母}[おば]",
-      "fr": "tante",
-      "en": "aunt",
-      "note_fr": "soeur cadette de mon parent",
-      "note_en": "younger sister of my parent"
-    },
-    {
-      "jp": "{義}[ギ]{兄}[ケイ]",
-      "fr": "beau-frère",
-      "en": "brother-in-law",
-      "note_fr": "frère aîné de mon conjoint, ou époux de ma soeur aînée",
-      "note_en": "older brother of my spouse, or husband of my older sister"
-    },
-    {
-      "jp": "{義}[ギ]{弟}[テイ]",
-      "fr": "beau-frère",
-      "en": "brother-in-law",
-      "note_fr": "frère cadet de mon conjoint, ou époux de ma soeur cadette",
-      "note_en": "younger brother of my spouse, or husband of my younger sister"
-    },
-    {
-      "jp": "{義}[ギ]{姉}[シ]",
-      "fr": "belle-soeur",
-      "en": "sister-in-law",
-      "note_fr": "soeur aînée de mon conjoint, ou épouse de mon frère aîné",
-      "note_en": "older sister of my spouse, or wife of my older brother"
-    },
-    {
-      "jp": "{義}[ギ]{妹}[マイ]",
-      "fr": "belle-soeur",
-      "en": "sister-in-law",
-      "note_fr": "soeur cadette de mon conjoint, ou épouse de mon frère cadet",
-      "note_en": "younger sister of my spouse, or wife of my younger brother"
-    }
-  ]
+  "words": [{
+    "jp": "{家}[カ]{族}[ゾク]",
+    "fr": "famille",
+    "en": "family"
+  }, {
+    "jp": "{夫}[おっと]",
+    "fr": "époux",
+    "en": "husband"
+  }, {
+    "jp": "{妻}[つま]",
+    "fr": "épouse",
+    "en": "wife"
+  }, {
+    "jp": "{両}[リョウ]{親}[シン]",
+    "fr": "parents",
+    "en": "parents"
+  }, {
+    "jp": "{父}[ちち]",
+    "fr": "père",
+    "en": "father"
+  }, {
+    "jp": "{母}[はは]",
+    "fr": "mère",
+    "en": "mother"
+  }, {
+    "jp": "{子}[こ]{供}[ども]",
+    "fr": "enfant",
+    "en": "child"
+  }, {
+    "jp": "{息子}[むすこ]",
+    "fr": "fils",
+    "en": "son"
+  }, {
+    "jp": "{娘}[むすめ]",
+    "fr": "fille",
+    "en": "daughter"
+  }, {
+    "jp": "{祖}[ソ]{父}[フ]{母}[ボ]",
+    "fr": "grands-parents",
+    "en": "grandparents"
+  }, {
+    "jp": "{祖}[ソ]{父}[フ]",
+    "fr": "grand-père",
+    "en": "grandfather"
+  }, {
+    "jp": "{祖}[ソ]{母}[ボ]",
+    "fr": "grand-mère",
+    "en": "grandmother"
+  }, {
+    "jp": "{孫}[まご]",
+    "fr": "petit-enfant",
+    "en": "grandchild"
+  }, {
+    "jp": "{双}[ふた]{子}[ご]",
+    "fr": "jumeau",
+    "en": "twin",
+    "note_fr": "ou jumelle",
+    "note_en": "or female twin"
+  }, {
+    "jp": "{兄}[あに]",
+    "fr": "frère aîné",
+    "en": "older brother"
+  }, {
+    "jp": "{弟}[おとうと]",
+    "fr": "frère cadet",
+    "en": "younger brother"
+  }, {
+    "jp": "{兄}[キョウ]{弟}[ダイ]",
+    "fr": "fratrie",
+    "en": "siblings"
+  }, {
+    "jp": "{姉}[あね]",
+    "fr": "soeur aînée",
+    "en": "older sister"
+  }, {
+    "jp": "{妹}[いもうと]",
+    "fr": "soeur cadette",
+    "en": "younger sister"
+  }, {
+    "jp": "{従兄}[いとこ]",
+    "fr": "cousin aîné",
+    "en": "older male cousin"
+  }, {
+    "jp": "{従弟}[いとこ]",
+    "fr": "cousin cadet",
+    "en": "younger male cousin"
+  }, {
+    "jp": "{従姉}[いとこ]",
+    "fr": "cousine aînée",
+    "en": "older female cousin"
+  }, {
+    "jp": "{従妹}[いとこ]",
+    "fr": "cousine cadette",
+    "en": "younger female cousin"
+  }, {
+    "jp": "{伯父}[おじ]",
+    "fr": "oncle",
+    "en": "uncle",
+    "note_fr": "frère aîné de mon parent",
+    "note_en": "older brother of my parent"
+  }, {
+    "jp": "{叔父}[おじ]",
+    "fr": "oncle",
+    "en": "uncle",
+    "note_fr": "frère cadet de mon parent",
+    "note_en": "younger brother of my parent"
+  }, {
+    "jp": "{伯母}[おば]",
+    "fr": "tante",
+    "en": "aunt",
+    "note_fr": "soeur aînée de mon parent",
+    "note_en": "older sister of my parent"
+  }, {
+    "jp": "{叔母}[おば]",
+    "fr": "tante",
+    "en": "aunt",
+    "note_fr": "soeur cadette de mon parent",
+    "note_en": "younger sister of my parent"
+  }, {
+    "jp": "{義}[ギ]{兄}[ケイ]",
+    "fr": "beau-frère",
+    "en": "brother-in-law",
+    "note_fr": "frère aîné de mon conjoint, ou époux de ma soeur aînée",
+    "note_en": "older brother of my spouse, or husband of my older sister"
+  }, {
+    "jp": "{義}[ギ]{弟}[テイ]",
+    "fr": "beau-frère",
+    "en": "brother-in-law",
+    "note_fr": "frère cadet de mon conjoint, ou époux de ma soeur cadette",
+    "note_en": "younger brother of my spouse, or husband of my younger sister"
+  }, {
+    "jp": "{義}[ギ]{姉}[シ]",
+    "fr": "belle-soeur",
+    "en": "sister-in-law",
+    "note_fr": "soeur aînée de mon conjoint, ou épouse de mon frère aîné",
+    "note_en": "older sister of my spouse, or wife of my older brother"
+  }, {
+    "jp": "{義}[ギ]{妹}[マイ]",
+    "fr": "belle-soeur",
+    "en": "sister-in-law",
+    "note_fr": "soeur cadette de mon conjoint, ou épouse de mon frère cadet",
+    "note_en": "younger sister of my spouse, or wife of my younger brother"
+  }]
 }
