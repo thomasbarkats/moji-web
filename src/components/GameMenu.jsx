@@ -70,7 +70,7 @@ export const GameMenu = ({
                 px-4 py-2
                 transition-all duration-200 cursor-pointer
                 hover:scale-105 hover:opacity-100
-                opacity-70
+                opacity-80
                 flex-1
               `}
             >

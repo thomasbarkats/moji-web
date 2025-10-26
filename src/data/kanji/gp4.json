@@ -1,0 +1,139 @@
+{
+  "fr": "N5 - Temps et durée",
+  "en": "N5 - Time and duration",
+  "kanji": [{
+    "character": "分",
+    "readings": [{
+      "kun": null,
+      "on": ["フン", "ブ"],
+      "fr": ["partie", "fraction"],
+      "en": ["part", "fraction"]
+    }, {
+      "kun": null,
+      "on": ["フン"],
+      "fr": ["minute"],
+      "en": ["minute"]
+    }, {
+      "kun": ["わ(ける)"],
+      "on": null,
+      "fr": ["diviser", "partager", "distinguer"],
+      "en": ["divide", "share", "distinguish"]
+    }, {
+      "kun": ["わ(かれる)"],
+      "on": null,
+      "fr": ["être séparé"],
+      "en": ["be separated"]
+    }, {
+      "kun": ["わ(かる)"],
+      "on": null,
+      "fr": ["comprendre"],
+      "en": ["understand"]
+    }]
+  }, {
+    "character": "時",
+    "readings": [{
+      "kun": ["とき"],
+      "on": ["ジ"],
+      "fr": ["temps", "heure"],
+      "en": ["time", "hour"]
+    }]
+  }, {
+    "character": "年",
+    "readings": [{
+      "kun": ["とし"],
+      "on": ["ネン"],
+      "fr": ["année"],
+      "en": ["year"]
+    }]
+  }, {
+    "character": "間",
+    "readings": [{
+      "kun": ["あいだ", "ま"],
+      "on": ["カン"],
+      "fr": ["intervalle (entre)"],
+      "en": ["interval (between)"]
+    }]
+  }, {
+    "character": "今",
+    "readings": [{
+      "kun": ["いま"],
+      "on": ["コン"],
+      "fr": ["maintenant"],
+      "en": ["now"]
+    }]
+  }, {
+    "character": "先",
+    "readings": [{
+      "kun": ["さき"],
+      "on": ["セン"],
+      "fr": ["plus tôt", "à l'avance", "priorité", "futur", "destination", "le bout"],
+      "en": ["earlier", "ahead", "priority", "future", "destination", "the tip"]
+    }]
+  }, {
+    "character": "前",
+    "readings": [{
+      "kun": ["まえ"],
+      "on": ["ゼン"],
+      "fr": ["avant", "devant", "plus tôt"],
+      "en": ["before", "in front of", "earlier"]
+    }]
+  }, {
+    "character": "後",
+    "readings": [{
+      "kun": ["のち", "あと"],
+      "on": ["ゴ"],
+      "fr": ["après", "plus tard"],
+      "en": ["after", "later"]
+    }, {
+      "kun": ["うし(ろ)"],
+      "on": ["コウ"],
+      "fr": ["derrière"],
+      "en": ["behind"]
+    }, {
+      "kun": ["おく(れる)"],
+      "on": null,
+      "fr": ["être en retard"],
+      "en": ["be late"]
+    }]
+  }, {
+    "character": "週",
+    "readings": [{
+      "kun": null,
+      "on": ["シュウ"],
+      "fr": ["semaine"],
+      "en": ["week"]
+    }]
+  }, {
+    "character": "午",
+    "readings": [{
+      "kun": null,
+      "on": ["ゴ"],
+      "fr": ["midi"],
+      "en": ["noon"]
+    }]
+  }, {
+    "character": "夕",
+    "readings": [{
+      "kun": ["ゆう"],
+      "on": ["セキ"],
+      "fr": ["soir"],
+      "en": ["evening"]
+    }]
+  }, {
+    "character": "半",
+    "readings": [{
+      "kun": ["なか(ば)"],
+      "on": ["ハン"],
+      "fr": ["moitié", "milieu"],
+      "en": ["half", "middle"]
+    }]
+  }, {
+    "character": "毎",
+    "readings": [{
+      "kun": null,
+      "on": ["マイ"],
+      "fr": ["chaque"],
+      "en": ["each", "every"]
+    }]
+  }]
+}

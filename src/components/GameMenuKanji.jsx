@@ -42,7 +42,8 @@ export const GameMenuKanji = () => {
   const listOptions = Object.entries(kanjiLists).map(([key, list]) => ({
     value: key,
     label: list.name,
-    count: list.kanji.length
+    count: list.kanji.length,
+    description: list.kanji.map(k => k.character).join(' ')
   }));
 
   const modeOptions = [

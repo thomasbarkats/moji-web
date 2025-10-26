@@ -1,6 +1,6 @@
 {
-  "fr": "N5 - Kanji de base 1",
-  "en": "N5 - Basic kanji 1",
+  "fr": "N5 - Kanji de base (1)",
+  "en": "N5 - Basic kanji (1)",
   "kanji": [{
     "character": "人",
     "readings": [{
@@ -122,6 +122,14 @@
       "on": ["ホン"],
       "fr": ["livre", "principal", "origine", "vrai", "compteur pour les objets longs et cylindriques"],
       "en": ["book", "main", "origin", "true", "counter for long cylindrical objects"]
+    }]
+  }, {
+    "character": "刀",
+    "readings": [{
+      "kun": ["かたな"],
+      "on": ["トウ"],
+      "fr": ["sabre"],
+      "en": ["sword"]
     }]
   }]
 }

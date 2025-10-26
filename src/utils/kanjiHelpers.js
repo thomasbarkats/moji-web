@@ -186,9 +186,15 @@ const validateMeanings = (userAnswers, kanjiItem) => {
   for (const group of meaningGroups) {
     const groupSize = group.length;
     const userGroup = userAnswers.slice(userIndex, userIndex + groupSize);
-    const normalizedExpectedGroup = group.map(m => removeAccents(m.toLowerCase()));
 
-    const userGroupSorted = [...userGroup].sort();
+    const normalizedExpectedGroup = group.map(m =>
+      removeAccents(m.toLowerCase()).replace(/[()]/g, '')
+    );
+    const normalizedUserGroup = userGroup.map(m =>
+      removeAccents(m.toLowerCase()).replace(/[()]/g, '')
+    );
+
+    const userGroupSorted = [...normalizedUserGroup].sort();
     const expectedGroupSorted = [...normalizedExpectedGroup].sort();
 
     if (!arraysEqual(userGroupSorted, expectedGroupSorted)) {

@@ -73,6 +73,9 @@ export const MultiSelection = ({
                   {option.count > 0 && (
                     <div className={`text-xs ${theme.textMuted}`}>
                       {option.count} {subItemsLabel}
+                      {option.description && (
+                        <span className="opacity-70"> / {option.description}</span>
+                      )}
                     </div>
                   )}
                 </div>
