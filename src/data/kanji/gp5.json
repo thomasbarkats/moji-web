@@ -3,6 +3,7 @@
   "en": "N5 - Positions and movements",
   "kanji": [{
     "character": "下",
+    "strokes": 3,
     "readings": [{
       "kun": ["した"],
       "on": ["カ、ゲ"],
@@ -41,6 +42,7 @@
     }]
   }, {
     "character": "上",
+    "strokes": 3,
     "readings": [{
       "kun": ["うえ"],
       "on": ["ジョウ", "ショウ"],
@@ -64,6 +66,7 @@
     }]
   }, {
     "character": "左",
+    "strokes": 5,
     "readings": [{
       "kun": ["ひだり"],
       "on": ["サ"],
@@ -72,6 +75,7 @@
     }]
   }, {
     "character": "右",
+    "strokes": 5,
     "readings": [{
       "kun": ["みぎ"],
       "on": ["ウ", "ユウ"],
@@ -80,6 +84,7 @@
     }]
   }, {
     "character": "入",
+    "strokes": 2,
     "readings": [{
       "kun": ["はい(る)", "い(る)"],
       "on": ["ニュウ"],
@@ -93,6 +98,7 @@
     }]
   }, {
     "character": "出",
+    "strokes": 5,
     "readings": [{
       "kun": ["だ(す)"],
       "on": ["シュツ"],
@@ -106,6 +112,7 @@
     }]
   }, {
     "character": "外",
+    "strokes": 5,
     "readings": [{
       "kun": ["そと"],
       "on": ["ガイ", "ゲ"],
@@ -124,6 +131,7 @@
     }]
   }, {
     "character": "内",
+    "strokes": 4,
     "readings": [{
       "kun": ["うち"],
       "on": ["ナイ"],

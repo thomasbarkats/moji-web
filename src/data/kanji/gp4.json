@@ -3,6 +3,7 @@
   "en": "N5 - Time and duration",
   "kanji": [{
     "character": "分",
+    "strokes": 4,
     "readings": [{
       "kun": null,
       "on": ["フン", "ブ"],
@@ -31,6 +32,7 @@
     }]
   }, {
     "character": "時",
+    "strokes": 10,
     "readings": [{
       "kun": ["とき"],
       "on": ["ジ"],
@@ -39,6 +41,7 @@
     }]
   }, {
     "character": "年",
+    "strokes": 6,
     "readings": [{
       "kun": ["とし"],
       "on": ["ネン"],
@@ -47,6 +50,7 @@
     }]
   }, {
     "character": "間",
+    "strokes": 12,
     "readings": [{
       "kun": ["あいだ", "ま"],
       "on": ["カン"],
@@ -55,6 +59,7 @@
     }]
   }, {
     "character": "今",
+    "strokes": 4,
     "readings": [{
       "kun": ["いま"],
       "on": ["コン"],
@@ -63,6 +68,7 @@
     }]
   }, {
     "character": "先",
+    "strokes": 6,
     "readings": [{
       "kun": ["さき"],
       "on": ["セン"],
@@ -71,6 +77,7 @@
     }]
   }, {
     "character": "前",
+    "strokes": 9,
     "readings": [{
       "kun": ["まえ"],
       "on": ["ゼン"],
@@ -79,6 +86,7 @@
     }]
   }, {
     "character": "後",
+    "strokes": 9,
     "readings": [{
       "kun": ["のち", "あと"],
       "on": ["ゴ"],
@@ -97,6 +105,7 @@
     }]
   }, {
     "character": "週",
+    "strokes": 11,
     "readings": [{
       "kun": null,
       "on": ["シュウ"],
@@ -105,6 +114,7 @@
     }]
   }, {
     "character": "午",
+    "strokes": 4,
     "readings": [{
       "kun": null,
       "on": ["ゴ"],
@@ -113,6 +123,7 @@
     }]
   }, {
     "character": "夕",
+    "strokes": 3,
     "readings": [{
       "kun": ["ゆう"],
       "on": ["セキ"],
@@ -121,6 +132,7 @@
     }]
   }, {
     "character": "半",
+    "strokes": 5,
     "readings": [{
       "kun": ["なか(ば)"],
       "on": ["ハン"],
@@ -129,6 +141,7 @@
     }]
   }, {
     "character": "毎",
+    "strokes": 6,
     "readings": [{
       "kun": null,
       "on": ["マイ"],

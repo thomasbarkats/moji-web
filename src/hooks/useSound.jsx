@@ -15,18 +15,33 @@ export const useSound = () => {
 
   const [soundMode, setSoundMode] = useState(getInitialSoundMode);
 
-  const cycleSoundMode = () => {
+  const cycleSoundMode = (skipNone = false) => {
     setSoundMode(prev => {
       let next;
-      switch (prev) {
-        case SOUND_MODES.BOTH: next = SOUND_MODES.NONE; break;
-        case SOUND_MODES.NONE: next = SOUND_MODES.SPEECH_ONLY; break;
-        case SOUND_MODES.SPEECH_ONLY: next = SOUND_MODES.BOTH; break;
-        default: next = SOUND_MODES.BOTH;
+      if (skipNone) {
+        switch (prev) {
+          case SOUND_MODES.BOTH: next = SOUND_MODES.SPEECH_ONLY; break;
+          case SOUND_MODES.SPEECH_ONLY: next = SOUND_MODES.BOTH; break;
+          default: next = SOUND_MODES.BOTH;
+        }
+      } else {
+        switch (prev) {
+          case SOUND_MODES.BOTH: next = SOUND_MODES.NONE; break;
+          case SOUND_MODES.NONE: next = SOUND_MODES.SPEECH_ONLY; break;
+          case SOUND_MODES.SPEECH_ONLY: next = SOUND_MODES.BOTH; break;
+          default: next = SOUND_MODES.BOTH;
+        }
       }
       localStorage.setItem(STORAGE_KEY, next);
       return next;
     });
+  };
+
+  const setSoundModeValue = (mode) => {
+    if (Object.values(SOUND_MODES).includes(mode)) {
+      setSoundMode(mode);
+      localStorage.setItem(STORAGE_KEY, mode);
+    }
   };
 
   const getSoundModeIcon = () => {
@@ -45,6 +60,7 @@ export const useSound = () => {
   return {
     soundMode,
     cycleSoundMode,
-    getSoundModeIcon
+    getSoundModeIcon,
+    setSoundModeValue
   };
 };

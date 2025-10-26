@@ -87,33 +87,41 @@ export const GameMenuKanji = () => {
           py={3}
         />
 
-        {kanjiSelectedLists.length > 0 && (
-          <div className="space-y-4">
-            <button
-              onClick={() => openReviewKanji()}
-              className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                <span className="text-sm">{t('common.reviewSelectedKanji')}</span>
-              </div>
-            </button>
+        <div className="space-y-4">
+          <button
+            onClick={() => kanjiSelectedLists.length > 0 && openReviewKanji()}
+            disabled={kanjiSelectedLists.length === 0}
+            className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg ${
+              kanjiSelectedLists.length > 0
+                ? 'transform hover:scale-105 cursor-pointer'
+                : 'opacity-50 cursor-not-allowed'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              <span className="text-sm">{t('common.reviewSelectedKanji')}</span>
+            </div>
+          </button>
 
-            <button
-              onClick={() => initializeKanjiGame(kanjiSelectedLists)}
-              className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
-            >
-              <div className="flex items-center justify-center">
-                <div className="flex flex-col text-left mb-1">
-                  <span className="text-lg">{t('common.startPractice')}</span>
-                  <div className="text-xs opacity-80">
-                    {totalKanji} {t('common.kanjiSelected')}
-                  </div>
+          <button
+            onClick={() => kanjiSelectedLists.length > 0 && initializeKanjiGame(kanjiSelectedLists)}
+            disabled={kanjiSelectedLists.length === 0}
+            className={`w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg ${
+              kanjiSelectedLists.length > 0
+                ? 'hover:from-emerald-600 hover:to-teal-700 transform hover:scale-105 cursor-pointer'
+                : 'opacity-50 cursor-not-allowed'
+            }`}
+          >
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col text-left mb-1">
+                <span className="text-lg">{t('common.startPractice')}</span>
+                <div className="text-xs opacity-80">
+                  {totalKanji} {t('common.kanjiSelected')}
                 </div>
               </div>
-            </button>
-          </div>
-        )}
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Advanced options */}

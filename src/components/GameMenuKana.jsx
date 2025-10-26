@@ -113,7 +113,7 @@ export const GameMenuKana = () => {
           </div>
         </button>
 
-        <div className="flex gap-4">
+        <div className="flex gap-3">
           {renderModeSection(GAME_MODES.HIRAGANA, 'ひ', 'modes.hiragana', 'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700')}
           {renderModeSection(GAME_MODES.KATAKANA, 'カ', 'modes.katakana', 'bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700')}
         </div>

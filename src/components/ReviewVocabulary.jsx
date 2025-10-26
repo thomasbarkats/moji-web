@@ -1,39 +1,49 @@
-import { Volume2, ArrowLeft, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { Volume2 } from 'lucide-react';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContext } from '../contexts/GameContext';
 import { useTranslation } from '../contexts/I18nContext';
 import { speakReading, parseVocabularyEntry } from '../utils';
-import { GAME_STATES, SORT_MODES } from '../constants';
+import { SORT_MODES } from '../constants';
+import { ReviewLayout } from './';
 
 
 export const ReviewVocabulary = () => {
   const { t } = useTranslation();
   const { theme } = usePreferences();
-  const { vocabularyLists, wordsSelectedLists, setGameState } = useGameContext();
-
-  const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
+  const { vocabularyLists, wordsSelectedLists } = useGameContext();
 
 
-  const sortWords = (words, listKey) => {
-    const wordsWithKey = words.map((w, idx) => ({
-      original: w,
-      listKey,
-      originalIndex: idx,
-      parsed: parseVocabularyEntry(w)
-    }));
+  const sortOptions = [
+    { value: SORT_MODES.DEFAULT, label: 'sortModes.default' },
+    { value: SORT_MODES.ALPHABETICAL, label: 'sortModes.alphabetical' }
+  ];
 
-    if (sortBy === SORT_MODES.DEFAULT) {
-      return wordsWithKey;
-    }
+  const isMergedSort = (sortBy) => sortBy === SORT_MODES.ALPHABETICAL;
 
+  const getAllWords = (sortBy) => {
+    // Collect all words from all selected lists
+    const allWords = wordsSelectedLists.flatMap(listKey => {
+      const list = vocabularyLists[listKey];
+      if (!list) return [];
+
+      return list.words.map((w, idx) => ({
+        original: w,
+        listKey,
+        listName: list.name,
+        originalIndex: idx,
+        parsed: parseVocabularyEntry(w)
+      }));
+    });
+
+    // Apply sorting
     if (sortBy === SORT_MODES.ALPHABETICAL) {
-      return [...wordsWithKey].sort((a, b) =>
+      return allWords.sort((a, b) =>
         a.parsed.cleanedJp.localeCompare(b.parsed.cleanedJp, 'ja')
       );
     }
 
-    return wordsWithKey;
+    // Default: keep original order (grouped by list)
+    return allWords;
   };
 
   const renderWordRow = (wordData) => {
@@ -80,66 +90,35 @@ export const ReviewVocabulary = () => {
     );
   };
 
-  return (
-    <div className={`min-h-screen ${theme.bg} p-4 flex items-center`}>
-      <div className="w-full max-w-5xl mx-auto">
-        <div className={`${theme.cardBg} backdrop-blur-sm rounded-3xl shadow-2xl p-8`}>
+  const renderTable = (words, listName, key) => (
+    <div key={key}>
+      {listName && (
+        <h3 className={`text-sm font-medium ${theme.textMuted} mb-3 uppercase tracking-wide`}>
+          {listName}
+        </h3>
+      )}
 
-          <div className="flex justify-between items-center mb-6">
-            <button
-              onClick={() => setGameState(GAME_STATES.MENU)}
-              className={`flex items-center gap-2 ${theme.text} hover:${theme.textSecondary} transition-colors cursor-pointer`}
-            >
-              <ArrowLeft className="w-5 h-5" />
-              <span>{t('common.backToMenu')}</span>
-            </button>
-
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className={`appearance-none ${theme.sectionBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
-              >
-                <option value={SORT_MODES.DEFAULT}>{t('sortModes.default')}</option>
-                <option value={SORT_MODES.ALPHABETICAL}>{t('sortModes.alphabetical')}</option>
-              </select>
-              <ChevronDown className={`w-5 h-5 ${theme.textMuted} absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none`} />
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            {wordsSelectedLists.map(listKey => {
-              const list = vocabularyLists[listKey];
-              if (!list) return null;
-
-              const sortedWords = sortWords(list.words, listKey);
-
-              return (
-                <div key={listKey}>
-                  {wordsSelectedLists.length > 1 && (
-                    <h3 className={`text-sm font-medium ${theme.textMuted} mb-3 uppercase tracking-wide`}>
-                      {list.name}
-                    </h3>
-                  )}
-
-                  <table className="w-full">
-                    <thead>
-                      <tr className={`${theme.border} border-b-2`}>
-                        <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.japanese')}</th>
-                        <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.translation')}</th>
-                        <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.notes')}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {sortedWords.map(renderWordRow)}
-                    </tbody>
-                  </table>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      <table className="w-full">
+        <thead>
+          <tr className={`${theme.border} border-b-2`}>
+            <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.japanese')}</th>
+            <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.translation')}</th>
+            <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.notes')}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {words.map(renderWordRow)}
+        </tbody>
+      </table>
     </div>
+  );
+
+  return (
+    <ReviewLayout
+      sortOptions={sortOptions}
+      getAllItems={getAllWords}
+      renderTable={renderTable}
+      isMergedSort={isMergedSort}
+    />
   );
 };

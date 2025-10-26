@@ -3,7 +3,7 @@ import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useTranslation } from '../contexts/I18nContext';
 import { useGameLogicVocabulary } from '../hooks';
-import { VOCABULARY_MODES } from '../constants';
+import { VOCABULARY_MODES, SOUND_MODES } from '../constants';
 import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 
@@ -28,6 +28,7 @@ export const GameMenuVocabulary = () => {
     handleVocabularyModeChange,
     cycleSoundMode,
     getSoundModeIcon,
+    soundMode,
     theme,
     darkMode,
     toggleDarkMode,
@@ -45,6 +46,12 @@ export const GameMenuVocabulary = () => {
       value: VOCABULARY_MODES.TO_JAPANESE,
       label: t('vocabularyModes.toJapanese'),
       tooltip: t('tooltips.typeJapanese')
+    },
+    {
+      value: VOCABULARY_MODES.SOUND_ONLY,
+      label: t('vocabularyModes.soundOnly'),
+      tooltip: t('tooltips.soundOnlyMode'),
+      disabled: soundMode === SOUND_MODES.NONE
     },
     {
       value: VOCABULARY_MODES.FROM_JAPANESE,
@@ -78,33 +85,41 @@ export const GameMenuVocabulary = () => {
           py={3}
         />
 
-        {wordsSelectedLists.length > 0 && (
-          <div className="space-y-4">
-            <button
-              onClick={() => openReviewVocabulary(wordsSelectedLists)}
-              className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
-            >
-              <div className="flex items-center justify-center gap-2">
-                <BookOpen className="w-4 h-4" />
-                <span className="text-sm">{t('common.reviewSelectedWords')}</span>
-              </div>
-            </button>
+        <div className="space-y-4">
+          <button
+            onClick={() => wordsSelectedLists.length > 0 && openReviewVocabulary(wordsSelectedLists)}
+            disabled={wordsSelectedLists.length === 0}
+            className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg ${
+              wordsSelectedLists.length > 0
+                ? 'transform hover:scale-105 cursor-pointer'
+                : 'opacity-50 cursor-not-allowed'
+            }`}
+          >
+            <div className="flex items-center justify-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              <span className="text-sm">{t('common.reviewSelectedWords')}</span>
+            </div>
+          </button>
 
-            <button
-              onClick={() => initializeVocabularyGame(wordsSelectedLists)}
-              className="w-full bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer"
-            >
-              <div className="flex items-center justify-center">
-                <div className="flex flex-col text-left mb-1">
-                  <span className="text-lg">{t('common.startPractice')}</span>
-                  <div className="text-xs opacity-80">
-                    {totalWords} {t('common.wordsSelected')}
-                  </div>
+          <button
+            onClick={() => wordsSelectedLists.length > 0 && initializeVocabularyGame(wordsSelectedLists)}
+            disabled={wordsSelectedLists.length === 0}
+            className={`w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg ${
+              wordsSelectedLists.length > 0
+                ? 'hover:from-indigo-600 hover:to-purple-700 transform hover:scale-105 cursor-pointer'
+                : 'opacity-50 cursor-not-allowed'
+            }`}
+          >
+            <div className="flex items-center justify-center">
+              <div className="flex flex-col text-left mb-1">
+                <span className="text-lg">{t('common.startPractice')}</span>
+                <div className="text-xs opacity-80">
+                  {totalWords} {t('common.wordsSelected')}
                 </div>
               </div>
-            </button>
-          </div>
-        )}
+            </div>
+          </button>
+        </div>
       </div>
 
       {/* Advanced options */}

@@ -26,7 +26,7 @@ const DEFAULT_PREFERENCES = {
 
 export const PreferencesProvider = ({ children }) => {
   const { theme, darkMode, toggleDarkMode } = useTheme();
-  const { soundMode, cycleSoundMode, getSoundModeIcon } = useSound();
+  const { soundMode, cycleSoundMode, getSoundModeIcon, setSoundModeValue } = useSound();
 
   const [preferences, setPreferences] = useState(() => {
     try {
@@ -103,6 +103,7 @@ export const PreferencesProvider = ({ children }) => {
     handleLanguageChange,
     toggleDarkMode,
     cycleSoundMode,
+    setSoundModeValue,
     getSoundModeIcon,
   };
 

@@ -3,6 +3,7 @@
   "en": "N5 - Basic kanji (1)",
   "kanji": [{
     "character": "人",
+    "strokes": 2,
     "readings": [{
       "kun": ["ひと"],
       "on": ["ジン"],
@@ -21,6 +22,7 @@
     }]
   }, {
     "character": "日",
+    "strokes": 4,
     "readings": [{
       "kun": ["ひ"],
       "on": ["ニチ"],
@@ -39,6 +41,7 @@
     }]
   }, {
     "character": "月",
+    "strokes": 4,
     "readings": [{
       "kun": ["つき"],
       "on": null,
@@ -52,6 +55,7 @@
     }]
   }, {
     "character": "曜",
+    "strokes": 18,
     "readings": [{
       "kun": null,
       "on": ["ヨウ"],
@@ -60,6 +64,7 @@
     }]
   }, {
     "character": "円",
+    "strokes": 4,
     "readings": [{
       "kun": ["まる(い)"],
       "on": null,
@@ -73,6 +78,7 @@
     }]
   }, {
     "character": "大",
+    "strokes": 3,
     "readings": [{
       "kun": ["おお(きい)"],
       "on": ["ダイ", "タイ"],
@@ -86,6 +92,7 @@
     }]
   }, {
     "character": "小",
+    "strokes": 3,
     "readings": [{
       "kun": ["ちい(さい)", "こ-", "お-"],
       "on": ["ショウ"],
@@ -94,6 +101,7 @@
     }]
   }, {
     "character": "中",
+    "strokes": 4,
     "readings": [{
       "kun": null,
       "on": ["チュウ"],
@@ -112,6 +120,7 @@
     }]
   }, {
     "character": "本",
+    "strokes": 5,
     "readings": [{
       "kun": ["もと"],
       "on": null,
@@ -125,6 +134,7 @@
     }]
   }, {
     "character": "刀",
+    "strokes": 2,
     "readings": [{
       "kun": ["かたな"],
       "on": ["トウ"],

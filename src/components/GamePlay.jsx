@@ -1,12 +1,12 @@
 import { useRef, useEffect, useState } from 'react';
-import { Clock, RefreshCw, Sun, Moon } from 'lucide-react';
+import { Clock, RefreshCw, Sun, Moon, Volume2 } from 'lucide-react';
 import { useGameContext } from '../contexts/GameContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
 import { useGameActions } from '../hooks';
 import { ProgressBar } from '.';
-import { formatTime, cleanJapaneseText } from '../utils';
+import { formatTime, cleanJapaneseText, speakReading } from '../utils';
 import {
   FEEDBACK_TYPES,
   GAME_MODES,
@@ -71,10 +71,17 @@ export const GamePlay = () => {
 
   const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
   const isKanjiMode = gameMode === GAME_MODES.KANJI;
+  const isSoundOnlyMode = isVocabularyMode && currentItem?.isSoundOnly;
   const total = Object.values(sessionStats).length;
   const mastered = Object.values(progress).filter(p => p.mastered).length;
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
   const progressPercentage = total ? (mastered / total) * 100 : 0;
+
+  const handleReplayAudio = () => {
+    if (currentItem?.speechText) {
+      speakReading(currentItem.speechText, 1);
+    }
+  };
 
   const displayCorrectAnswer = feedback && isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
     ? cleanJapaneseText(feedback.correctAnswer)
@@ -130,7 +137,7 @@ export const GamePlay = () => {
                 }
               </button>
               <button
-                onClick={cycleSoundMode}
+                onClick={() => cycleSoundMode(isSoundOnlyMode)}
                 className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
                 title={getSoundModeIcon().tooltip}
               >
@@ -158,7 +165,15 @@ export const GamePlay = () => {
             <div className={`
               ${isVocabularyMode ? (vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? 'text-[2.5rem]' : 'text-[2rem]') : 'text-8xl'}
               font-light ${theme.text} select-none mb-2`}>
-              {isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? (
+              {isSoundOnlyMode ? (
+                <button
+                  onClick={handleReplayAudio}
+                  className={`p-6 ${theme.buttonSecondary} rounded-full transition-all hover:scale-110 cursor-pointer`}
+                  title={t('tooltips.replayAudio')}
+                >
+                  <Volume2 className="w-16 h-16" />
+                </button>
+              ) : isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? (
                 <JapaneseTextDisplay parts={currentItem.parts} theme={theme} />
               ) : (
                 currentItem.question
@@ -195,7 +210,7 @@ export const GamePlay = () => {
                     <div className={`text-lg ${theme.feedbackSuccess.text}`}>"{displayCorrectAnswer}"</div>
                     {
                       isVocabularyMode &&
-                      vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE &&
+                      (vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE || isSoundOnlyMode) &&
                       currentItem.infoText && (
                         <div className={`text-sm ${theme.textMuted} mt-3 italic`}>
                           {currentItem.infoText}
@@ -211,7 +226,7 @@ export const GamePlay = () => {
                     <div className={`text-lg ${theme.feedbackError.title} font-semibold`}>{t('gameplay.correctAnswer')} "{displayCorrectAnswer}"</div>
                     {
                       isVocabularyMode &&
-                      vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE &&
+                      (vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE || isSoundOnlyMode) &&
                       currentItem.infoText && (
                         <div className={`text-sm ${theme.textMuted} mt-3 italic`}>
                           {currentItem.infoText}

@@ -27,11 +27,15 @@ export const useGameLogicVocabulary = () => {
     currentItemStartRef,
   } = useGameContext();
 
-  const { vocabularyMode, soundMode } = usePreferences();
+  const { vocabularyMode, soundMode, setSoundModeValue } = usePreferences();
 
 
   const initializeVocabularyGame = (selectedListKeys) => {
     if (!selectedListKeys || selectedListKeys.length === 0) return;
+
+    if (vocabularyMode === VOCABULARY_MODES.SOUND_ONLY && soundMode === SOUND_MODES.NONE) {
+      setSoundModeValue(SOUND_MODES.SPEECH_ONLY);
+    }
 
     const words = selectedListKeys.flatMap(listKey => {
       const rawWords = vocabularyLists[listKey]?.words || [];
@@ -62,27 +66,31 @@ export const useGameLogicVocabulary = () => {
 
     if (!nextWord) return null;
 
+    const isSoundOnlyMode = vocabularyMode === VOCABULARY_MODES.SOUND_ONLY;
+    const isToJapaneseMode = vocabularyMode === VOCABULARY_MODES.TO_JAPANESE;
+
     const newItem = {
       key: nextWord.jp,
-      question: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
+      question: isToJapaneseMode
         ? nextWord.translation
         : nextWord.cleanedJp,
-      answer: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
+      answer: isToJapaneseMode
         ? nextWord.cleanedJp
         : nextWord.translation,
       cleanedJp: nextWord.cleanedJp,
       parts: nextWord.parts,
       infoText: nextWord.infoText,
       speechText: nextWord.speechText,
+      isSoundOnly: isSoundOnlyMode,
     };
 
     const setters = { setCurrentItem, setUserInput, setFeedback, setProgress };
     const refs = { currentItemStartRef };
     finalizeItemSelection(newItem, nextWord.jp, setters, refs);
 
-    // Speak word when showing Japanese (from Japanese mode)
+    // Speak word when showing Japanese (from Japanese mode or sound only mode)
     if ((soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
-      vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE) {
+      (vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE || vocabularyMode === VOCABULARY_MODES.SOUND_ONLY)) {
       setTimeout(() => speakReading(nextWord.speechText, 1), 100);
     }
 

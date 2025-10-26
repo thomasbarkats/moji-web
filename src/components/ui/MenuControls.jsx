@@ -41,7 +41,7 @@ export const MenuControls = ({
           {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </button>
         <button
-          onClick={cycleSoundMode}
+          onClick={() => cycleSoundMode()}
           className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
           title={getSoundModeIcon().tooltip}
         >

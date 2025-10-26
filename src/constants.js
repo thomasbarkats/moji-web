@@ -39,12 +39,14 @@ export const SORT_MODES = {
   FAILURES: 'failures',
   ALPHABETICAL: 'alphabetical',
   TIME: 'time',
-  DEFAULT: 'default'
+  DEFAULT: 'default',
+  STROKES: 'strokes'
 };
 
 export const VOCABULARY_MODES = {
   TO_JAPANESE: 'to_japanese',
-  FROM_JAPANESE: 'from_japanese'
+  FROM_JAPANESE: 'from_japanese',
+  SOUND_ONLY: 'sound_only'
 };
 
 export const KANJI_MODES = {

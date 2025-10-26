@@ -8,8 +8,9 @@
     "both": "Hiragana + Katakana"
   },
   "vocabularyModes": {
-    "fromJapanese": "JP → FR",
-    "toJapanese": "FR → JP"
+    "fromJapanese": "JP→FR",
+    "toJapanese": "FR→JP",
+    "soundOnly": "🔊"
   },
   "kanjiModes": {
     "all": "Tout",
@@ -41,7 +42,7 @@
     "requiredSuccesses": "Succès requis",
     "dakutenMode": "Dakuten & Handakuten",
     "combinationsMode": "Combinaisons",
-    "vocabularyMode": "Lecture et frappe",
+    "vocabularyMode": "Lecture / saisie",
     "kanjiMode": "À partir du kanji",
     "sound": "Son",
     "theme": "Thème",
@@ -100,7 +101,8 @@
   },
   "sortModes": {
     "default": "Ordre par défaut",
-    "alphabetical": "Alphabétique"
+    "alphabetical": "Alphabétique",
+    "strokes": "Par traits"
   },
   "common": {
     "startPractice": "Commencer l'entraînement",
@@ -140,11 +142,13 @@
     "typeTranslation": "Tapez la traduction",
     "jpKeyboardHelp": "Aide clavier japonais",
     "playAudio": "Lire l'audio",
+    "replayAudio": "Rejouer l'audio",
     "noDakuten": "Pas de dakuten/handakuten",
     "addToKana": "Ajouter aux kana sélectionnés",
     "dakutenOnly": "Dakuten/handakuten uniquement",
     "noCombinations": "Pas de combinaisons",
-    "combinationsOnly": "Combinaisons uniquement"
+    "combinationsOnly": "Combinaisons uniquement",
+    "soundOnlyMode": "Écouter et taper la traduction"
   },
   "languages": {
     "fr": "Français",

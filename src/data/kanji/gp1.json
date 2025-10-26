@@ -3,6 +3,7 @@
   "en": "N5 - Numbers",
   "kanji": [{
     "character": "一",
+    "strokes": 1,
     "readings": [{
       "kun": ["ひと"],
       "on": ["イチ"],
@@ -11,6 +12,7 @@
     }]
   }, {
     "character": "二",
+    "strokes": 2,
     "readings": [{
       "kun": ["ふた"],
       "on": ["ニ"],
@@ -19,6 +21,7 @@
     }]
   }, {
     "character": "三",
+    "strokes": 3,
     "readings": [{
       "kun": ["み"],
       "on": ["サン"],
@@ -27,6 +30,7 @@
     }]
   }, {
     "character": "四",
+    "strokes": 5,
     "readings": [{
       "kun": ["よ", "よん"],
       "on": ["シ"],
@@ -35,6 +39,7 @@
     }]
   }, {
     "character": "五",
+    "strokes": 4,
     "readings": [{
       "kun": ["いつ"],
       "on": ["ゴ"],
@@ -43,6 +48,7 @@
     }]
   }, {
     "character": "六",
+    "strokes": 4,
     "readings": [{
       "kun": ["む"],
       "on": ["ロク"],
@@ -51,6 +57,7 @@
     }]
   }, {
     "character": "七",
+    "strokes": 2,
     "readings": [{
       "kun": ["なな"],
       "on": ["シチ"],
@@ -59,6 +66,7 @@
     }]
   }, {
     "character": "八",
+    "strokes": 2,
     "readings": [{
       "kun": ["や"],
       "on": ["ハチ"],
@@ -67,6 +75,7 @@
     }]
   }, {
     "character": "九",
+    "strokes": 2,
     "readings": [{
       "kun": ["ここの"],
       "on": ["キュウ", "ク"],
@@ -75,6 +84,7 @@
     }]
   }, {
     "character": "十",
+    "strokes": 2,
     "readings": [{
       "kun": ["とお"],
       "on": ["ジュウ"],
@@ -83,6 +93,7 @@
     }]
   }, {
     "character": "百",
+    "strokes": 6,
     "readings": [{
       "kun": null,
       "on": ["ヒャク"],
@@ -91,6 +102,7 @@
     }]
   }, {
     "character": "千",
+    "strokes": 3,
     "readings": [{
       "kun": ["ち"],
       "on": ["セン"],
@@ -99,6 +111,7 @@
     }]
   }, {
     "character": "万",
+    "strokes": 3,
     "readings": [{
       "kun": null,
       "on": ["マン"],

@@ -93,6 +93,7 @@ function formatKanjiJson(filePath) {
     }
 
     output += `    "character": ${JSON.stringify(kanji.character)},\n`;
+    output += `    "strokes": ${JSON.stringify(kanji.strokes)},\n`;
     output += '    "readings": [';
 
     kanji.readings.forEach((reading, readingIndex) => {
