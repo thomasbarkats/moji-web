@@ -39,12 +39,14 @@ export const GameMenuKanji = () => {
   } = usePreferences();
 
 
-  const listOptions = Object.entries(kanjiLists).map(([key, list]) => ({
-    value: key,
-    label: list.name,
-    count: list.kanji.length,
-    description: list.kanji.map(k => k.character).join(' ')
-  }));
+  const listOptions = Object.entries(kanjiLists)
+    .map(([key, list]) => ({
+      value: key,
+      label: list.name,
+      count: list.kanji.length,
+      description: list.kanji.map(k => k.character).join(' ')
+    }))
+    .sort((a, b) => a.value.localeCompare(b.value));
 
   const modeOptions = [
     {

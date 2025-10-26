@@ -35,11 +35,13 @@ export const GameMenuVocabulary = () => {
   } = usePreferences();
 
 
-  const listOptions = Object.entries(vocabularyLists).map(([key, list]) => ({
-    value: key,
-    label: list.name,
-    count: list.words.length
-  }));
+  const listOptions = Object.entries(vocabularyLists)
+    .map(([key, list]) => ({
+      value: key,
+      label: list.name,
+      count: list.words.length
+    }))
+    .sort((a, b) => a.value.localeCompare(b.value));
 
   const modeOptions = [
     {

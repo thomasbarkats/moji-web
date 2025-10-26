@@ -49,7 +49,7 @@
       "en": ["moon"]
     }, {
       "kun": null,
-      "on": ["ゲツ", "ガツ"],
+      "on": ["ガツ", "ゲツ"],
       "fr": ["mois"],
       "en": ["month"]
     }]
@@ -103,6 +103,11 @@
     "character": "中",
     "strokes": 4,
     "readings": [{
+      "kun": ["なか"],
+      "on": null,
+      "fr": ["dedans", "au milieu"],
+      "en": ["inside", "in the middle"]
+    }, {
       "kun": null,
       "on": ["チュウ"],
       "fr": ["milieu"],
@@ -112,11 +117,6 @@
       "on": ["-チュウ", "-ジュウ"],
       "fr": ["pendant", "tout au long", "dans"],
       "en": ["during", "throughout", "in"]
-    }, {
-      "kun": ["なか"],
-      "on": null,
-      "fr": ["dedans", "au milieu"],
-      "en": ["inside", "in the middle"]
     }]
   }, {
     "character": "本",

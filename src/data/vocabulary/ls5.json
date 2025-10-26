@@ -1,6 +1,6 @@
 {
-  "fr": "Les pays",
-  "en": "Countries",
+  "fr": "Pays (sélection pratique)",
+  "en": "Countries (practical selection)",
   "words": [{
     "jp": "フランス",
     "fr": "France",
@@ -22,10 +22,6 @@
     "fr": "Royaume-Uni",
     "en": "United Kingdom"
   }, {
-    "jp": "イングランド",
-    "fr": "Angleterre",
-    "en": "England"
-  }, {
     "jp": "ギリシャ",
     "fr": "Grèce",
     "en": "Greece"
@@ -42,45 +38,9 @@
     "fr": "Suisse",
     "en": "Switzerland"
   }, {
-    "jp": "ルクセンブルク",
-    "fr": "Luxembourg",
-    "en": "Luxembourg"
-  }, {
-    "jp": "オランダ",
-    "fr": "Pays-Bas",
-    "en": "Netherlands"
-  }, {
-    "jp": "オーストリア",
-    "fr": "Autriche",
-    "en": "Austria"
-  }, {
-    "jp": "トルコ",
-    "fr": "Turquie",
-    "en": "Turkey"
-  }, {
-    "jp": "シリア",
-    "fr": "Syrie",
-    "en": "Syria"
-  }, {
-    "jp": "イスラエル",
-    "fr": "Israel",
-    "en": "Israel"
-  }, {
-    "jp": "カタール",
-    "fr": "Qatar",
-    "en": "Qatar"
-  }, {
-    "jp": "ドバイ",
-    "fr": "Dubai",
-    "en": "Dubai"
-  }, {
-    "jp": "ロシア",
-    "fr": "Russie",
-    "en": "Russia"
-  }, {
-    "jp": "アルジェリア",
-    "fr": "Algérie",
-    "en": "Algeria"
+    "jp": "{南}[みなみ]アフリカ",
+    "fr": "Afrique Du Sud",
+    "en": "South Africa"
   }, {
     "jp": "チュニジア",
     "fr": "Tunisie",
@@ -98,25 +58,9 @@
     "fr": "Sénégal",
     "en": "Senegal"
   }, {
-    "jp": "コートジボワール",
-    "fr": "Côte D'Ivoire",
-    "en": "Ivory Coast"
-  }, {
-    "jp": "コンゴ",
-    "fr": "Congo",
-    "en": "Congo"
-  }, {
-    "jp": "{南}[みなみ]アフリカ",
-    "fr": "Afrique Du Sud",
-    "en": "South Africa"
-  }, {
     "jp": "カナダ",
     "fr": "Canada",
     "en": "Canada"
-  }, {
-    "jp": "ケベック",
-    "fr": "Québec",
-    "en": "Quebec"
   }, {
     "jp": "アメリカ{合衆国}[ガッシュコク]",
     "fr": "États-Unis",
@@ -133,10 +77,6 @@
     "jp": "アルゼンチン",
     "fr": "Argentine",
     "en": "Argentina"
-  }, {
-    "jp": "チリ",
-    "fr": "Chili",
-    "en": "Chile"
   }, {
     "jp": "オーストラリア",
     "fr": "Australie",
@@ -173,5 +113,9 @@
     "jp": "{日本}[二ホン]",
     "fr": "Japon",
     "en": "Japan"
+  }, {
+    "jp": "ロシア",
+    "fr": "Russie",
+    "en": "Russia"
   }]
 }

@@ -6,7 +6,7 @@
     "strokes": 3,
     "readings": [{
       "kun": ["した"],
-      "on": ["カ、ゲ"],
+      "on": ["カ", "ゲ"],
       "fr": ["inférieur", "base", "sous"],
       "en": ["lower", "base", "under"]
     }, {
@@ -22,7 +22,7 @@
     }, {
       "kun": ["さ(がる)"],
       "on": null,
-      "fr": ["pendre", "descendre (intransitif)"],
+      "fr": ["descendre (intransitif)"],
       "en": ["hang down", "go down"]
     }, {
       "kun": ["お(りる)"],
@@ -86,7 +86,7 @@
     "character": "入",
     "strokes": 2,
     "readings": [{
-      "kun": ["はい(る)", "い(る)"],
+      "kun": ["はい(る)"],
       "on": ["ニュウ"],
       "fr": ["entrer", "pénétrer"],
       "en": ["come", "get in", "enter"]
@@ -100,15 +100,15 @@
     "character": "出",
     "strokes": 5,
     "readings": [{
-      "kun": ["だ(す)"],
-      "on": ["シュツ"],
-      "fr": ["sortir (quelque chose)", "faire sortir", "envoyer"],
-      "en": ["take out", "bring out", "send out"]
-    }, {
       "kun": ["で(る)"],
       "on": null,
       "fr": ["sortir", "partir"],
       "en": ["go out", "leave"]
+    }, {
+      "kun": ["だ(す)"],
+      "on": ["シュツ"],
+      "fr": ["sortir (quelque chose)", "faire sortir", "envoyer"],
+      "en": ["take out", "bring out", "send out"]
     }]
   }, {
     "character": "外",
@@ -124,10 +124,15 @@
       "fr": ["autre"],
       "en": ["other"]
     }, {
-      "kun": ["はず(れる/す)"],
+      "kun": ["はず(れる)"],
       "on": null,
-      "fr": ["glisser", "manquer"],
-      "en": ["slip off", "miss"]
+      "fr": ["se détacher", "rater"],
+      "en": ["come off", "miss"]
+    }, {
+      "kun": ["はず(す)"],
+      "on": null,
+      "fr": ["enlever", "rater"],
+      "en": ["remove", "miss"]
     }]
   }, {
     "character": "内",

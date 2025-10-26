@@ -6,29 +6,29 @@
     "strokes": 4,
     "readings": [{
       "kun": null,
-      "on": ["フン", "ブ"],
-      "fr": ["partie", "fraction"],
-      "en": ["part", "fraction"]
-    }, {
-      "kun": null,
       "on": ["フン"],
       "fr": ["minute"],
       "en": ["minute"]
+    }, {
+      "kun": ["わ(かる)"],
+      "on": null,
+      "fr": ["comprendre"],
+      "en": ["understand"]
     }, {
       "kun": ["わ(ける)"],
       "on": null,
       "fr": ["diviser", "partager", "distinguer"],
       "en": ["divide", "share", "distinguish"]
     }, {
+      "kun": null,
+      "on": ["フン", "ブ"],
+      "fr": ["partie", "fraction"],
+      "en": ["part", "fraction"]
+    }, {
       "kun": ["わ(かれる)"],
       "on": null,
       "fr": ["être séparé"],
       "en": ["be separated"]
-    }, {
-      "kun": ["わ(かる)"],
-      "on": null,
-      "fr": ["comprendre"],
-      "en": ["understand"]
     }]
   }, {
     "character": "時",
@@ -54,7 +54,7 @@
     "readings": [{
       "kun": ["あいだ", "ま"],
       "on": ["カン"],
-      "fr": ["intervalle (entre)"],
+      "fr": ["intervalle (entre)", "durée", "espace"],
       "en": ["interval (between)"]
     }]
   }, {
@@ -72,7 +72,7 @@
     "readings": [{
       "kun": ["さき"],
       "on": ["セン"],
-      "fr": ["plus tôt", "à l'avance", "priorité", "futur", "destination", "le bout"],
+      "fr": ["plus tôt", "à l'avance", "priorité", "futur", "destination", "extrémité"],
       "en": ["earlier", "ahead", "priority", "future", "destination", "the tip"]
     }]
   }, {
@@ -88,7 +88,7 @@
     "character": "後",
     "strokes": 9,
     "readings": [{
-      "kun": ["のち", "あと"],
+      "kun": ["あと", "のち"],
       "on": ["ゴ"],
       "fr": ["après", "plus tard"],
       "en": ["after", "later"]
@@ -126,7 +126,7 @@
     "strokes": 3,
     "readings": [{
       "kun": ["ゆう"],
-      "on": ["セキ"],
+      "on": null,
       "fr": ["soir"],
       "en": ["evening"]
     }]
