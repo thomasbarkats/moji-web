@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useRef } from 'react';
+import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 import { useDataKana, useDataVocabulary } from '../hooks';
 import { usePreferences } from './PreferencesContext';
-import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
 
 
 const GameContext = createContext();

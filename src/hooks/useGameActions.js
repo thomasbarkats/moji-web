@@ -2,8 +2,17 @@ import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKana } from './useGameLogicKana';
-import { useGameLogicVocabulary } from './useGameLogicVocabulary';
 import { useGameLogicKanji } from './useGameLogicKanji';
+import { useGameLogicVocabulary } from './useGameLogicVocabulary';
+import {
+  GAME_STATES,
+  FEEDBACK_TYPES,
+  TIMING,
+  SOUND_MODES,
+  GAME_MODES,
+  VOCABULARY_MODES,
+  KANJI_STEPS,
+} from '../constants';
 import {
   getAllKanaForMode,
   speakReading,
@@ -15,15 +24,6 @@ import {
   getKunReadingsForAudio,
   getOnReadingsForAudio,
 } from '../utils';
-import {
-  GAME_STATES,
-  FEEDBACK_TYPES,
-  TIMING,
-  SOUND_MODES,
-  GAME_MODES,
-  VOCABULARY_MODES,
-  KANJI_STEPS,
-} from '../constants';
 
 
 export const useGameActions = () => {

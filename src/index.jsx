@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import './index.css';
 import App from './App';
 import { GameProvider } from './contexts/GameContext';
-import { PreferencesProvider, usePreferences } from './contexts/PreferencesContext';
 import { KanjiGameProvider } from './contexts/GameContextKanji';
 import { I18nProvider } from './contexts/I18nContext';
-import './index.css';
+import { PreferencesProvider, usePreferences } from './contexts/PreferencesContext';
 
 
 function I18nWrapper({ children }) {

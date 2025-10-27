@@ -14,7 +14,6 @@ export const hasOnReadings = (readingGroup) => {
   return readingGroup.on && Array.isArray(readingGroup.on) && readingGroup.on.length > 0;
 };
 
-
 // ============================================
 // NORMALIZATION HELPERS
 // ============================================
@@ -44,7 +43,6 @@ const normalizeAnswerItem = (item, isMeanings = false) => {
   trimmed = trimmed.replace(/[()（）]/g, '');
   return wanakana.toKatakana(trimmed);
 };
-
 
 // ============================================
 // READING EXTRACTION (with options)
@@ -91,7 +89,6 @@ export const getReadingGroupsForDisplay = (readings) => {
     on: hasOnReadings(r) ? r.on : null
   }));
 };
-
 
 // ============================================
 // STEP-BASED HELPERS
@@ -142,7 +139,6 @@ export const parseUserAnswers = (userInput, isMeanings = false) => {
     .map(item => normalizeAnswerItem(item, isMeanings))
     .filter(item => item.length > 0);
 };
-
 
 // ============================================
 // VALIDATION
@@ -224,7 +220,6 @@ export const validateKanjiAnswer = (userInput, kanjiItem, step) => {
   }
 };
 
-
 // ============================================
 // STEP NAVIGATION
 // ============================================
@@ -259,7 +254,6 @@ export const getNextStepForKanji = (currentStep, readings, kanjiMode = KANJI_MOD
 
   return KANJI_STEPS.MEANINGS;
 };
-
 
 // ============================================
 // REVIEW FORMATTING

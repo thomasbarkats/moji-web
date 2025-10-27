@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Speech, Volume2, VolumeX } from 'lucide-react';
+import { useState } from 'react';
 import { SOUND_MODES } from '../constants';
 
 

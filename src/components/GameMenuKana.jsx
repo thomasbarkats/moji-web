@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
-import { useGameContext } from '../contexts/GameContext';
-import { usePreferences } from '../contexts/PreferencesContext';
-import { useTranslation } from '../contexts/I18nContext';
-import { useGameLogicKana } from '../hooks';
+import { useState } from 'react';
 import { GAME_MODES, KANA_INCLUSION } from '../constants';
+import { useGameContext } from '../contexts/GameContext';
+import { useTranslation } from '../contexts/I18nContext';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { useGameLogicKana } from '../hooks';
 import { getAllKanaForMode } from '../utils';
 import { GameMenu, MenuControls, SegmentedControl } from '.';
 

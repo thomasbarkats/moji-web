@@ -1,11 +1,11 @@
 import { Trophy, Target, BarChart3, Clock, ChevronDown } from 'lucide-react';
-import { useGameContext } from '../contexts/GameContext';
-import { usePreferences } from '../contexts/PreferencesContext';
-import { useTranslation } from '../contexts/I18nContext';
-import { Button, StatsCard } from '.';
-import { formatTime } from '../utils';
-import { calculateTintStyle } from '../services/statsService';
 import { GAME_MODES } from '../constants';
+import { useGameContext } from '../contexts/GameContext';
+import { useTranslation } from '../contexts/I18nContext';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { calculateTintStyle } from '../services/statsService';
+import { formatTime } from '../utils';
+import { Button, StatsCard } from '.';
 
 
 export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {

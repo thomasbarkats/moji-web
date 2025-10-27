@@ -1,12 +1,12 @@
-import { useRef, useEffect, useState } from 'react';
 import { Clock, RefreshCw, Sun, Moon, Volume2 } from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
 import { useGameContext } from '../contexts/GameContext';
-import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
+import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameActions } from '../hooks';
-import { ProgressBar } from '.';
 import { formatTime, cleanJapaneseText, speakReading } from '../utils';
+import { ProgressBar } from '.';
 import {
   FEEDBACK_TYPES,
   GAME_MODES,

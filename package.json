@@ -22,8 +22,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "postinstall": "rm -f package-lock.json && echo 'Use pnpm only'",
-    "data:format": "node scripts/formatJson.cjs",
-    "data:list": "node scripts/listData.cjs",
-    "data:add": "node scripts/addData.cjs"
+    "data:format": "node scripts/formatJson.js",
+    "data:list": "node scripts/listData.js",
+    "data:add": "node scripts/addData.js"
   }
 }

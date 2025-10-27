@@ -1,6 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const readline = require('readline');
+#!/usr/bin/env node
+
+import fs from 'fs';
+import path from 'path';
+import readline from 'readline';
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -211,7 +213,7 @@ async function createKanjiSet() {
   console.log(`Total kanji: ${kanji.length}`);
 }
 
-async function main() {
+async function createDataSet() {
   console.log('\n=== CREATE DATA SET ===');
   console.log('1. Vocabulary');
   console.log('2. Kanji');
@@ -229,4 +231,4 @@ async function main() {
   rl.close();
 }
 
-main().catch(console.error);
+createDataSet();

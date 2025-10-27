@@ -1,10 +1,10 @@
 import { BookOpen } from 'lucide-react';
+import { KANJI_MODES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
-import { usePreferences } from '../contexts/PreferencesContext';
 import { useTranslation } from '../contexts/I18nContext';
+import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKanji } from '../hooks';
-import { KANJI_MODES } from '../constants';
 import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 

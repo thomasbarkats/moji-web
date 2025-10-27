@@ -1,6 +1,5 @@
 import confetti from 'canvas-confetti';
 import { GAME_MODES, GAME_STATES, KANA_INCLUSION, VOCABULARY_MODES } from '../constants';
-import { getAllKunReadings, getAllOnReadings, getAllMeaningsInOrder } from './kanjiHelpers';
 
 
 // ============================================
@@ -33,7 +32,6 @@ export const getAllKanaForMode = (mode, kanaData, options = {}) => {
 
   return result;
 };
-
 
 // ============================================
 // DATA INITIALIZATION
@@ -128,7 +126,6 @@ export const initializeGameState = (setters, mode) => {
   setFeedback(null);
 };
 
-
 // ============================================
 // ITEM SELECTION
 // ============================================
@@ -193,7 +190,6 @@ export const finalizeItemSelection = (item, key, setters, refs) => {
     }
   }));
 };
-
 
 // ============================================
 // OTHERS

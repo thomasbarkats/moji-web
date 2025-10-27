@@ -1,7 +1,7 @@
 import { Globe } from 'lucide-react';
-import { usePreferences } from '../../contexts/PreferencesContext';
-import { useTranslation } from '../../contexts/I18nContext';
 import { LANGUAGES } from '../../constants';
+import { useTranslation } from '../../contexts/I18nContext';
+import { usePreferences } from '../../contexts/PreferencesContext';
 
 
 export const LanguageSelector = ({ theme, darkMode }) => {

@@ -1,5 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+#!/usr/bin/env node
+
+import fs from 'fs';
+import path from 'path';
 
 // Format vocabulary/*.json: compact objects with jp, fr, en, note_fr?, note_en?
 function formatVocabularyJson(filePath) {
@@ -151,9 +153,4 @@ function formatAllJsonFiles() {
   console.log('\nAll JSON files formatted successfully');
 }
 
-// Run if called directly
-if (require.main === module) {
-  formatAllJsonFiles();
-}
-
-module.exports = { formatVocabularyJson, formatKanjiJson };
+formatAllJsonFiles();

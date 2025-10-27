@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import { useGameContext } from '../contexts/GameContext';
 import { GAME_STATES, APP_MODES } from '../constants';
+import { useGameContext } from '../contexts/GameContext';
 
 
 const APP_MODE_ORDER = [APP_MODES.KANA, APP_MODES.KANJI, APP_MODES.VOCABULARY,];

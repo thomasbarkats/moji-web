@@ -1,15 +1,9 @@
+import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useGameContext } from './contexts/GameContext';
 import { useGameContextKanji } from './contexts/GameContextKanji';
 import { usePreferences } from './contexts/PreferencesContext';
-import { getSortedStats } from './services/statsService';
-import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useKeyboardNavigation } from './hooks';
-import {
-  useGameActions,
-  useGameLogicVocabulary,
-  useGameLogicKana,
-  useGameLogicKanji,
-} from './hooks';
+import { getSortedStats } from './services/statsService';
 import {
   GameMenuKana,
   GamePlay,
@@ -21,6 +15,12 @@ import {
   ReviewKana,
   ReviewKanji,
 } from './components';
+import {
+  useGameActions,
+  useGameLogicVocabulary,
+  useGameLogicKana,
+  useGameLogicKanji,
+} from './hooks';
 
 
 function App() {

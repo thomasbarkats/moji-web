@@ -5,7 +5,7 @@ import {
   initializeKanaData,
   selectNextItem,
   initializeGameState,
-  finalizeItemSelection
+  finalizeItemSelection,
 } from '../utils';
 
 

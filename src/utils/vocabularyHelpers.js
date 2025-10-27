@@ -80,7 +80,6 @@ export const parseJapaneseText = (text) => {
   return parts;
 };
 
-
 // ============================================
 // TEXT CLEANING
 // ============================================
@@ -90,7 +89,6 @@ export const cleanJapaneseText = (text) => {
     .replace(/\{([^}]+)\}\[([^\]]+)\]/g, '$1')
     .replace(/\{([^}]+)\}/g, '$1');
 };
-
 
 // ============================================
 // NORMALIZATION
@@ -105,8 +103,7 @@ export const normalizeAnswer = (text) => {
     .replace(/[.,;:!?'"(){}[\]]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
-};
-
+}
 
 // ============================================
 // OPTIONAL VARIANTS GENERATION
@@ -131,7 +128,6 @@ export const generateOptionalVariants = (text) => {
 
   return [...new Set(variants)];
 };
-
 
 // ============================================
 // VALIDATION

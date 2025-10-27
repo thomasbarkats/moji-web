@@ -1,11 +1,11 @@
+import { GAME_MODES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
-import { GAME_MODES } from '../constants';
 import {
   selectNextItem,
   initializeGameState,
   finalizeItemSelection,
-  initializeKanjiData
+  initializeKanjiData,
 } from '../utils';
 
 

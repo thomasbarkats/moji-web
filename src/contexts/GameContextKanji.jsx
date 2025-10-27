@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react';
-import { usePreferences } from './PreferencesContext';
-import { useDataKanji } from '../hooks';
 import { KANJI_STEPS } from '../constants';
+import { useDataKanji } from '../hooks';
+import { usePreferences } from './PreferencesContext';
 import {
   getFirstStepForKanji,
   getNextStepForKanji,

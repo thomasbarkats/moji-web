@@ -15,7 +15,6 @@ const DAKUTEN_VARIANTS = {
   'ha': ['ba', 'pa'], 'hi': ['bi', 'pi'], 'fu': ['bu', 'pu'], 'he': ['be', 'pe'], 'ho': ['bo', 'po']
 };
 
-
 // ============================================
 // KANA ORGANIZATION FOR DISPLAY
 // ============================================
@@ -132,7 +131,6 @@ export const organizeKanaByRows = (baseKana, dakutenKana, combinationKana) => {
 
   return rows;
 };
-
 
 // ============================================
 // FILTER INITIALIZATION

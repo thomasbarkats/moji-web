@@ -1,7 +1,7 @@
 import { Sun, Moon, Globe } from 'lucide-react';
 import { LANGUAGES, REQUIRED_SUCCESSES_LIMITS } from '../../constants';
-import { usePreferences } from '../../contexts/PreferencesContext';
 import { useTranslation } from '../../contexts/I18nContext';
+import { usePreferences } from '../../contexts/PreferencesContext';
 
 
 export const MenuControls = ({

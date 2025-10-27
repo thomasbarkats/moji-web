@@ -15,7 +15,7 @@ const getAnswerComplexity = (stat) => {
   if (stat.kun !== undefined && stat.on !== undefined && stat.meanings !== undefined) {
     return stat.kun.length + stat.on.length + stat.meanings.length;
   }
-  
+
   // For vocabulary and kana: use answer length
   return (stat.answer || '').length;
 };
@@ -23,11 +23,11 @@ const getAnswerComplexity = (stat) => {
 const calculateTimeThreshold = (stat, requiredSuccesses) => {
   const baseThreshold = requiredSuccesses + 1;
   const complexity = getAnswerComplexity(stat);
-  
+
   // 1 second per 10 characters (adjustable)
   const CHARS_PER_SECOND = 10;
   const complexityBonus = Math.floor(complexity / CHARS_PER_SECOND);
-  
+
   return baseThreshold + complexityBonus;
 };
 
@@ -41,16 +41,16 @@ const calculateFailureTint = (failures) => {
 const calculateTimeTint = (stat, allStats, requiredSuccesses) => {
   const timeThreshold = calculateTimeThreshold(stat, requiredSuccesses);
   const timeSpent = stat.timeSpent || 0;
-  
+
   if (timeSpent <= timeThreshold) return {};
 
   const adjustedTimeSpent = timeSpent - timeThreshold;
-  
+
   const maxTime = Math.max(...allStats.map(s => {
     const threshold = calculateTimeThreshold(s, requiredSuccesses);
     return Math.max(0, (s.timeSpent || 0) - threshold);
   }));
-  
+
   if (maxTime === 0) return {};
 
   const timeAlpha = Math.min(TINT_CONFIG.MAX_ALPHA, (adjustedTimeSpent / maxTime) * TINT_CONFIG.MAX_ALPHA);
@@ -62,7 +62,7 @@ const calculateCombinedTint = (stat, allStats, requiredSuccesses) => {
   const failures = stat.failures || 0;
   const timeSpent = stat.timeSpent || 0;
   const timeThreshold = calculateTimeThreshold(stat, requiredSuccesses);
-  
+
   if (failures === 0 && timeSpent <= timeThreshold) return {};
 
   const adjustedTime = Math.max(0, timeSpent - timeThreshold);
@@ -76,13 +76,13 @@ const calculateCombinedTint = (stat, allStats, requiredSuccesses) => {
   const normalizedFailures = maxFailures > 0 ? failures / maxFailures : 0;
 
   const combinedScore = (normalizedFailures * TINT_CONFIG.ERROR_WEIGHT) + (normalizedTime * TINT_CONFIG.TIME_WEIGHT);
-  
+
   if (combinedScore === 0) return {};
 
   const combinedAlpha = Math.min(TINT_CONFIG.MAX_ALPHA, combinedScore * TINT_CONFIG.MAX_ALPHA);
   const red = Math.round(TINT_CONFIG.COLORS.RED.r - (127 * combinedScore));
   const purple = Math.round(TINT_CONFIG.COLORS.PURPLE.r * combinedScore);
-  
+
   return createTintStyle(red, 0, purple, combinedAlpha);
 };
 
@@ -92,18 +92,17 @@ export const calculateTintStyle = (kana, allStats, sortBy, requiredSuccesses) =>
   switch (sortBy) {
     case SORT_MODES.FAILURES:
       return calculateFailureTint(failures);
-    
+
     case SORT_MODES.TIME:
       return calculateTimeTint(kana, allStats, requiredSuccesses);
-    
+
     case SORT_MODES.ALPHABETICAL:
       return calculateCombinedTint(kana, allStats, requiredSuccesses);
-    
+
     default:
       return {};
   }
 };
-
 
 // ============================================
 // SORTING
@@ -153,18 +152,17 @@ export const getSortedStats = (sessionStats, sortBy, currentVocabularyWords = []
   switch (sortBy) {
     case SORT_MODES.FAILURES:
       return sortByFailures(stats);
-    
+
     case SORT_MODES.ALPHABETICAL:
       return sortAlphabetically(stats);
-    
+
     case SORT_MODES.TIME:
       return sortByTime(stats);
-    
+
     default:
       return stats;
   }
 };
-
 
 // ============================================
 // AGGREGATION
@@ -176,10 +174,10 @@ export const getTotalStats = (sessionStats, progress) => {
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
   const elapsedTimeSeconds = Object.values(sessionStats).reduce((sum, s) => sum + (s.timeSpent || 0), 0);
 
-  return { 
-    total, 
-    mastered, 
-    totalFailures, 
-    elapsedTime: elapsedTimeSeconds 
+  return {
+    total,
+    mastered,
+    totalFailures,
+    elapsedTime: elapsedTimeSeconds
   };
 };

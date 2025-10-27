@@ -1,5 +1,7 @@
-const fs = require('fs');
-const path = require('path');
+#!/usr/bin/env node
+
+import fs from 'fs';
+import path from 'path';
 
 const args = process.argv.slice(2);
 const lang = args[0] || 'fr';

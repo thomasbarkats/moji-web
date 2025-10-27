@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useTranslation } from '../contexts/I18nContext';
 import { APP_MODES } from '../constants';
+import { useTranslation } from '../contexts/I18nContext';
+
 
 export const GameMenu = ({
   theme,
