@@ -12,7 +12,7 @@ import {
 
 const PreferencesContext = createContext();
 
-const STORAGE_KEY = 'kana-trainer-preferences';
+const STORAGE_KEY = 'preferences';
 
 const DEFAULT_PREFERENCES = {
   defaultAppMode: APP_MODES.KANA,

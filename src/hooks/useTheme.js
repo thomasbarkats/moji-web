@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 
-const STORAGE_KEY = 'kana-app-theme';
+const STORAGE_KEY = 'theme';
 
 export const useTheme = () => {
   const getInitialTheme = () => {

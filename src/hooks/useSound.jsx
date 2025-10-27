@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { SOUND_MODES } from '../constants';
 
 
-const STORAGE_KEY = 'kana-app-sound-mode';
+const STORAGE_KEY = 'sound-mode';
 
 export const useSound = () => {
   const getInitialSoundMode = () => {
