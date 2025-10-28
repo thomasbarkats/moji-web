@@ -7,32 +7,17 @@
     "readings": [{
       "kun": ["した"],
       "on": ["カ", "ゲ"],
-      "fr": ["inférieur", "base", "sous"],
-      "en": ["lower", "base", "under"]
+      "fr": ["dessous", "inférieur"],
+      "en": ["below", "lower"]
     }, {
-      "kun": ["しも"],
+      "kun": ["さ(げる)", "お(ろす)"],
       "on": null,
-      "fr": ["partie inférieure"],
-      "en": ["lower part"]
+      "fr": ["baisser", "descendre (transitif)"],
+      "en": ["lower", "bring down"]
     }, {
-      "kun": ["さ(げる)", "お(ろす)", "くだ(す)"],
-      "on": null,
-      "fr": ["abaisser", "descendre (transitif)", "rendre un verdict"],
-      "en": ["lower", "bring down", "hand down a verdict"]
-    }, {
-      "kun": ["さ(がる)"],
+      "kun": ["さ(がる)", "お(りる)", "くだ(る)"],
       "on": null,
       "fr": ["descendre (intransitif)"],
-      "en": ["hang down", "go down"]
-    }, {
-      "kun": ["お(りる)"],
-      "on": null,
-      "fr": ["descendre", "sortir d'un véhicule"],
-      "en": ["get out of", "get off a vehicle"]
-    }, {
-      "kun": ["くだ(る)"],
-      "on": null,
-      "fr": ["descendre", "aller vers le bas"],
       "en": ["go down", "descend"]
     }, {
       "kun": ["くだ(さる)"],
@@ -46,13 +31,8 @@
     "readings": [{
       "kun": ["うえ"],
       "on": ["ジョウ", "ショウ"],
-      "fr": ["supérieur", "au-dessus"],
-      "en": ["upper", "above"]
-    }, {
-      "kun": ["かみ"],
-      "on": null,
-      "fr": ["partie supérieure"],
-      "en": ["upper part"]
+      "fr": ["dessus", "supérieur"],
+      "en": ["above", "upper"]
     }, {
       "kun": ["あ(げる)"],
       "on": null,
@@ -61,7 +41,7 @@
     }, {
       "kun": ["あ(がる)", "のぼ(る)"],
       "on": null,
-      "fr": ["monter", "s'élever (intransitif)"],
+      "fr": ["monter (intransitif)"],
       "en": ["rise", "go up"]
     }]
   }, {
@@ -88,13 +68,13 @@
     "readings": [{
       "kun": ["はい(る)"],
       "on": ["ニュウ"],
-      "fr": ["entrer", "pénétrer"],
-      "en": ["come", "get in", "enter"]
+      "fr": ["entrer"],
+      "en": ["enter", "go in"]
     }, {
       "kun": ["い(れる)"],
       "on": null,
-      "fr": ["mettre", "introduire", "laisser entrer"],
-      "en": ["put in", "insert", "let in"]
+      "fr": ["mettre", "introduire"],
+      "en": ["put in", "insert"]
     }]
   }, {
     "character": "出",
@@ -107,8 +87,8 @@
     }, {
       "kun": ["だ(す)"],
       "on": ["シュツ"],
-      "fr": ["sortir (quelque chose)", "faire sortir", "envoyer"],
-      "en": ["take out", "bring out", "send out"]
+      "fr": ["sortir (quelque chose)", "envoyer"],
+      "en": ["take out", "send out"]
     }]
   }, {
     "character": "外",
