@@ -1,4 +1,4 @@
-import { GAME_MODES } from '../constants';
+import { GAME_MODES, KANJI_STEPS } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import {
@@ -6,6 +6,7 @@ import {
   initializeGameState,
   finalizeItemSelection,
   initializeKanjiData,
+  getFirstStepForKanji,
 } from '../utils';
 
 
@@ -27,6 +28,8 @@ export const useGameLogicKanji = () => {
     kanjiLists,
     setCurrentKanjiList,
     resetSteps,
+    setCurrentStep,
+    setStepData,
   } = useGameContextKanji();
 
 
@@ -48,14 +51,21 @@ export const useGameLogicKanji = () => {
     selectNextKanji(allKanji, initialProgress);
   };
 
-  const selectNextKanji = (allKanji, currentProgress) => {
+  const selectNextKanji = (allKanji, currentProgress, forceRepeatKanji = null, forceRestartStep = null) => {
     const availableKanji = allKanji.filter(
       kanji => !currentProgress[kanji.character].mastered
     );
 
     if (availableKanji.length === 0) return null;
 
-    const nextKanji = selectNextItem(availableKanji, currentProgress, currentItem?.key);
+    let nextKanji;
+
+    // Check if we need to force repeat a kanji (discovery mode)
+    if (forceRepeatKanji) {
+      nextKanji = allKanji.find(k => k.character === forceRepeatKanji);
+    } else {
+      nextKanji = selectNextItem(availableKanji, currentProgress, currentItem?.key);
+    }
 
     if (!nextKanji) return null;
 
@@ -67,7 +77,22 @@ export const useGameLogicKanji = () => {
       notes: nextKanji.notes,
     };
 
+    // Reset steps normally first
     resetSteps(nextKanji);
+
+    // If there's a restart step specified, override it and update stepData if needed
+    if (forceRestartStep !== null) {
+      setCurrentStep(forceRestartStep);
+
+      // If restarting at meanings step, we need to set the reading groups
+      if (forceRestartStep === KANJI_STEPS.MEANINGS) {
+        const readingGroups = nextKanji.readings.map(r => ({
+          kun: r.kun && Array.isArray(r.kun) && r.kun.length > 0 ? r.kun : null,
+          on: r.on && Array.isArray(r.on) && r.on.length > 0 ? r.on : null
+        }));
+        setStepData({ readingGroups });
+      }
+    }
 
     const setters = { setCurrentItem, setUserInput, setFeedback, setProgress };
     const refs = { currentItemStartRef };

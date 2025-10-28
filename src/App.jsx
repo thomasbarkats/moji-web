@@ -1,6 +1,8 @@
+import { Info, Keyboard } from 'lucide-react';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useGameContext } from './contexts/GameContext';
 import { useGameContextKanji } from './contexts/GameContextKanji';
+import { useTranslation } from './contexts/I18nContext';
 import { usePreferences } from './contexts/PreferencesContext';
 import { useKeyboardNavigation } from './hooks';
 import { getSortedStats } from './services/statsService';
@@ -10,7 +12,7 @@ import {
   Summary,
   GameMenuVocabulary,
   GameMenuKanji,
-  KeyboardHint,
+  FloatingHelpButton,
   ReviewVocabulary,
   ReviewKana,
   ReviewKanji,
@@ -24,6 +26,7 @@ import {
 
 
 function App() {
+  const { t } = useTranslation();
   const { theme } = usePreferences();
   const { kanjiSelectedLists } = useGameContextKanji();
   const {
@@ -57,7 +60,44 @@ function App() {
           }
           return (<>
             <GameMenuVocabulary />
-            <KeyboardHint theme={theme} />
+            <FloatingHelpButton
+              icon={Info}
+              tooltip={t('tooltips.inputRulesHelp')}
+              title={t('inputRulesHelp.vocabularyTitle')}
+              theme={theme}
+              position="bottom-18 right-6"
+            >
+              <div>
+                <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyJapaneseTitle')}</h4>
+                <p className="text-sm">{t('inputRulesHelp.vocabularyJapaneseDesc')}</p>
+              </div>
+            </FloatingHelpButton>
+            <FloatingHelpButton
+              icon={Keyboard}
+              tooltip={t('tooltips.jpKeyboardHelp')}
+              title={t('keyboardHelp.title')}
+              theme={theme}
+            >
+              <div>
+                <h4 className="font-medium mb-1">{t('keyboardHelp.windowsTitle')}</h4>
+                <p className="text-sm" dangerouslySetInnerHTML={{ __html:
+                  `1. ${t('keyboardHelp.windowsStep1')}<br/>` +
+                  `2. ${t('keyboardHelp.windowsStep2')}<br/>` +
+                  `3. ${t('keyboardHelp.windowsStep3')}<br/>` +
+                  `4. ${t('keyboardHelp.windowsStep4')}`
+                }} />
+              </div>
+
+              <div>
+                <h4 className="font-medium mb-1">{t('keyboardHelp.quickTipsTitle')}</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• {t('keyboardHelp.tip1')}</li>
+                  <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip2') }} /></li>
+                  <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip3') }} /></li>
+                  <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip4') }} /></li>
+                </ul>
+              </div>
+            </FloatingHelpButton>
           </>);
         case APP_MODES.KANJI:
           if (kanjiLoading) {
@@ -65,7 +105,49 @@ function App() {
           }
           return (<>
             <GameMenuKanji />
-            <KeyboardHint theme={theme} />
+            <FloatingHelpButton
+              icon={Info}
+              tooltip={t('tooltips.inputRulesHelp')}
+              title={t('inputRulesHelp.kanjiTitle')}
+              theme={theme}
+              position="bottom-18 right-6"
+            >
+              <div>
+                <h4 className="font-medium mb-2">{t('inputRulesHelp.kanjiReadingsTitle')}</h4>
+                <p className="text-sm" dangerouslySetInnerHTML={{ __html: t('inputRulesHelp.kanjiReadingsDesc') }} />
+              </div>
+
+              <div>
+                <h4 className="font-medium mb-2">{t('inputRulesHelp.kanjiMeaningsTitle')}</h4>
+                <p className="text-sm">{t('inputRulesHelp.kanjiMeaningsDesc')}</p>
+              </div>
+            </FloatingHelpButton>
+            <FloatingHelpButton
+              icon={Keyboard}
+              tooltip={t('tooltips.jpKeyboardHelp')}
+              title={t('keyboardHelp.title')}
+              theme={theme}
+            >
+              <div>
+                <h4 className="font-medium mb-1">{t('keyboardHelp.windowsTitle')}</h4>
+                <p className="text-sm" dangerouslySetInnerHTML={{ __html:
+                  `1. ${t('keyboardHelp.windowsStep1')}<br/>` +
+                  `2. ${t('keyboardHelp.windowsStep2')}<br/>` +
+                  `3. ${t('keyboardHelp.windowsStep3')}<br/>` +
+                  `4. ${t('keyboardHelp.windowsStep4')}`
+                }} />
+              </div>
+
+              <div>
+                <h4 className="font-medium mb-1">{t('keyboardHelp.quickTipsTitle')}</h4>
+                <ul className="text-sm space-y-1">
+                  <li>• {t('keyboardHelp.tip1')}</li>
+                  <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip2') }} /></li>
+                  <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip3') }} /></li>
+                  <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip4') }} /></li>
+                </ul>
+              </div>
+            </FloatingHelpButton>
           </>);
         default:
           return null;

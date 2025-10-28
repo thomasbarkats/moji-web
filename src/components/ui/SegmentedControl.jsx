@@ -1,8 +1,11 @@
-export const SegmentedControl = ({ value, onChange, options, label, theme }) => {
+export const SegmentedControl = ({ value, onChange, options, label, theme, helpIcon }) => {
   return (
     <div className="flex items-center justify-between py-3">
       {label && (
-        <div className={`text-sm font-medium ${theme.text}`}>{label}</div>
+        <div className={`flex items-center gap-2 text-sm font-medium ${theme.text}`}>
+          <span>{label}</span>
+          {helpIcon}
+        </div>
       )}
       <div className={`inline-flex rounded-lg ${theme.darkMode ? 'bg-gray-700' : 'bg-gray-200'} p-1`}>
         {options.map((option) => (

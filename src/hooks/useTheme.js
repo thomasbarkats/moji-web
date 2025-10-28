@@ -24,6 +24,7 @@ export const useTheme = () => {
       return {
         bg: 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900',
         cardBg: 'bg-gray-800/90',
+        modalBg: 'bg-gray-800',
         selectorBg: 'bg-gray-800',
         selectorHover: 'hover:bg-gray-700',
         inputBg: 'bg-gray-700',
@@ -64,6 +65,7 @@ export const useTheme = () => {
       return {
         bg: 'bg-gradient-to-br from-purple-100 via-blue-50 to-cyan-100',
         cardBg: 'bg-white/90',
+        modalBg: 'bg-white',
         selectorBg: 'bg-white',
         selectorHover: 'hover:bg-gray-100',
         inputBg: 'bg-white',

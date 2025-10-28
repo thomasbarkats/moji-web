@@ -16,6 +16,20 @@
     "all": "All",
     "meaningsOnly": "Meanings only"
   },
+  "discoveryMode": {
+    "label": "Discovery mode",
+    "description": "Repeat kanji until you get it right"
+  },
+  "discoveryModeHelp": {
+    "title": "Discovery Mode",
+    "firstAppearanceTitle": "First appearance",
+    "firstAppearanceDesc": "Each step (kun → on → meanings) loops until you answer correctly. Retry as many times as needed.",
+    "secondAppearanceTitle": "Second appearance (if required > 1)",
+    "secondAppearanceDesc": "All steps loop together. If you fail any step, you restart from the first step and must complete all correctly in sequence.",
+    "subsequentAppearancesTitle": "Subsequent appearances (if required > 2)",
+    "subsequentAppearancesDesc": "No more looping. Works like regular mode.",
+    "note": "Great for learning new kanji progressively."
+  },
   "gameplay": {
     "typeTranslation": "Type the translation...",
     "typeReading": "Type the reading...",
@@ -157,10 +171,34 @@
     "language": "Language",
     "selectLanguage": "Select language"
   },
+  "keyboardHelp": {
+    "title": "Japanese Input Setup",
+    "windowsTitle": "Windows:",
+    "windowsStep1": "Press <kbd>Win + Space</kbd> to switch input methods",
+    "windowsStep2": "Or click the language icon in taskbar",
+    "windowsStep3": "Select Japanese IME",
+    "windowsStep4": "Press <kbd>Capslock</kbd> to toggle hiragana/romaji",
+    "quickTipsTitle": "Quick tips:",
+    "tip1": "Type in romaji, it converts to hiragana",
+    "tip2": "Press <kbd>Space</kbd> to convert to kanji",
+    "tip3": "Press <kbd>F7</kbd> for katakana",
+    "tip4": "Press <kbd>Enter</kbd> to confirm"
+  },
+  "inputRulesHelp": {
+    "kanjiTitle": "Kanji Input Rules",
+    "kanjiReadingsTitle": "Readings (kun/on):",
+    "kanjiReadingsDesc": "Both romaji and kana typing are accepted. Okurigana are required, but parentheses can be ignored (e.g., <code>ookii</code> and <code>oo(kii)</code> are both valid).",
+    "kanjiMeaningsTitle": "Meanings:",
+    "kanjiMeaningsDesc": "Accents, parentheses, and other special characters are ignored when checking answers.",
+    "vocabularyTitle": "Vocabulary Input Rules",
+    "vocabularyJapaneseTitle": "Japanese text:",
+    "vocabularyJapaneseDesc": "The exact Japanese text is expected with the correct kanji. Okurigana are required, but parentheses can be ignored for them or other precisions."
+  },
   "tooltips": {
     "typeJapanese": "Type Japanese",
     "typeTranslation": "Type translation",
     "jpKeyboardHelp": "Japanese keyboard help",
+    "inputRulesHelp": "Input rules help",
     "playAudio": "Play audio",
     "replayAudio": "Replay audio",
     "noDakuten": "No dakuten/handakuten",
@@ -168,7 +206,9 @@
     "dakutenOnly": "Dakuten/handakuten only",
     "noCombinations": "No combinations",
     "combinationsOnly": "Combinations only",
-    "soundOnlyMode": "Listen and type translation"
+    "soundOnlyMode": "Listen and type translation",
+    "kanjiModeAll": "Find the kun / on readings, and meanings",
+    "kanjiModeMeanings": "Find meanings only"
   },
   "languages": {
     "fr": "Français",

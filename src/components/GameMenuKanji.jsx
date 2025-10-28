@@ -1,16 +1,18 @@
-import { BookOpen } from 'lucide-react';
+import { BookOpen, HelpCircle } from 'lucide-react';
+import { useState } from 'react';
 import { KANJI_MODES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKanji } from '../hooks';
-import { GameMenu, MenuControls, MultiSelection, SegmentedControl } from '.';
+import { GameMenu, HelpModal, MenuControls, MultiSelection, SegmentedControl } from '.';
 
 
 export const GameMenuKanji = () => {
   const { t } = useTranslation();
   const { initializeKanjiGame } = useGameLogicKanji();
+  const [showDiscoveryHelp, setShowDiscoveryHelp] = useState(false);
 
   const {
     appMode,
@@ -36,6 +38,8 @@ export const GameMenuKanji = () => {
     toggleDarkMode,
     kanjiMode,
     handleKanjiModeChange,
+    kanjiDiscoveryMode,
+    handleKanjiDiscoveryModeChange,
   } = usePreferences();
 
 
@@ -52,12 +56,23 @@ export const GameMenuKanji = () => {
     {
       value: KANJI_MODES.ALL,
       label: t('kanjiModes.all'),
-      tooltip: t('kanjiModes.all')
+      tooltip: t('tooltips.kanjiModesAll')
     },
     {
       value: KANJI_MODES.MEANINGS_ONLY,
       label: t('kanjiModes.meaningsOnly'),
-      tooltip: t('kanjiModes.meaningsOnly')
+      tooltip: t('tooltips.kanjiModeMeanings')
+    }
+  ];
+
+  const discoveryOptions = [
+    {
+      value: false,
+      label: t('options.off')
+    },
+    {
+      value: true,
+      label: t('options.on')
     }
   ];
 
@@ -137,6 +152,22 @@ export const GameMenuKanji = () => {
               label={t('menu.kanjiMode')}
               theme={{ ...theme, darkMode }}
             />
+            <SegmentedControl
+              value={kanjiDiscoveryMode}
+              onChange={handleKanjiDiscoveryModeChange}
+              options={discoveryOptions}
+              label={t('discoveryMode.label')}
+              theme={{ ...theme, darkMode }}
+              helpIcon={
+                <button
+                  onClick={() => setShowDiscoveryHelp(true)}
+                  className={`p-0.5 rounded-full ${theme.textSecondary} hover:${theme.text} transition-colors cursor-pointer`}
+                  title={t('discoveryMode.description')}
+                >
+                  <HelpCircle className="w-4 h-4" />
+                </button>
+              }
+            />
           </div>
         </div>
       </div>
@@ -150,6 +181,46 @@ export const GameMenuKanji = () => {
         requiredSuccesses={requiredSuccesses}
         onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
+
+      <HelpModal
+        show={showDiscoveryHelp}
+        onClose={() => setShowDiscoveryHelp(false)}
+        title={t('discoveryModeHelp.title')}
+        theme={theme}
+      >
+        <div>
+          <h4 className={`font-medium mb-2 ${theme.text}`}>
+            {t('discoveryModeHelp.firstAppearanceTitle')}
+          </h4>
+          <p className="text-sm">
+            {t('discoveryModeHelp.firstAppearanceDesc')}
+          </p>
+        </div>
+
+        <div>
+          <h4 className={`font-medium mb-2 ${theme.text}`}>
+            {t('discoveryModeHelp.secondAppearanceTitle')}
+          </h4>
+          <p className="text-sm">
+            {t('discoveryModeHelp.secondAppearanceDesc')}
+          </p>
+        </div>
+
+        <div>
+          <h4 className={`font-medium mb-2 ${theme.text}`}>
+            {t('discoveryModeHelp.subsequentAppearancesTitle')}
+          </h4>
+          <p className="text-sm">
+            {t('discoveryModeHelp.subsequentAppearancesDesc')}
+          </p>
+        </div>
+
+        <div className={`mt-4 pt-4 border-t ${theme.divider}`}>
+          <p className="text-sm italic">
+            {t('discoveryModeHelp.note')}
+          </p>
+        </div>
+      </HelpModal>
     </GameMenu>
   );
 };

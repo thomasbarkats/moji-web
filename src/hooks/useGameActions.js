@@ -23,6 +23,7 @@ import {
   getExpectedAnswerForFeedback,
   getKunReadingsForAudio,
   getOnReadingsForAudio,
+  getFirstStepForKanji,
 } from '../utils';
 
 
@@ -60,6 +61,8 @@ export const useGameActions = () => {
     combinationsMode,
     vocabularyMode,
     soundMode,
+    kanjiDiscoveryMode,
+    kanjiMode,
   } = usePreferences();
 
   const { selectNextKana } = useGameLogicKana();
@@ -108,14 +111,14 @@ export const useGameActions = () => {
     triggerConfetti();
   };
 
-  const proceedToNextItem = (newProgress) => {
+  const proceedToNextItem = (newProgress, forceRepeatKanji = null, forceRestartStep = null) => {
     let nextItem;
     switch (gameMode) {
       case GAME_MODES.VOCABULARY:
         nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress);
         break;
       case GAME_MODES.KANJI:
-        nextItem = selectNextKanji(currentKanjiList, newProgress);
+        nextItem = selectNextKanji(currentKanjiList, newProgress, forceRepeatKanji, forceRestartStep);
         break;
       default:
         const options = { dakutenMode, combinationsMode };
@@ -165,6 +168,30 @@ export const useGameActions = () => {
 
     const proceedToNext = () => {
       if (!isCorrect || isLastStep) {
+        // Check discovery mode logic on failure
+        if (!isCorrect && kanjiDiscoveryMode) {
+          const currentSuccesses = newProgress[currentItem.key].successes;
+
+          // 1st success attempt: repeat from current step
+          if (currentSuccesses === 0) {
+            setUserInput('');
+            setFeedback(null);
+            proceedToNextItem(newProgress, currentItem.key, currentStep);
+            return;
+          }
+
+          // 2nd success attempt: repeat from first step
+          if (currentSuccesses === 1 && requiredSuccesses > 1) {
+            setUserInput('');
+            setFeedback(null);
+            const firstStep = getFirstStepForKanji(currentItem.readings, kanjiMode);
+            proceedToNextItem(newProgress, currentItem.key, firstStep);
+            return;
+          }
+
+          // 3rd+ success or requiredSuccesses <= 2: normal behavior (proceed to next)
+        }
+
         proceedToNextItem(newProgress);
       } else {
         setUserInput('');

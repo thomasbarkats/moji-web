@@ -16,6 +16,20 @@
     "all": "Tout",
     "meaningsOnly": "Significations"
   },
+  "discoveryMode": {
+    "label": "Mode découverte",
+    "description": "Répéter le kanji jusqu'à réussite"
+  },
+  "discoveryModeHelp": {
+    "title": "Mode découverte",
+    "firstAppearanceTitle": "Première apparition",
+    "firstAppearanceDesc": "Chaque étape (kun → on → significations) boucle jusqu'à bonne réponse. Réessayez autant que nécessaire.",
+    "secondAppearanceTitle": "Deuxième apparition (si requis > 1)",
+    "secondAppearanceDesc": "Toutes les étapes bouclent ensemble. Si vous échouez une étape, vous recommencez à la première et devez toutes les réussir en séquence.",
+    "subsequentAppearancesTitle": "Apparitions suivantes (si requis > 2)",
+    "subsequentAppearancesDesc": "Plus de boucles. Fonctionne comme le mode normal.",
+    "note": "Idéal pour apprendre de nouveaux kanji progressivement."
+  },
   "gameplay": {
     "typeTranslation": "Tapez la traduction...",
     "typeReading": "Tapez la lecture...",
@@ -137,10 +151,34 @@
     "language": "Langue",
     "selectLanguage": "Sélectionner la langue"
   },
+  "keyboardHelp": {
+    "title": "Configuration du clavier japonais",
+    "windowsTitle": "Windows :",
+    "windowsStep1": "Appuyez sur <kbd>Win + Espace</kbd> pour changer de méthode d'entrée",
+    "windowsStep2": "Ou cliquez sur l'icône de langue dans la barre des tâches",
+    "windowsStep3": "Sélectionnez l'IME japonais",
+    "windowsStep4": "Appuyez sur <kbd>Verr. Maj.</kbd> pour basculer hiragana/romaji",
+    "quickTipsTitle": "Astuces rapides :",
+    "tip1": "Tapez en romaji, c'est converti en hiragana",
+    "tip2": "Appuyez sur <kbd>Espace</kbd> pour convertir en kanji",
+    "tip3": "Appuyez sur <kbd>F7</kbd> pour le katakana",
+    "tip4": "Appuyez sur <kbd>Entrée</kbd> pour confirmer"
+  },
+  "inputRulesHelp": {
+    "kanjiTitle": "Règles de saisie - Kanji",
+    "kanjiReadingsTitle": "Lectures (kun/on) :",
+    "kanjiReadingsDesc": "La saisie en romaji ou en kana est acceptée. Les okurigana sont requis, mais les parenthèses peuvent être ignorées (ex. <code>ookii</code> et <code>oo(kii)</code> sont valides).",
+    "kanjiMeaningsTitle": "Significations :",
+    "kanjiMeaningsDesc": "Les accents, parenthèses et autres caractères spéciaux sont ignorés lors de la vérification.",
+    "vocabularyTitle": "Règles de saisie - Vocabulaire",
+    "vocabularyJapaneseTitle": "Texte japonais :",
+    "vocabularyJapaneseDesc": "Le texte japonais exact est attendu avec les bons kanji. Les okurigana sont requis, mais les parenthèses peuvent être ignorées pour eux ou d'autres précisions."
+  },
   "tooltips": {
     "typeJapanese": "Tapez en japonais",
     "typeTranslation": "Tapez la traduction",
     "jpKeyboardHelp": "Aide clavier japonais",
+    "inputRulesHelp": "Aide règles de saisie",
     "playAudio": "Lire l'audio",
     "replayAudio": "Rejouer l'audio",
     "noDakuten": "Pas de dakuten/handakuten",
@@ -148,7 +186,9 @@
     "dakutenOnly": "Dakuten/handakuten uniquement",
     "noCombinations": "Pas de combinaisons",
     "combinationsOnly": "Combinaisons uniquement",
-    "soundOnlyMode": "Écouter et taper la traduction"
+    "soundOnlyMode": "Écouter et taper la traduction",
+    "kanjiModeAll": "Trouvez les lectures kun / on, et les significations",
+    "kanjiModeMeanings": "Trouvez les significations uniquement"
   },
   "languages": {
     "fr": "Français",

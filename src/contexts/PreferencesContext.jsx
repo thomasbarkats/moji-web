@@ -21,6 +21,7 @@ const DEFAULT_PREFERENCES = {
   combinationsMode: KANA_INCLUSION.OFF,
   vocabularyMode: VOCABULARY_MODES.FROM_JAPANESE,
   kanjiMode: KANJI_MODES.ALL,
+  kanjiDiscoveryMode: false,
   language: LANGUAGES.EN,
 };
 
@@ -74,6 +75,10 @@ export const PreferencesProvider = ({ children }) => {
     updatePreferences({ kanjiMode: value });
   };
 
+  const handleKanjiDiscoveryModeChange = (value) => {
+    updatePreferences({ kanjiDiscoveryMode: value });
+  };
+
   const handleLanguageChange = (value) => {
     updatePreferences({ language: value });
   };
@@ -91,6 +96,7 @@ export const PreferencesProvider = ({ children }) => {
     combinationsMode: preferences.combinationsMode,
     vocabularyMode: preferences.vocabularyMode,
     kanjiMode: preferences.kanjiMode,
+    kanjiDiscoveryMode: preferences.kanjiDiscoveryMode,
     language: preferences.language,
 
     // Handlers
@@ -100,6 +106,7 @@ export const PreferencesProvider = ({ children }) => {
     handleCombinationsModeChange,
     handleVocabularyModeChange,
     handleKanjiModeChange,
+    handleKanjiDiscoveryModeChange,
     handleLanguageChange,
     toggleDarkMode,
     cycleSoundMode,
