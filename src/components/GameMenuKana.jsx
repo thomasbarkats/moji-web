@@ -112,7 +112,12 @@ export const GameMenuKana = () => {
       <div className="space-y-4">
         <button
           onClick={openReviewKana}
-          className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
+          disabled={kanaLoading}
+          className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transform transition-all duration-200 shadow-lg
+            ${!kanaLoading
+              ? 'transform hover:scale-105 cursor-pointer'
+              : 'opacity-50 cursor-not-allowed'
+            }`}
         >
           <div className="flex items-center justify-center gap-2">
             <BookOpen className="w-4 h-4" />
