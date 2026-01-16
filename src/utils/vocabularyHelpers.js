@@ -2,28 +2,53 @@
 // PARSING
 // ============================================
 
-export const parseVocabularyEntry = (entry) => {
-  if (!Array.isArray(entry) || entry.length < 2) {
-    throw new Error('Invalid vocabulary entry format');
+export const parseVocabularyEntry = (entry, language = 'en') => {
+  // Handle object format from API
+  if (typeof entry === 'object' && !Array.isArray(entry) && entry.jp) {
+    const japaneseRaw = entry.jp;
+    const translation = entry.translation || '';
+    const infoText = entry.note || null;
+
+    const parts = parseJapaneseText(japaneseRaw);
+
+    const speechText = parts.map(part => {
+      if (part.type === 'kanji') return part.reading;
+      if (part.type === 'optional') return part.text.slice(1, -1);
+      return part.text;
+    }).join('');
+
+    return {
+      jp: japaneseRaw,
+      cleanedJp: cleanJapaneseText(japaneseRaw),
+      speechText,
+      translation,
+      infoText,
+      parts,
+    };
   }
 
-  const [japaneseRaw, translation, infoText = null] = entry;
-  const parts = parseJapaneseText(japaneseRaw);
+  // Legacy array format support
+  if (Array.isArray(entry) && entry.length >= 2) {
+    const [japaneseRaw, translation, infoText = null] = entry;
+    const parts = parseJapaneseText(japaneseRaw);
 
-  const speechText = parts.map(part => {
-    if (part.type === 'kanji') return part.reading;
-    if (part.type === 'optional') return part.text.slice(1, -1);
-    return part.text;
-  }).join('');
+    const speechText = parts.map(part => {
+      if (part.type === 'kanji') return part.reading;
+      if (part.type === 'optional') return part.text.slice(1, -1);
+      return part.text;
+    }).join('');
 
-  return {
-    jp: japaneseRaw,
-    cleanedJp: cleanJapaneseText(japaneseRaw),
-    speechText,
-    translation,
-    infoText,
-    parts,
-  };
+    return {
+      jp: japaneseRaw,
+      cleanedJp: cleanJapaneseText(japaneseRaw),
+      speechText,
+      translation,
+      infoText,
+      parts,
+    };
+  }
+
+  throw new Error('Invalid vocabulary entry format');
 };
 
 export const parseJapaneseText = (text) => {
@@ -51,23 +76,32 @@ export const parseJapaneseText = (text) => {
       if (closeBraceIdx === -1) throw new Error(`Unmatched '{' at position ${i}`);
 
       const nextChar = text[closeBraceIdx + 1];
-      if (nextChar !== '[') {
-        throw new Error(`Expected '[' after '}' at position ${closeBraceIdx + 1}`);
+
+      // If followed by '[', it's a kanji with reading
+      if (nextChar === '[') {
+        const closeBracketIdx = text.indexOf(']', closeBraceIdx + 1);
+        if (closeBracketIdx === -1) throw new Error(`Unmatched '[' at position ${closeBraceIdx + 1}`);
+
+        const kanjiText = text.substring(i + 1, closeBraceIdx);
+        const reading = text.substring(closeBraceIdx + 2, closeBracketIdx);
+
+        parts.push({
+          type: 'kanji',
+          text: kanjiText,
+          reading,
+        });
+        i = closeBracketIdx + 1;
+        continue;
+      } else {
+        // If not followed by '[', treat the content as plain text
+        const content = text.substring(i + 1, closeBraceIdx);
+        parts.push({
+          type: 'text',
+          text: content,
+        });
+        i = closeBraceIdx + 1;
+        continue;
       }
-
-      const closeBracketIdx = text.indexOf(']', closeBraceIdx + 1);
-      if (closeBracketIdx === -1) throw new Error(`Unmatched '[' at position ${closeBraceIdx + 1}`);
-
-      const kanjiText = text.substring(i + 1, closeBraceIdx);
-      const reading = text.substring(closeBraceIdx + 2, closeBracketIdx);
-
-      parts.push({
-        type: 'kanji',
-        text: kanjiText,
-        reading,
-      });
-      i = closeBracketIdx + 1;
-      continue;
     }
 
     parts.push({
@@ -99,9 +133,9 @@ export const normalizeAnswer = (text) => {
     .toLowerCase()
     .trim()
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[.,;:!?'"(){}[\]]/g, '')
-    .replace(/\s+/g, ' ')
+    .replace(/[\u0300-\u036f]/g, '')  // Remove accents
+    .replace(/[.,;:!?'"(){}[\]/-]/g, '')  // Remove punctuation, /, and -
+    .replace(/\s+/g, ' ')  // Collapse multiple spaces
     .trim();
 }
 
@@ -130,19 +164,58 @@ export const generateOptionalVariants = (text) => {
 };
 
 // ============================================
+// WORD SORTING FOR ORDER-INDEPENDENT MATCHING
+// ============================================
+
+export const sortWords = (text) => {
+  return text.split(' ').filter(w => w).sort().join(' ');
+};
+
+// ============================================
+// CARTESIAN PRODUCT FOR VARIANT COMBINATIONS
+// ============================================
+
+const cartesianProduct = (arrays) => {
+  if (arrays.length === 0) return [[]];
+  if (arrays.length === 1) return arrays[0].map(item => [item]);
+
+  const [first, ...rest] = arrays;
+  const restProduct = cartesianProduct(rest);
+
+  return first.flatMap(item =>
+    restProduct.map(combo => [item, ...combo])
+  );
+};
+
+// ============================================
 // VALIDATION
 // ============================================
 
 export const checkVocabularyAnswer = (userAnswer, correctAnswer) => {
+  // Split by / to get all required translations
+  const correctParts = correctAnswer.split('/').map(part => part.trim());
+
+  // For each correct part, generate optional variants and normalize
+  const variantsPerPart = correctParts.map(part => {
+    if (part.includes('(') && part.includes(')')) {
+      const variants = generateOptionalVariants(part);
+      return variants.map(normalizeAnswer);
+    }
+    return [normalizeAnswer(part)];
+  });
+
+  // Generate all possible combinations (cartesian product of variants)
+  const allCombinations = cartesianProduct(variantsPerPart);
+
+  // For each combination, join all words and sort them
+  const sortedCorrectCombinations = allCombinations.map(combo =>
+    sortWords(combo.join(' '))
+  );
+
+  // Normalize user answer and sort its words
   const normalizedUser = normalizeAnswer(userAnswer);
-  const normalizedCorrect = normalizeAnswer(correctAnswer);
+  const sortedUserWords = sortWords(normalizedUser);
 
-  if (normalizedUser === normalizedCorrect) return true;
-
-  if (correctAnswer.includes('(') && correctAnswer.includes(')')) {
-    const variants = generateOptionalVariants(correctAnswer);
-    return variants.some(variant => normalizeAnswer(variant) === normalizedUser);
-  }
-
-  return false;
+  // Check if user's sorted words match any valid combination
+  return sortedCorrectCombinations.includes(sortedUserWords);
 };

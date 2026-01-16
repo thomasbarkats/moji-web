@@ -1,7 +1,9 @@
 import { GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
+import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
+import { vocabularyAPI } from '../services/apiService';
 import {
   speakReading,
   selectNextItem,
@@ -13,7 +15,6 @@ import {
 
 export const useGameLogicVocabulary = () => {
   const {
-    vocabularyLists,
     setGameMode,
     setGameState,
     setUserInput,
@@ -23,24 +24,78 @@ export const useGameLogicVocabulary = () => {
     setSessionStats,
     currentItem,
     setCurrentItem,
-    setCurrentVocabularyWords,
     currentItemStartRef,
   } = useGameContext();
 
-  const { vocabularyMode, soundMode, setSoundModeValue } = usePreferences();
+  const {
+    setCurrentVocabularyWords,
+    setSessionFavoritesVocabulary,
+    wordsCache,
+    setWordsCache,
+  } = useGameContextVocabulary();
+
+  const { vocabularyMode, soundMode, setSoundModeValue, language } = usePreferences();
 
 
-  const initializeVocabularyGame = (selectedListKeys) => {
+  const initializeVocabularyGame = async (selectedListKeys) => {
     if (!selectedListKeys || selectedListKeys.length === 0) return;
 
     if (vocabularyMode === VOCABULARY_MODES.SOUND_ONLY && soundMode === SOUND_MODES.NONE) {
       setSoundModeValue(SOUND_MODES.SPEECH_ONLY);
     }
 
-    const words = selectedListKeys.flatMap(listKey => {
-      const rawWords = vocabularyLists[listKey]?.words || [];
-      return rawWords.map(parseVocabularyEntry);
+    // Load actual word data from API for all selected lists in one request
+    let rawWords = [];
+    const isFavoritesIncluded = selectedListKeys.includes('favorites');
+    const cacheKey = `${[...selectedListKeys].sort().join(',')}_${language}`;
+
+    // Check cache first
+    if (wordsCache[cacheKey]) {
+      rawWords = wordsCache[cacheKey];
+    } else {
+      try {
+        const listData = await vocabularyAPI.getWords(selectedListKeys, language);
+        rawWords = listData.words || [];
+        // Store in cache
+        setWordsCache(prev => ({ ...prev, [cacheKey]: rawWords }));
+      } catch (error) {
+        console.error(`Failed to load vocabulary lists:`, error);
+      }
+    }
+
+    const words = rawWords.map(word => {
+      try {
+        return {
+          ...parseVocabularyEntry(word, language),
+          id: word.id
+        };
+      } catch (error) {
+        console.error('Failed to parse word:', word, error);
+        // Return a fallback parsed word
+        return {
+          id: word.id,
+          jp: word.jp || '',
+          cleanedJp: word.jp || '',
+          speechText: word.jp || '',
+          translation: word.translation || '',
+          infoText: word.note || null,
+          parts: [{ type: 'text', text: word.jp || '' }]
+        };
+      }
     });
+
+    // Initialize session favorites using isFavorite field
+    if (isFavoritesIncluded) {
+      const favoritesMap = new Map();
+      rawWords.forEach(word => {
+        if (word.isFavorite) {
+          favoritesMap.set(word.id, true);
+        }
+      });
+      setSessionFavoritesVocabulary(favoritesMap);
+    } else {
+      setSessionFavoritesVocabulary(new Map());
+    }
 
     if (words.length === 0) return;
 
@@ -57,12 +112,19 @@ export const useGameLogicVocabulary = () => {
     selectNextVocabularyWord(words, initialProgress);
   };
 
-  const selectNextVocabularyWord = (allWords, currentProgress) => {
+  const selectNextVocabularyWord = (allWords, currentProgress, forceRepeatWord = null) => {
     const availableWords = allWords.filter(word => !currentProgress[word.jp].mastered);
 
     if (availableWords.length === 0) return null;
 
-    const nextWord = selectNextItem(availableWords, currentProgress, currentItem?.key);
+    let nextWord;
+
+    // Check if we need to force repeat a word (loop mode)
+    if (forceRepeatWord) {
+      nextWord = allWords.find(w => w.jp === forceRepeatWord);
+    } else {
+      nextWord = selectNextItem(availableWords, currentProgress, currentItem?.key);
+    }
 
     if (!nextWord) return null;
 
@@ -70,6 +132,7 @@ export const useGameLogicVocabulary = () => {
     const isToJapaneseMode = vocabularyMode === VOCABULARY_MODES.TO_JAPANESE;
 
     const newItem = {
+      id: nextWord.id,
       key: nextWord.jp,
       question: isToJapaneseMode
         ? nextWord.translation

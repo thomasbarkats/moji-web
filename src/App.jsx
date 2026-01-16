@@ -1,6 +1,7 @@
-import { Info, Keyboard } from 'lucide-react';
+import { HelpCircle, Keyboard } from 'lucide-react';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useGameContext } from './contexts/GameContext';
+import { useGameContextVocabulary } from './contexts/GameContextVocabulary';
 import { useGameContextKanji } from './contexts/GameContextKanji';
 import { useTranslation } from './contexts/I18nContext';
 import { usePreferences } from './contexts/PreferencesContext';
@@ -16,6 +17,8 @@ import {
   ReviewVocabulary,
   ReviewKana,
   ReviewKanji,
+  ProfileButton,
+  MobileWarning,
 } from './components';
 import {
   useGameActions,
@@ -29,16 +32,13 @@ function App() {
   const { t } = useTranslation();
   const { theme } = usePreferences();
   const { kanjiSelectedLists } = useGameContextKanji();
+  const { wordsSelectedLists, currentVocabularyWords } = useGameContextVocabulary();
   const {
     gameState,
     appMode,
     gameMode,
-    vocabularyLoading,
-    kanjiLoading,
-    wordsSelectedLists,
     sessionStats,
     sortBy,
-    currentVocabularyWords,
   } = useGameContext();
 
   useKeyboardNavigation();
@@ -48,20 +48,23 @@ function App() {
   const { initializeKanjiGame } = useGameLogicKanji();
   const { resetGame } = useGameActions();
 
-
-  switch (gameState) {
+  const renderContent = () => {
+    switch (gameState) {
     case GAME_STATES.MENU:
       switch (appMode) {
         case APP_MODES.KANA:
-          return <GameMenuKana />;
+          return (
+            <>
+              <GameMenuKana />
+              <ProfileButton position="bottom-4 right-6" />
+            </>
+          );
         case APP_MODES.VOCABULARY:
-          if (vocabularyLoading) {
-            return <div>Loading vocabulary...</div>;
-          }
           return (<>
             <GameMenuVocabulary />
+            <ProfileButton position="bottom-32 right-6" />
             <FloatingHelpButton
-              icon={Info}
+              icon={HelpCircle}
               tooltip={t('tooltips.inputRulesHelp')}
               title={t('inputRulesHelp.vocabularyTitle')}
               theme={theme}
@@ -70,6 +73,11 @@ function App() {
               <div>
                 <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyJapaneseTitle')}</h4>
                 <p className="text-sm">{t('inputRulesHelp.vocabularyJapaneseDesc')}</p>
+              </div>
+
+              <div>
+                <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyTranslationsTitle')}</h4>
+                <p className="text-sm">{t('inputRulesHelp.vocabularyTranslationsDesc')}</p>
               </div>
             </FloatingHelpButton>
             <FloatingHelpButton
@@ -100,13 +108,11 @@ function App() {
             </FloatingHelpButton>
           </>);
         case APP_MODES.KANJI:
-          if (kanjiLoading) {
-            return <div>Loading kanji...</div>;
-          }
           return (<>
             <GameMenuKanji />
+            <ProfileButton position="bottom-32 right-6" />
             <FloatingHelpButton
-              icon={Info}
+              icon={HelpCircle}
               tooltip={t('tooltips.inputRulesHelp')}
               title={t('inputRulesHelp.kanjiTitle')}
               theme={theme}
@@ -154,43 +160,74 @@ function App() {
       }
 
     case GAME_STATES.PLAYING:
-      return <GamePlay />;
+      return (
+        <>
+          <GamePlay />
+          <ProfileButton position="bottom-4 right-6" />
+        </>
+      );
 
     case GAME_STATES.SUMMARY:
       return (
-        <Summary
-          onNewSession={resetGame}
-          onRestartSameMode={() => {
-            switch (gameMode) {
-              case GAME_MODES.VOCABULARY:
-                initializeVocabularyGame(wordsSelectedLists);
-                break;
-              case GAME_MODES.KANJI:
-                initializeKanjiGame(kanjiSelectedLists);
-                break;
-              default:
-                initializeKanaGame(gameMode);
-            }
-          }}
-          sortedStats={getSortedStats(sessionStats, sortBy, currentVocabularyWords)}
-        />
+        <>
+          <Summary
+            onNewSession={resetGame}
+            onRestartSameMode={() => {
+              switch (gameMode) {
+                case GAME_MODES.VOCABULARY:
+                  initializeVocabularyGame(wordsSelectedLists);
+                  break;
+                case GAME_MODES.KANJI:
+                  initializeKanjiGame(kanjiSelectedLists);
+                  break;
+                default:
+                  initializeKanaGame(gameMode);
+              }
+            }}
+            sortedStats={getSortedStats(sessionStats, sortBy, currentVocabularyWords)}
+          />
+          <ProfileButton position="bottom-4 right-6" />
+        </>
       );
 
     case GAME_STATES.REVIEW:
       switch (appMode) {
         case APP_MODES.KANA:
-          return <ReviewKana />;
+          return (
+            <>
+              <ReviewKana />
+              <ProfileButton position="bottom-4 right-6" />
+            </>
+          );
         case APP_MODES.VOCABULARY:
-          return <ReviewVocabulary />;
+          return (
+            <>
+              <ReviewVocabulary />
+              <ProfileButton position="bottom-4 right-6" />
+            </>
+          );
         case APP_MODES.KANJI:
-          return <ReviewKanji />;
+          return (
+            <>
+              <ReviewKanji />
+              <ProfileButton position="bottom-4 right-6" />
+            </>
+          );
         default:
           return null;
       }
 
     default:
       return null;
-  }
+    }
+  };
+
+  return (
+    <>
+      <MobileWarning />
+      {renderContent()}
+    </>
+  );
 }
 
 export default App;

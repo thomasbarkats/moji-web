@@ -38,6 +38,8 @@ export const useTheme = () => {
         divider: 'divide-gray-600',
         inputBorder: 'border-gray-600 focus:border-blue-400',
         buttonSecondary: 'text-gray-300 hover:text-gray-100 hover:bg-gray-700',
+        buttonSkip: 'text-white bg-gray-500 hover:bg-gray-600',
+        bookmarkColor: 'text-yellow-500',
         statsBg: {
           blue: 'bg-blue-900/50',
           red: 'bg-red-900/50',
@@ -59,7 +61,7 @@ export const useTheme = () => {
           bg: 'bg-red-900/50 border-red-400',
           title: 'text-red-300',
           text: 'text-red-400'
-        }
+        },
       };
     } else {
       return {
@@ -79,6 +81,8 @@ export const useTheme = () => {
         divider: 'divide-gray-300',
         inputBorder: 'border-gray-300 focus:border-blue-500',
         buttonSecondary: 'text-gray-500 hover:text-gray-700 hover:bg-gray-100',
+        buttonSkip: 'text-white bg-gray-400 hover:bg-gray-500',
+        bookmarkColor: 'text-yellow-600',
         statsBg: {
           blue: 'bg-blue-100',
           red: 'bg-red-100',
@@ -100,7 +104,7 @@ export const useTheme = () => {
           bg: 'bg-red-100 border-red-300',
           title: 'text-red-800',
           text: 'text-red-700'
-        }
+        },
       };
     }
   };

@@ -1,58 +1,43 @@
 import { useState, useEffect } from 'react';
+import { vocabularyAPI } from '../services/apiService';
 
 
-export const useDataVocabulary = (language = 'fr') => {
+export const useDataVocabulary = (language = 'fr', isAuthenticated = false) => {
   const [vocabularyLists, setVocabularyLists] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadVocabularyLists = async () => {
-      const lists = {};
-
       try {
-        const modules = import.meta.glob('../data/vocabulary/*.json');
+        setLoading(true);
+        setError(null);
 
-        const loadPromises = Object.entries(modules).map(async ([path, importFn]) => {
-          try {
-            const data = await importFn();
-            const filename = path.split('/').pop().replace('.json', '');
+        const listsResponse = await vocabularyAPI.getLists(language);
+        const lists = {};
 
-            if (data.default && data.default[language] && data.default.words) {
-              // Transform words to legacy format [japanese, translation, note?]
-              const transformedWords = data.default.words.map(word => {
-                const result = [word.jp, word[language]];
-                // Add note if it exists
-                const noteKey = `note_${language}`;
-                if (word[noteKey]) {
-                  result.push(word[noteKey]);
-                }
-                return result;
-              });
+        listsResponse.lists.forEach((listMeta) => {
+          const wordsArray = new Array(listMeta.wordCount || 0).fill(null);
 
-              lists[filename] = {
-                name: data.default[language],
-                words: transformedWords
-              };
-            } else {
-              console.warn(`Invalid format for vocabulary list: ${filename}`);
-            }
-          } catch (error) {
-            console.warn(`Failed to load vocabulary file: ${path}`, error);
-          }
+          lists[listMeta.id] = {
+            name: listMeta.name,
+            words: wordsArray,
+            isLocked: listMeta.isLocked,
+            count: listMeta.wordCount || 0
+          };
         });
-
-        await Promise.all(loadPromises);
 
         setVocabularyLists(lists);
       } catch (error) {
         console.error('Failed to load vocabulary lists:', error);
+        setError(error.message);
       } finally {
         setLoading(false);
       }
     };
 
     loadVocabularyLists();
-  }, [language]);
+  }, [language, isAuthenticated]);
 
-  return { vocabularyLists, loading };
+  return { vocabularyLists, loading, error };
 };

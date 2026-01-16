@@ -16,25 +16,12 @@
     "all": "Tout",
     "meaningsOnly": "Significations"
   },
-  "discoveryMode": {
-    "label": "Mode découverte",
-    "description": "Répéter le kanji jusqu'à réussite"
-  },
-  "discoveryModeHelp": {
-    "title": "Mode découverte",
-    "firstAppearanceTitle": "Première apparition",
-    "firstAppearanceDesc": "Chaque étape (kun → on → significations) boucle jusqu'à bonne réponse. Réessayez autant que nécessaire.",
-    "secondAppearanceTitle": "Deuxième apparition (si requis > 1)",
-    "secondAppearanceDesc": "Toutes les étapes bouclent ensemble. Si vous échouez une étape, vous recommencez à la première et devez toutes les réussir en séquence.",
-    "subsequentAppearancesTitle": "Apparitions suivantes (si requis > 2)",
-    "subsequentAppearancesDesc": "Plus de boucles. Fonctionne comme le mode normal.",
-    "note": "Idéal pour apprendre de nouveaux kanji progressivement."
-  },
   "gameplay": {
     "typeTranslation": "Tapez la traduction...",
     "typeReading": "Tapez la lecture...",
     "commaSeparated": "... (séparé par des virgules)",
     "validate": "Valider (Entrée)",
+    "skip": "Passer",
     "correct": "Correct !",
     "incorrect": "Incorrect",
     "youWrote": "Vous avez écrit :",
@@ -50,10 +37,10 @@
   },
   "menu": {
     "selectListsOf": "Sélectionner des listes de",
-    "selected": "sélectionné(es)",
+    "selected": "sélectionnées",
     "filterOptions": "Options de filtrage...",
     "difficulty": "Difficulté",
-    "requiredSuccesses": "Succès requis",
+    "repetitions": "Répétitions",
     "dakutenMode": "Dakuten & Handakuten",
     "combinationsMode": "Combinaisons",
     "vocabularyMode": "Lecture / saisie",
@@ -134,7 +121,13 @@
     "list": "liste",
     "wordsSelected": "mots sélectionnés",
     "kanjiSelected": "kanji sélectionnés",
-    "backToMenu": "Retour au menu"
+    "backToMenu": "Retour au menu",
+    "signInToUnlock": "Connectez-vous pour déverrouiller toutes les listes",
+    "unlockAllLists": "Déverrouiller toutes les listes",
+    "bookmarkWordsPlaceholder": "Marquez des mots pendant votre session",
+    "bookmarkKanjiPlaceholder": "Marquez des kanji pendant votre session",
+    "signInForFavorites": "Connectez-vous pour enregistrer des favoris",
+    "favorites": "Favoris"
   },
   "titles": {
     "japanese": "Japonais",
@@ -167,12 +160,14 @@
   "inputRulesHelp": {
     "kanjiTitle": "Règles de saisie - Kanji",
     "kanjiReadingsTitle": "Lectures (kun/on) :",
-    "kanjiReadingsDesc": "La saisie en romaji ou en kana est acceptée. Les okurigana sont requis, mais les parenthèses peuvent être ignorées (ex. <code>ookii</code> et <code>oo(kii)</code> sont valides).",
+    "kanjiReadingsDesc": "La saisie en romaji ou en kana est acceptée. Les okurigana sont requis, mais les parenthèses les entourant peuvent être ignorées.",
     "kanjiMeaningsTitle": "Significations :",
     "kanjiMeaningsDesc": "Les accents, parenthèses et autres caractères spéciaux sont ignorés lors de la vérification.",
     "vocabularyTitle": "Règles de saisie - Vocabulaire",
     "vocabularyJapaneseTitle": "Texte japonais :",
-    "vocabularyJapaneseDesc": "Le texte japonais exact est attendu avec les bons kanji. Les okurigana sont requis, mais les parenthèses peuvent être ignorées pour eux ou d'autres précisions."
+    "vocabularyJapaneseDesc": "Le texte japonais exact est attendu avec les bons kanji. Les okurigana sont requis, mais les parenthèses peuvent être ignorées pour eux ou d'autres précisions.",
+    "vocabularyTranslationsTitle": "Traductions :",
+    "vocabularyTranslationsDesc": "Les accents, espaces, parenthèses (et leur contenu), \"/\", \"-\" et autres caractères peuvent être ignorés. En cas de traductions multiples, les séparateurs peuvent être ignorés et l'ordre de saisie n'importe pas."
   },
   "tooltips": {
     "typeJapanese": "Tapez en japonais",
@@ -188,10 +183,64 @@
     "combinationsOnly": "Combinaisons uniquement",
     "soundOnlyMode": "Écouter et taper la traduction",
     "kanjiModeAll": "Trouvez les lectures kun / on, et les significations",
-    "kanjiModeMeanings": "Trouvez les significations uniquement"
+    "kanjiModeMeanings": "Trouvez les significations uniquement",
+    "loopMode": "Boucler l'étape courante jusqu'à succès",
+    "toggleFurigana": "Afficher/masquer les furigana",
+    "addToFavorites": "Ajouter aux favoris",
+    "removeFromFavorites": "Retirer des favoris"
   },
   "languages": {
     "fr": "Français",
     "en": "English"
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "signIn": "Se connecter",
+    "signInDescription": "Connectez-vous pour déverrouiller toutes les listes et synchroniser votre progression sur tous vos appareils.",
+    "termsAgreement": "En vous connectant, vous acceptez nos Conditions d'utilisation et notre Politique de confidentialité."
+  },
+  "profile": {
+    "title": "Profil",
+    "manageSubscription": "Gérer l'abonnement",
+    "contactSupport": "Obtenir de l'aide",
+    "activeSubscription": "Abonnement actif",
+    "monthlySubscription": "Abonnement mensuel",
+    "noSubscription": "Aucun abonnement",
+    "lifetimeAccess": "Accès à vie",
+    "redirecting": "Redirection...",
+    "renewOn": "Renouvelé le"
+  },
+  "subscription": {
+    "unlockTitle": "Déverrouiller toutes les listes",
+    "description": "Accédez à toutes les listes de vocabulaire et de kanji :",
+    "features": {
+      "vocabularyLists": "Accès à toutes les listes de vocabulaire",
+      "kanjiLists": "Accès à toutes les listes de kanji",
+      "futureUpdates": "Toutes les futures mises à jour de contenu",
+      "lifetimeAccess": "Accès à vie - payez une fois, utilisez pour toujours"
+    },
+    "perMonth": "par mois",
+    "subscribeMonthly": "S'abonner mensuellement",
+    "subscribeLifetime": "S'abonner - À vie",
+    "redirecting": "Redirection vers Stripe...",
+    "comingSoon": "Bientôt disponible"
+  },
+  "support": {
+    "warningMessage": "Support pour des problèmes liés à l'abonnement (mal détecté, problème de paiement, etc.).",
+    "emailAddress": "Adresse email",
+    "yourInformation": "Vos informations",
+    "accountEmail": "Email du compte",
+    "subscriptionStatus": "Statut d'abonnement",
+    "whatToInclude": "Que faut-il inclure dans votre email ?",
+    "instruction1": "Votre email associé à votre compte (si différent de l'email utilisé pour me contacter)",
+    "instruction2": "Votre statut d'abonnement (affiché ci-dessus)",
+    "instruction3": "Une description détaillée de votre problème",
+    "openEmailClient": "Ouvrir le client email"
+  },
+  "mobileWarning": {
+    "title": "Bureau recommandé",
+    "message": "Cette application est conçue pour un usage sur ordinateur ou tablette avec un clavier. L'expérience mobile n'est pas optimisée et peut ne pas fonctionner correctement.",
+    "dismiss": "Continuer quand même"
   }
 }

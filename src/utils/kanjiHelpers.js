@@ -275,6 +275,7 @@ export const formatKanjiForReview = (kanji) => {
   });
 
   return {
+    id: kanji.id,
     character: kanji.character,
     kun: kunReadings.join(', '),
     on: onReadings.join(', '),

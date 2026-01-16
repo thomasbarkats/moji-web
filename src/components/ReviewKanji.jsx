@@ -1,17 +1,93 @@
-import { Volume2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Volume2, Bookmark } from 'lucide-react';
 import { SORT_MODES } from '../constants';
+import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useAuth } from '../contexts/AuthContext';
 import { formatKanjiForReview, speakReading } from '../utils';
+import { kanjiAPI } from '../services/apiService';
 import { ReviewLayout } from './';
 
 
 export const ReviewKanji = () => {
   const { t } = useTranslation();
-  const { theme } = usePreferences();
-  const { kanjiLists, kanjiSelectedLists } = useGameContextKanji();
+  const { theme, language } = usePreferences();
+  const { reviewExpectedCountKanji } = useGameContext();
+  const {
+    kanjiLists,
+    kanjiSelectedLists,
+    sessionFavoritesKanji,
+    setSessionFavoritesKanji,
+    addKanjiToFavorites,
+    removeKanjiFromFavorites,
+    kanjiCache,
+    setKanjiCache,
+  } = useGameContextKanji();
 
+  const { isAuthenticated } = useAuth();
+  const [rawKanji, setRawKanji] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  // Load data when selection changes
+  useEffect(() => {
+    const loadKanjiData = async () => {
+      if (kanjiSelectedLists.length === 0) return;
+
+      const cacheKey = `${[...kanjiSelectedLists].sort().join(',')}_${language}`;
+      const isFavoritesIncluded = kanjiSelectedLists.includes('favorites');
+
+      // Check cache first (synchronously to avoid loading flash)
+      if (kanjiCache[cacheKey]) {
+        setRawKanji(kanjiCache[cacheKey]);
+        if (isFavoritesIncluded) {
+          const favoritesMap = new Map();
+          kanjiCache[cacheKey].forEach(kanji => {
+            if (kanji.isFavorite) {
+              favoritesMap.set(kanji.id, true);
+            }
+          });
+          setSessionFavoritesKanji(favoritesMap);
+        }
+        setLoading(false);
+        return;
+      }
+
+      // Data not in cache - show loading and fetch
+      setRawKanji([]);
+      setLoading(true);
+
+      try {
+        const listData = await kanjiAPI.getKanji(kanjiSelectedLists, language);
+        const allKanji = listData.kanji || [];
+
+        // Store in cache
+        setKanjiCache(prev => ({ ...prev, [cacheKey]: allKanji }));
+
+        // Initialize session favorites using isFavorite field
+        if (isFavoritesIncluded) {
+          const favoritesMap = new Map();
+          allKanji.forEach(kanji => {
+            if (kanji.isFavorite) {
+              favoritesMap.set(kanji.id, true);
+            }
+          });
+          setSessionFavoritesKanji(favoritesMap);
+        }
+
+        setRawKanji(allKanji);
+      } catch (error) {
+        console.error('Failed to load kanji lists:', error);
+        setRawKanji([]);
+      }
+
+      setLoading(false);
+    };
+
+    loadKanjiData();
+  }, [kanjiSelectedLists, language]);
 
   const sortOptions = [
     { value: SORT_MODES.DEFAULT, label: 'sortModes.default' },
@@ -22,38 +98,84 @@ export const ReviewKanji = () => {
   const isMergedSort = (sortBy) =>
     sortBy === SORT_MODES.ALPHABETICAL || sortBy === SORT_MODES.STROKES;
 
-  const getAllKanji = (sortBy) => {
-    // Collect all kanji from all selected lists with their list info
-    const allKanji = kanjiSelectedLists.flatMap(listKey => {
-      const list = kanjiLists[listKey];
-      if (!list) return [];
+  const handleToggleFavorite = (kanjiId) => {
+    if (!kanjiId) return;
 
-      return list.kanji.map(k => ({
+    if (sessionFavoritesKanji.has(kanjiId)) {
+      removeKanjiFromFavorites(kanjiId);
+    } else {
+      addKanjiToFavorites(kanjiId);
+    }
+  };
+
+  const getAllKanji = (sortBy) => {
+    if (loading || rawKanji.length === 0) return [];
+
+    // Merged views: sort without duplicates
+    if (sortBy === SORT_MODES.ALPHABETICAL || sortBy === SORT_MODES.STROKES) {
+      const kanjiData = rawKanji.map(k => ({
         ...formatKanjiForReview(k),
-        listKey,
-        listName: list.name
+        listKey: k.isFavorite ? 'favorites' : k.listId,
+        listName: k.isFavorite ? kanjiLists['favorites']?.name : kanjiLists[k.listId]?.name
       }));
+
+      if (sortBy === SORT_MODES.ALPHABETICAL) {
+        return kanjiData.sort((a, b) =>
+          a.character.localeCompare(b.character, 'ja')
+        );
+      }
+
+      if (sortBy === SORT_MODES.STROKES) {
+        return kanjiData.sort((a, b) => {
+          if (a.strokes !== b.strokes) {
+            return (a.strokes || 999) - (b.strokes || 999);
+          }
+          return a.character.localeCompare(b.character, 'ja');
+        });
+      }
+    }
+
+    // Grouped view: duplicate favorites to show them in both sections
+    // Sort by ID (ascending) for stable ordering
+    const seenListKeys = new Set();
+    const orderedListKeys = [];
+
+    // Extract unique list keys from rawKanji
+    rawKanji.forEach(k => {
+      const listId = k.listId;
+      if (!seenListKeys.has(listId) && kanjiSelectedLists.includes(listId)) {
+        seenListKeys.add(listId);
+        orderedListKeys.push(listId);
+      }
     });
 
-    // Apply sorting
-    if (sortBy === SORT_MODES.ALPHABETICAL) {
-      return allKanji.sort((a, b) =>
-        a.character.localeCompare(b.character, 'ja')
-      );
+    // Sort by ID (ascending)
+    orderedListKeys.sort();
+
+    // Add favorites at the beginning if selected and has items
+    const hasFavorites = kanjiSelectedLists.includes('favorites') && rawKanji.some(k => k.isFavorite);
+    if (hasFavorites) {
+      orderedListKeys.unshift('favorites');
     }
 
-    if (sortBy === SORT_MODES.STROKES) {
-      return allKanji.sort((a, b) => {
-        // Sort by strokes first, then alphabetically if strokes are equal
-        if (a.strokes !== b.strokes) {
-          return (a.strokes || 999) - (b.strokes || 999);
+    return orderedListKeys.flatMap(listKey => {
+      const kanjiForList = (listKey === 'favorites'
+        ? rawKanji.filter(k => k.isFavorite)
+        : rawKanji.filter(k => k.listId === listKey)
+      ).sort((a, b) => {
+        // Sort by ID (ascending)
+        if (typeof a.id === 'number' && typeof b.id === 'number') {
+          return a.id - b.id;
         }
-        return a.character.localeCompare(b.character, 'ja');
+        return String(a.id).localeCompare(String(b.id));
       });
-    }
 
-    // Default: keep original order (grouped by list)
-    return allKanji;
+      return kanjiForList.map(k => ({
+        ...formatKanjiForReview(k),
+        listKey,
+        listName: kanjiLists[listKey]?.name || listKey
+      }));
+    });
   };
 
   const handlePlayAudio = (kanji) => {
@@ -82,11 +204,12 @@ export const ReviewKanji = () => {
               <th className={`px-4 py-3 text-left ${theme.text} font-semibold`}>{t('titles.on')}</th>
               <th className={`px-4 py-3 text-left ${theme.text} font-semibold`}>{t('titles.meanings')}</th>
               <th className={`px-4 py-3 ${theme.text} font-semibold w-12`}></th>
+              {isAuthenticated && (<th></th>)}
             </tr>
           </thead>
           <tbody>
             {kanjiList.map((kanji, idx) => (
-              <tr key={idx} className={`${theme.border} border-b hover:${theme.hoverBg} transition-colors`}>
+              <tr key={idx} className={`${theme.border} border-b ${theme.selectorHover} transition-colors`}>
                 <td className={`px-4 py-4 text-4xl ${theme.text}`}>
                   {kanji.character}
                 </td>
@@ -117,6 +240,20 @@ export const ReviewKanji = () => {
                     <Volume2 className="w-4 h-4" />
                   </button>
                 </td>
+                {isAuthenticated && (
+                  <td className="px-4 py-4 text-center">
+                    <button
+                      onClick={() => handleToggleFavorite(kanji.id)}
+                      className={`${theme.textMuted} hover:${theme.text} transition-colors cursor-pointer`}
+                      title={sessionFavoritesKanji.has(kanji.id) ? t('tooltips.removeFromFavorites') : t('tooltips.addToFavorites')}
+                    >
+                      <Bookmark
+                        className={`w-5 h-5 ${sessionFavoritesKanji.has(kanji.id) ? theme.bookmarkColor : ''}`}
+                        fill={sessionFavoritesKanji.has(kanji.id) ? "currentColor" : "none"}
+                      />
+                    </button>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -131,6 +268,8 @@ export const ReviewKanji = () => {
       getAllItems={getAllKanji}
       renderTable={renderTable}
       isMergedSort={isMergedSort}
+      loading={loading}
+      expectedCount={reviewExpectedCountKanji}
     />
   );
 };

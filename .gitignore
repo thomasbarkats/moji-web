@@ -5,6 +5,7 @@
 .claude
 
 # testing
+.env
 /coverage
 
 # production

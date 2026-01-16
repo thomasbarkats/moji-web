@@ -1,5 +1,5 @@
 import { Volume2, ArrowLeft } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GAME_STATES, KANA_TYPES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useTranslation } from '../contexts/I18nContext';
@@ -14,6 +14,15 @@ export const ReviewKana = () => {
   const { dakutenMode, combinationsMode, theme } = usePreferences();
   const [selectedOptions, setSelectedOptions] = useState(initFilterSelection(dakutenMode, combinationsMode));
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setGameState(GAME_STATES.MENU);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setGameState]);
 
   const filterOptions = [
     { value: KANA_TYPES.DAKUTEN, label: `${t('menu.include')} ${t('menu.dakutenMode')}`, count: null },

@@ -1,4 +1,5 @@
 import { useGameContext } from '../contexts/GameContext';
+import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKana } from './useGameLogicKana';
@@ -23,7 +24,6 @@ import {
   getExpectedAnswerForFeedback,
   getKunReadingsForAudio,
   getOnReadingsForAudio,
-  getFirstStepForKanji,
 } from '../utils';
 
 
@@ -35,7 +35,6 @@ export const useGameActions = () => {
     userInput,
     progress,
     sessionStats,
-    currentVocabularyWords,
     currentItemStartRef,
     setGameState,
     setGameMode,
@@ -45,8 +44,12 @@ export const useGameActions = () => {
     setSessionStats,
     setStartTime,
     setFeedback,
-    setCurrentVocabularyWords,
   } = useGameContext();
+
+  const {
+    currentVocabularyWords,
+    setCurrentVocabularyWords,
+  } = useGameContextVocabulary();
 
   const {
     currentStep,
@@ -59,9 +62,11 @@ export const useGameActions = () => {
     requiredSuccesses,
     dakutenMode,
     combinationsMode,
+    kanaLoopMode,
     vocabularyMode,
+    vocabularyLoopMode,
     soundMode,
-    kanjiDiscoveryMode,
+    kanjiLoopMode,
     kanjiMode,
   } = usePreferences();
 
@@ -111,11 +116,11 @@ export const useGameActions = () => {
     triggerConfetti();
   };
 
-  const proceedToNextItem = (newProgress, forceRepeatKanji = null, forceRestartStep = null) => {
+  const proceedToNextItem = (newProgress, forceRepeatKanji = null, forceRestartStep = null, forceRepeatWord = null, forceRepeatKana = null) => {
     let nextItem;
     switch (gameMode) {
       case GAME_MODES.VOCABULARY:
-        nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress);
+        nextItem = selectNextVocabularyWord(currentVocabularyWords, newProgress, forceRepeatWord);
         break;
       case GAME_MODES.KANJI:
         nextItem = selectNextKanji(currentKanjiList, newProgress, forceRepeatKanji, forceRestartStep);
@@ -123,7 +128,7 @@ export const useGameActions = () => {
       default:
         const options = { dakutenMode, combinationsMode };
         const allKana = getAllKanaForMode(gameMode, kanaData, options);
-        nextItem = selectNextKana(allKana, newProgress);
+        nextItem = selectNextKana(allKana, newProgress, forceRepeatKana);
     }
 
     // If no next item available, finish session
@@ -133,7 +138,7 @@ export const useGameActions = () => {
   };
 
   const handleKanjiStepSubmit = () => {
-    if (!currentItem || !userInput.trim()) return;
+    if (!currentItem) return;
 
     const isCorrect = validateKanjiAnswer(userInput, currentItem, currentStep);
     const expectedAnswers = getExpectedAnswerForFeedback(currentItem, currentStep);
@@ -168,28 +173,12 @@ export const useGameActions = () => {
 
     const proceedToNext = () => {
       if (!isCorrect || isLastStep) {
-        // Check discovery mode logic on failure
-        if (!isCorrect && kanjiDiscoveryMode) {
-          const currentSuccesses = newProgress[currentItem.key].successes;
-
-          // 1st success attempt: repeat from current step
-          if (currentSuccesses === 0) {
-            setUserInput('');
-            setFeedback(null);
-            proceedToNextItem(newProgress, currentItem.key, currentStep);
-            return;
-          }
-
-          // 2nd success attempt: repeat from first step
-          if (currentSuccesses === 1 && requiredSuccesses > 1) {
-            setUserInput('');
-            setFeedback(null);
-            const firstStep = getFirstStepForKanji(currentItem.readings, kanjiMode);
-            proceedToNextItem(newProgress, currentItem.key, firstStep);
-            return;
-          }
-
-          // 3rd+ success or requiredSuccesses <= 2: normal behavior (proceed to next)
+        // Loop mode: repeat current step on failure
+        if (!isCorrect && kanjiLoopMode) {
+          setUserInput('');
+          setFeedback(null);
+          proceedToNextItem(newProgress, currentItem.key, currentStep);
+          return;
         }
 
         proceedToNextItem(newProgress);
@@ -220,7 +209,7 @@ export const useGameActions = () => {
   };
 
   const handleSubmit = () => {
-    if (!currentItem || !userInput.trim()) return;
+    if (!currentItem) return;
 
     if (gameMode === GAME_MODES.KANJI) {
       handleKanjiStepSubmit();
@@ -258,25 +247,34 @@ export const useGameActions = () => {
     const infoTextDelay = hasInfoText ? 1500 : 0;
     const nextDelay = (isCorrect ? TIMING.SUCCESS_FEEDBACK_DELAY : TIMING.ERROR_FEEDBACK_DELAY) + infoTextDelay;
 
+    const proceedToNext = () => {
+      // Loop mode for vocabulary: repeat same word on failure
+      if (!isCorrect && isVocabularyMode && vocabularyLoopMode) {
+        setTimeout(() => proceedToNextItem(newProgress, null, null, currentItem.key), infoTextDelay);
+      }
+      // Loop mode for kana: repeat same kana on failure
+      else if (!isCorrect && !isVocabularyMode && kanaLoopMode) {
+        setTimeout(() => proceedToNextItem(newProgress, null, null, null, currentItem.key), infoTextDelay);
+      } else {
+        setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
+      }
+    };
+
     if (shouldPlaySpeech) {
       const textToSpeak = (isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE)
         ? currentItem.speechText
         : currentItem.question;
 
       if (soundMode === SOUND_MODES.SPEECH_ONLY) {
-        speakReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
-          setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
-        });
+        speakReading(textToSpeak, isVocabularyMode ? 1 : 0.5, proceedToNext);
       } else {
         const speechDelay = (isCorrect && !isVocabularyMode) ? 150 : 280;
         setTimeout(() => {
-          speakReading(textToSpeak, isVocabularyMode ? 1 : 0.5, () => {
-            setTimeout(() => proceedToNextItem(newProgress), infoTextDelay);
-          });
+          speakReading(textToSpeak, isVocabularyMode ? 1 : 0.5, proceedToNext);
         }, speechDelay);
       }
     } else {
-      setTimeout(() => proceedToNextItem(newProgress), nextDelay);
+      setTimeout(proceedToNext, nextDelay);
     }
   };
 

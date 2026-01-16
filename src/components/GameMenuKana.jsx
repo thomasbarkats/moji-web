@@ -6,7 +6,7 @@ import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKana } from '../hooks';
 import { getAllKanaForMode } from '../utils';
-import { GameMenu, MenuControls, SegmentedControl } from '.';
+import { GameMenu, MenuControls, SegmentedControl, SkeletonButton } from '.';
 
 
 export const GameMenuKana = () => {
@@ -17,6 +17,7 @@ export const GameMenuKana = () => {
     appMode,
     updateAppMode,
     kanaData,
+    kanaLoading,
     switchToKanji,
     openReviewKana,
   } = useGameContext();
@@ -25,9 +26,11 @@ export const GameMenuKana = () => {
     requiredSuccesses,
     dakutenMode,
     combinationsMode,
+    kanaLoopMode,
     handleRequiredSuccessesChange,
     handleDakutenModeChange,
     handleCombinationsModeChange,
+    handleKanaLoopModeChange,
     cycleSoundMode,
     getSoundModeIcon,
     theme,
@@ -72,6 +75,10 @@ export const GameMenuKana = () => {
   };
 
   const renderModeSection = (mode, icon, labelKey, gradientClass) => {
+    if (kanaLoading) {
+      return <SkeletonButton theme={theme} />;
+    }
+
     const kanaCount = getAllKanaForMode(mode, kanaData, { dakutenMode, combinationsMode })?.length;
 
     return (
@@ -150,6 +157,9 @@ export const GameMenuKana = () => {
         getSoundModeIcon={getSoundModeIcon}
         requiredSuccesses={requiredSuccesses}
         onRequiredSuccessesChange={handleRequiredSuccessesChange}
+        showLoopMode={true}
+        loopMode={kanaLoopMode}
+        onLoopModeChange={handleKanaLoopModeChange}
       />
     </GameMenu>
   );

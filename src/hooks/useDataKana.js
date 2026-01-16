@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toRomaji } from 'wanakana';
-import kanaJSON from '../data/kana.json';
+import { kanaAPI } from '../services/apiService';
 
 
 const convertKanaList = (kanaArray) => {
@@ -19,17 +19,34 @@ export const useDataKana = () => {
     hiraganaCombinations: [],
     katakanaCombinations: []
   });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setKanaData({
-      hiragana: convertKanaList(kanaJSON.hiragana),
-      katakana: convertKanaList(kanaJSON.katakana),
-      hiraganaDakuten: convertKanaList(kanaJSON.hiraganaDakuten),
-      katakanaDakuten: convertKanaList(kanaJSON.katakanaDakuten),
-      hiraganaCombinations: convertKanaList(kanaJSON.hiraganaCombinations),
-      katakanaCombinations: convertKanaList(kanaJSON.katakanaCombinations)
-    });
+    const fetchKanaData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await kanaAPI.getAll();
+
+        setKanaData({
+          hiragana: convertKanaList(response.hiragana),
+          katakana: convertKanaList(response.katakana),
+          hiraganaDakuten: convertKanaList(response.hiraganaDakuten),
+          katakanaDakuten: convertKanaList(response.katakanaDakuten),
+          hiraganaCombinations: convertKanaList(response.hiraganaCombinations),
+          katakanaCombinations: convertKanaList(response.katakanaCombinations)
+        });
+      } catch (err) {
+        console.error('Failed to load kana data:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchKanaData();
   }, []);
 
-  return kanaData;
+  return { kanaData, loading, error };
 };

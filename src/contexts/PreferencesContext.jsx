@@ -19,9 +19,12 @@ const DEFAULT_PREFERENCES = {
   requiredSuccesses: 3,
   dakutenMode: KANA_INCLUSION.OFF,
   combinationsMode: KANA_INCLUSION.OFF,
+  kanaLoopMode: false,
   vocabularyMode: VOCABULARY_MODES.FROM_JAPANESE,
+  vocabularyLoopMode: false,
   kanjiMode: KANJI_MODES.ALL,
-  kanjiDiscoveryMode: false,
+  kanjiLoopMode: false,
+  showFurigana: true,
   language: LANGUAGES.EN,
 };
 
@@ -67,16 +70,28 @@ export const PreferencesProvider = ({ children }) => {
     updatePreferences({ combinationsMode: value });
   };
 
+  const handleKanaLoopModeChange = (value) => {
+    updatePreferences({ kanaLoopMode: value });
+  };
+
   const handleVocabularyModeChange = (value) => {
     updatePreferences({ vocabularyMode: value });
+  };
+
+  const handleVocabularyLoopModeChange = (value) => {
+    updatePreferences({ vocabularyLoopMode: value });
   };
 
   const handleKanjiModeChange = (value) => {
     updatePreferences({ kanjiMode: value });
   };
 
-  const handleKanjiDiscoveryModeChange = (value) => {
-    updatePreferences({ kanjiDiscoveryMode: value });
+  const handleKanjiLoopModeChange = (value) => {
+    updatePreferences({ kanjiLoopMode: value });
+  };
+
+  const handleShowFuriganaChange = (value) => {
+    updatePreferences({ showFurigana: value });
   };
 
   const handleLanguageChange = (value) => {
@@ -94,9 +109,12 @@ export const PreferencesProvider = ({ children }) => {
     requiredSuccesses: preferences.requiredSuccesses,
     dakutenMode: preferences.dakutenMode,
     combinationsMode: preferences.combinationsMode,
+    kanaLoopMode: preferences.kanaLoopMode,
     vocabularyMode: preferences.vocabularyMode,
+    vocabularyLoopMode: preferences.vocabularyLoopMode,
     kanjiMode: preferences.kanjiMode,
-    kanjiDiscoveryMode: preferences.kanjiDiscoveryMode,
+    kanjiLoopMode: preferences.kanjiLoopMode,
+    showFurigana: preferences.showFurigana,
     language: preferences.language,
 
     // Handlers
@@ -104,9 +122,12 @@ export const PreferencesProvider = ({ children }) => {
     handleRequiredSuccessesChange,
     handleDakutenModeChange,
     handleCombinationsModeChange,
+    handleKanaLoopModeChange,
     handleVocabularyModeChange,
+    handleVocabularyLoopModeChange,
     handleKanjiModeChange,
-    handleKanjiDiscoveryModeChange,
+    handleKanjiLoopModeChange,
+    handleShowFuriganaChange,
     handleLanguageChange,
     toggleDarkMode,
     cycleSoundMode,

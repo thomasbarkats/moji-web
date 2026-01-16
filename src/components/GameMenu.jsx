@@ -38,7 +38,7 @@ export const GameMenu = ({
             {onPrevious && (
               <button
                 onClick={onPrevious}
-                className={`absolute top-5 left-8 p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+                className={`absolute top-4 left-6 p-3 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
                 title={previousTooltip}
               >
                 <ChevronLeft className="w-5 h-5" />
@@ -47,7 +47,7 @@ export const GameMenu = ({
             {onNext && (
               <button
                 onClick={onNext}
-                className={`absolute top-5 right-8 p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+                className={`absolute top-4 right-6 p-3 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
                 title={nextTooltip}
               >
                 <ChevronRight className="w-5 h-5" />

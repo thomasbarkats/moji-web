@@ -1,18 +1,26 @@
-import { BookOpen, HelpCircle } from 'lucide-react';
 import { useState } from 'react';
 import { KANJI_MODES } from '../constants';
+import { useAuth } from '../contexts/AuthContext';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKanji } from '../hooks';
-import { GameMenu, HelpModal, MenuControls, MultiSelection, SegmentedControl } from '.';
+import {
+  GameMenu,
+  LoginModal,
+  MenuControls,
+  MultiSelection,
+  SegmentedControl,
+  LockedContentSection,
+} from '.';
 
 
 export const GameMenuKanji = () => {
   const { t } = useTranslation();
   const { initializeKanjiGame } = useGameLogicKanji();
-  const [showDiscoveryHelp, setShowDiscoveryHelp] = useState(false);
+  const { isAuthenticated } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const {
     appMode,
@@ -26,6 +34,7 @@ export const GameMenuKanji = () => {
     kanjiLists,
     kanjiSelectedLists,
     setKanjiSelectedLists,
+    kanjiListsOverrides,
   } = useGameContextKanji();
 
   const {
@@ -38,25 +47,53 @@ export const GameMenuKanji = () => {
     toggleDarkMode,
     kanjiMode,
     handleKanjiModeChange,
-    kanjiDiscoveryMode,
-    handleKanjiDiscoveryModeChange,
+    kanjiLoopMode,
+    handleKanjiLoopModeChange,
   } = usePreferences();
 
 
   const listOptions = Object.entries(kanjiLists)
-    .map(([key, list]) => ({
-      value: key,
-      label: list.name,
-      count: list.kanji.length,
-      description: list.kanji.map(k => k.character).join(' ')
-    }))
-    .sort((a, b) => a.value.localeCompare(b.value));
+    .map(([key, list]) => {
+      // Use override count if available, otherwise use list count
+      const overrideCount = kanjiListsOverrides[key]?.count;
+      const actualCount = overrideCount !== undefined ? overrideCount : (list.count || list.kanji?.length || 0);
+      const count = list.isLocked ? null : actualCount;
+      const isFavoritesEmpty = key === 'favorites' && count === 0;
+      return {
+        value: key,
+        label: list.name,
+        count,
+        description: list.isLocked ? undefined : list.kanji?.map(k => k.character).join(' '),
+        isLocked: list.isLocked,
+        disabled: isFavoritesEmpty,
+        icon: key === 'favorites' ? 'bookmark' : null,
+        placeholder: isFavoritesEmpty ? t('common.bookmarkKanjiPlaceholder') : null
+      };
+    })
+    .sort((a, b) => a.value.localeCompare(b.value, undefined, { numeric: true, sensitivity: 'base' }));
+
+  // Add favorites CTA option when not authenticated
+  const hasFavoritesOption = listOptions.some(opt => opt.value === 'favorites');
+  if (!isAuthenticated && !hasFavoritesOption) {
+    listOptions.unshift({
+      value: 'favorites',
+      label: t('common.favorites'),
+      icon: 'bookmark',
+      placeholder: t('common.signInForFavorites'),
+      onClick: () => setShowLoginModal(true)
+    });
+  }
+
+  // Check if any selected list is locked
+  const hasLockedSelection = kanjiSelectedLists.some(listKey =>
+    kanjiLists[listKey]?.isLocked
+  );
 
   const modeOptions = [
     {
       value: KANJI_MODES.ALL,
       label: t('kanjiModes.all'),
-      tooltip: t('tooltips.kanjiModesAll')
+      tooltip: t('tooltips.kanjiModeAll')
     },
     {
       value: KANJI_MODES.MEANINGS_ONLY,
@@ -65,162 +102,92 @@ export const GameMenuKanji = () => {
     }
   ];
 
-  const discoveryOptions = [
-    {
-      value: false,
-      label: t('options.off')
-    },
-    {
-      value: true,
-      label: t('options.on')
-    }
-  ];
-
   const totalKanji = kanjiSelectedLists.reduce((sum, listKey) => {
-    return sum + (kanjiLists[listKey]?.kanji.length || 0);
+    const list = kanjiLists[listKey];
+    if (!list) return sum;
+
+    // Use override count if available, otherwise use list count
+    const overrideCount = kanjiListsOverrides[listKey]?.count;
+    const count = overrideCount !== undefined ? overrideCount : (list.count || list.kanji?.length || 0);
+
+    return sum + count;
   }, 0);
 
 
   return (
-    <GameMenu
-      theme={theme}
-      title="漢字学習"
-      subtitle={t('menu.kanjiLearning')}
-      onPrevious={switchToKana}
-      previousTooltip={t('menu.switchToKana')}
-      onNext={switchToVocabulary}
-      nextTooltip={t('menu.switchToVocabulary')}
-      currentMode={appMode}
-      onModeChange={updateAppMode}
-    >
-      <div className="space-y-4">
-        <MultiSelection
-          options={listOptions}
-          selectedValues={kanjiSelectedLists}
-          onChange={setKanjiSelectedLists}
-          theme={theme}
-          optionLabel={t('common.list')}
-          subItemsLabel={t('common.kanji')}
-          py={3}
-        />
-
+    <>
+      <GameMenu
+        theme={theme}
+        title="漢字学習"
+        subtitle={t('menu.kanjiLearning')}
+        onPrevious={switchToKana}
+        previousTooltip={t('menu.switchToKana')}
+        onNext={switchToVocabulary}
+        nextTooltip={t('menu.switchToVocabulary')}
+        currentMode={appMode}
+        onModeChange={updateAppMode}
+      >
         <div className="space-y-4">
-          <button
-            onClick={() => kanjiSelectedLists.length > 0 && openReviewKanji()}
-            disabled={kanjiSelectedLists.length === 0}
-            className={`w-full ${theme.sectionBg} ${theme.text} font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg ${
-              kanjiSelectedLists.length > 0
-                ? 'transform hover:scale-105 cursor-pointer'
-                : 'opacity-50 cursor-not-allowed'
-            }`}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <BookOpen className="w-4 h-4" />
-              <span className="text-sm">{t('common.reviewSelectedKanji')}</span>
-            </div>
-          </button>
+          <MultiSelection
+            options={listOptions}
+            selectedValues={kanjiSelectedLists}
+            onChange={setKanjiSelectedLists}
+            theme={theme}
+            optionLabel={t('common.list')}
+            subItemsLabel={t('common.kanji')}
+            py={3}
+          />
 
-          <button
-            onClick={() => kanjiSelectedLists.length > 0 && initializeKanjiGame(kanjiSelectedLists)}
-            disabled={kanjiSelectedLists.length === 0}
-            className={`w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg ${
-              kanjiSelectedLists.length > 0
-                ? 'hover:from-emerald-600 hover:to-teal-700 transform hover:scale-105 cursor-pointer'
-                : 'opacity-50 cursor-not-allowed'
-            }`}
-          >
-            <div className="flex items-center justify-center">
-              <div className="flex flex-col text-left mb-1">
-                <span className="text-lg">{t('common.startPractice')}</span>
-                <div className="text-xs opacity-80">
-                  {totalKanji} {t('common.kanjiSelected')}
-                </div>
-              </div>
-            </div>
-          </button>
+          <LockedContentSection
+            selectedLists={kanjiSelectedLists}
+            hasLockedSelection={hasLockedSelection}
+            onStartPractice={() => initializeKanjiGame(kanjiSelectedLists)}
+            onReview={() => openReviewKanji(totalKanji)}
+            totalCount={totalKanji}
+            countLabel={t('common.kanjiSelected')}
+            reviewLabel={t('common.reviewSelectedKanji')}
+            startGradient="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700"
+            theme={theme}
+            darkMode={darkMode}
+          />
         </div>
-      </div>
 
-      {/* Advanced options */}
-      <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
-        <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
-          <div className={`px-4 divide-y ${theme.divider}`}>
-            <SegmentedControl
-              value={kanjiMode}
-              onChange={handleKanjiModeChange}
-              options={modeOptions}
-              label={t('menu.kanjiMode')}
-              theme={{ ...theme, darkMode }}
-            />
-            <SegmentedControl
-              value={kanjiDiscoveryMode}
-              onChange={handleKanjiDiscoveryModeChange}
-              options={discoveryOptions}
-              label={t('discoveryMode.label')}
-              theme={{ ...theme, darkMode }}
-              helpIcon={
-                <button
-                  onClick={() => setShowDiscoveryHelp(true)}
-                  className={`p-0.5 rounded-full ${theme.textSecondary} hover:${theme.text} transition-colors cursor-pointer`}
-                  title={t('discoveryMode.description')}
-                >
-                  <HelpCircle className="w-4 h-4" />
-                </button>
-              }
-            />
+        {/* Advanced options */}
+        <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
+          <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
+            <div className={`px-4 divide-y ${theme.divider}`}>
+              <SegmentedControl
+                value={kanjiMode}
+                onChange={handleKanjiModeChange}
+                options={modeOptions}
+                label={t('menu.kanjiMode')}
+                theme={{ ...theme, darkMode }}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <MenuControls
+        <MenuControls
+          theme={theme}
+          darkMode={darkMode}
+          toggleDarkMode={toggleDarkMode}
+          cycleSoundMode={cycleSoundMode}
+          getSoundModeIcon={getSoundModeIcon}
+          requiredSuccesses={requiredSuccesses}
+          onRequiredSuccessesChange={handleRequiredSuccessesChange}
+          showLoopMode={true}
+          loopMode={kanjiLoopMode}
+          onLoopModeChange={handleKanjiLoopModeChange}
+        />
+      </GameMenu>
+
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onSuccess={() => setShowLoginModal(false)}
         theme={theme}
         darkMode={darkMode}
-        toggleDarkMode={toggleDarkMode}
-        cycleSoundMode={cycleSoundMode}
-        getSoundModeIcon={getSoundModeIcon}
-        requiredSuccesses={requiredSuccesses}
-        onRequiredSuccessesChange={handleRequiredSuccessesChange}
       />
-
-      <HelpModal
-        show={showDiscoveryHelp}
-        onClose={() => setShowDiscoveryHelp(false)}
-        title={t('discoveryModeHelp.title')}
-        theme={theme}
-      >
-        <div>
-          <h4 className={`font-medium mb-2 ${theme.text}`}>
-            {t('discoveryModeHelp.firstAppearanceTitle')}
-          </h4>
-          <p className="text-sm">
-            {t('discoveryModeHelp.firstAppearanceDesc')}
-          </p>
-        </div>
-
-        <div>
-          <h4 className={`font-medium mb-2 ${theme.text}`}>
-            {t('discoveryModeHelp.secondAppearanceTitle')}
-          </h4>
-          <p className="text-sm">
-            {t('discoveryModeHelp.secondAppearanceDesc')}
-          </p>
-        </div>
-
-        <div>
-          <h4 className={`font-medium mb-2 ${theme.text}`}>
-            {t('discoveryModeHelp.subsequentAppearancesTitle')}
-          </h4>
-          <p className="text-sm">
-            {t('discoveryModeHelp.subsequentAppearancesDesc')}
-          </p>
-        </div>
-
-        <div className={`mt-4 pt-4 border-t ${theme.divider}`}>
-          <p className="text-sm italic">
-            {t('discoveryModeHelp.note')}
-          </p>
-        </div>
-      </HelpModal>
-    </GameMenu>
+    </>
   );
 };

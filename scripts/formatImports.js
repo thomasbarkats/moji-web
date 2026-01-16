@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 import fs from 'fs';
 import { glob } from 'glob';
 
@@ -24,9 +26,9 @@ function isMultilineImport(importLine) {
 }
 
 function formatImportLine(importLine) {
-  if (importLine.length <= config.maxLineLength) return importLine;
+  if (importLine.length <= config.maxLineLength) { return importLine; }
   const m = importLine.match(/import\s+\{([\s\S]+)\}\s+from\s+['"]([^'"]+)['"]/);
-  if (!m) return importLine;
+  if (!m) { return importLine; }
   const items = m[1].split(',').map(i => i.trim()).filter(Boolean);
   const source = m[2];
   const lines = items.map(i => `  ${i},`);
@@ -44,9 +46,9 @@ function classifyImport(importLine) {
   const group = config.groups.find((g) => g.test(source))?.name || 'external';
 
   let kind = 'named';
-  if (/^\s*import\s+type\s/.test(line)) kind = 'type';
-  else if (/^\s*import\s+['"]/.test(line)) kind = 'side-effect';
-  else if (/^\s*import\s+[^{}'"]+from/.test(line)) kind = 'default';
+  if (/^\s*import\s+type\s/.test(line)) { kind = 'type'; }
+  else if (/^\s*import\s+['"]/.test(line)) { kind = 'side-effect'; }
+  else if (/^\s*import\s+[^{}'"]+from/.test(line)) { kind = 'default'; }
 
   const multiline = isOriginallyMultiline || willBeFormatted;
 
@@ -61,7 +63,7 @@ function sortImports(imports) {
     if (config.multilineAfterAll && imp.multiline) {
       multilineImports.push(imp);
     } else {
-      if (!groups[imp.group]) groups[imp.group] = [];
+      if (!groups[imp.group]) { groups[imp.group] = []; }
       groups[imp.group].push(imp);
     }
   }
@@ -72,7 +74,7 @@ function sortImports(imports) {
 
   for (const groupName of orderedGroups) {
     const group = groups[groupName];
-    if (!group || group.length === 0) continue;
+    if (!group || group.length === 0) { continue; }
 
     if (!isFirstGroup && config.newlineBetweenExternalAndInternal && groupName === 'internal') {
       sortedLines.push({ line: '', isBlank: true });
@@ -84,14 +86,14 @@ function sortImports(imports) {
     const sortedSimple = simple.sort((a, b) => {
       const ia = config.priorities.indexOf(a.kind);
       const ib = config.priorities.indexOf(b.kind);
-      if (ia !== ib) return ia - ib;
+      if (ia !== ib) { return ia - ib; }
       return a.source.localeCompare(b.source);
     });
 
     const sortedMultiline = multiline.sort((a, b) => {
       const ia = config.priorities.indexOf(a.kind);
       const ib = config.priorities.indexOf(b.kind);
-      if (ia !== ib) return ia - ib;
+      if (ia !== ib) { return ia - ib; }
       return a.source.localeCompare(b.source);
     });
 
@@ -103,7 +105,7 @@ function sortImports(imports) {
     const sortedMultiline = multilineImports.sort((a, b) => {
       const ia = config.priorities.indexOf(a.kind);
       const ib = config.priorities.indexOf(b.kind);
-      if (ia !== ib) return ia - ib;
+      if (ia !== ib) { return ia - ib; }
       return a.source.localeCompare(b.source);
     });
 
@@ -114,7 +116,7 @@ function sortImports(imports) {
 }
 
 function extractImportStatements(content) {
-  const importRegex = /^\s*import[\s\S]+?;$/gm;
+  const importRegex = /^\s*import\s+(?:type\s+)?(?:['"]|[\w{]|(?:\*\s+as))[\s\S]+?;$/gm;
   const imports = [...content.matchAll(importRegex)].map((m) => m[0]);
   const rest = content.replace(importRegex, '').trimStart();
   return { imports, rest };
@@ -123,7 +125,7 @@ function extractImportStatements(content) {
 function processFile(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
   const { imports, rest } = extractImportStatements(content);
-  if (!imports.length) return;
+  if (!imports.length) { return; }
   const sorted = sortImports(imports.map(classifyImport));
   const result = sorted + '\n'.repeat(config.newlinesAfterImports + 1) + rest;
   if (result !== content) {

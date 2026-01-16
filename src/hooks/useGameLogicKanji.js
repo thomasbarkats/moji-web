@@ -1,6 +1,8 @@
 import { GAME_MODES, KANJI_STEPS } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
+import { usePreferences } from '../contexts/PreferencesContext';
+import { kanjiAPI } from '../services/apiService';
 import {
   selectNextItem,
   initializeGameState,
@@ -30,16 +32,52 @@ export const useGameLogicKanji = () => {
     resetSteps,
     setCurrentStep,
     setStepData,
+    setSessionFavoritesKanji,
+    kanjiCache,
+    setKanjiCache,
   } = useGameContextKanji();
 
+  const { language } = usePreferences();
 
-  const initializeKanjiGame = (selectedLists) => {
+
+  const initializeKanjiGame = async (selectedLists) => {
     const setters = { setGameMode, setGameState, setUserInput, setStartTime, setFeedback };
     initializeGameState(setters, GAME_MODES.KANJI);
 
-    const allKanji = selectedLists.flatMap(listKey =>
-      kanjiLists[listKey]?.kanji || []
-    );
+    // Load actual kanji data from API for all selected lists in one request
+    const isFavoritesIncluded = selectedLists.includes('favorites');
+    let allKanji = [];
+    const cacheKey = `${[...selectedLists].sort().join(',')}_${language}`;
+
+    // Check cache first
+    if (kanjiCache[cacheKey]) {
+      allKanji = kanjiCache[cacheKey];
+    } else {
+      try {
+        const listData = await kanjiAPI.getKanji(selectedLists, language);
+        // API returns kanji with readings.meanings in the correct language
+        allKanji = listData.kanji || [];
+        // Store in cache
+        setKanjiCache(prev => ({ ...prev, [cacheKey]: allKanji }));
+      } catch (error) {
+        console.error(`Failed to load kanji lists:`, error);
+      }
+    }
+
+    // Initialize session favorites using isFavorite field
+    if (isFavoritesIncluded) {
+      const favoritesMap = new Map();
+      allKanji.forEach(kanji => {
+        if (kanji.isFavorite) {
+          favoritesMap.set(kanji.id, true);
+        }
+      });
+      setSessionFavoritesKanji(favoritesMap);
+    } else {
+      setSessionFavoritesKanji(new Map());
+    }
+
+    if (allKanji.length === 0) return;
 
     setCurrentKanjiList(allKanji);
 
@@ -60,7 +98,7 @@ export const useGameLogicKanji = () => {
 
     let nextKanji;
 
-    // Check if we need to force repeat a kanji (discovery mode)
+    // Check if we need to force repeat a kanji (loop mode)
     if (forceRepeatKanji) {
       nextKanji = allKanji.find(k => k.character === forceRepeatKanji);
     } else {
@@ -70,6 +108,7 @@ export const useGameLogicKanji = () => {
     if (!nextKanji) return null;
 
     const newItem = {
+      id: nextKanji.id,
       key: nextKanji.character,
       question: nextKanji.character,
       answer: '',

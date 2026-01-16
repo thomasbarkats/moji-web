@@ -41,12 +41,19 @@ export const useGameLogicKana = () => {
     selectNextKana(allKana, initialProgress);
   };
 
-  const selectNextKana = (allKana, currentProgress) => {
+  const selectNextKana = (allKana, currentProgress, forceRepeatKana = null) => {
     const availableKana = allKana.filter(kana => !currentProgress[kana.char].mastered);
 
     if (availableKana.length === 0) return null;
 
-    const nextKana = selectNextItem(availableKana, currentProgress, currentItem?.key);
+    let nextKana;
+
+    // Check if we need to force repeat a kana (loop mode)
+    if (forceRepeatKana) {
+      nextKana = allKana.find(k => k.char === forceRepeatKana);
+    } else {
+      nextKana = selectNextItem(availableKana, currentProgress, currentItem?.key);
+    }
 
     if (!nextKana) return null;
 

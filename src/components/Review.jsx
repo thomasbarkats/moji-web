@@ -1,22 +1,35 @@
 import { ArrowLeft, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GAME_STATES, SORT_MODES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { SkeletonTable } from './ui/SkeletonLoading';
 
 
 export const ReviewLayout = ({
   sortOptions,
   getAllItems,
   renderTable,
-  isMergedSort
+  isMergedSort,
+  loading = false,
+  expectedCount = 0
 }) => {
   const { t } = useTranslation();
   const { theme } = usePreferences();
   const { setGameState } = useGameContext();
 
   const [sortBy, setSortBy] = useState(SORT_MODES.DEFAULT);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setGameState(GAME_STATES.MENU);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [setGameState]);
 
   const allItems = getAllItems(sortBy);
   const shouldMerge = isMergedSort(sortBy);
@@ -52,7 +65,9 @@ export const ReviewLayout = ({
           </div>
 
           <div className="space-y-8">
-            {shouldMerge ? (
+            {loading ? (
+              <SkeletonTable theme={theme} rows={Math.min(expectedCount || 20, 20)} columns={3} showHeader={true} />
+            ) : shouldMerge ? (
               // Merged view: single table with all items
               renderTable(allItems, null)
             ) : (

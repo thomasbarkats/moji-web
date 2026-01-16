@@ -1,15 +1,14 @@
 import { createContext, useContext, useState, useRef } from 'react';
 import { GAME_STATES, APP_MODES, SORT_MODES, GAME_MODES } from '../constants';
-import { useDataKana, useDataVocabulary } from '../hooks';
+import { useDataKana } from '../hooks';
 import { usePreferences } from './PreferencesContext';
 
 
 const GameContext = createContext();
 
 export const GameProvider = ({ children }) => {
-  const kanaData = useDataKana();
-  const { language, updatePreferences, defaultAppMode } = usePreferences();
-  const { vocabularyLists, loading: vocabularyLoading } = useDataVocabulary(language);
+  const { kanaData, loading: kanaLoading, error: kanaError } = useDataKana();
+  const { updatePreferences, defaultAppMode } = usePreferences();
 
   // Game state
   const [gameState, setGameState] = useState(GAME_STATES.MENU);
@@ -28,9 +27,8 @@ export const GameProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState(SORT_MODES.FAILURES);
   const [startTime, setStartTime] = useState(null);
 
-  // Vocabulary specific
-  const [wordsSelectedLists, setWordsSelectedLists] = useState([]);
-  const [currentVocabularyWords, setCurrentVocabularyWords] = useState([]);
+  // Expected count for review mode skeleton loading (kanji only - vocabulary uses its own context)
+  const [reviewExpectedCountKanji, setReviewExpectedCountKanji] = useState(0);
 
   // Mode switching
   const updateAppMode = (appMode) => {
@@ -43,12 +41,8 @@ export const GameProvider = ({ children }) => {
   const switchToKanji = () => updateAppMode(APP_MODES.KANJI);
 
   const openReviewKana = () => setGameState(GAME_STATES.REVIEW);
-  const openReviewVocabulary = (lists) => {
-    setWordsSelectedLists(lists);
-    setGameMode(GAME_MODES.VOCABULARY);
-    setGameState(GAME_STATES.REVIEW);
-  };
-  const openReviewKanji = () => {
+  const openReviewKanji = (expectedCount = 0) => {
+    setReviewExpectedCountKanji(expectedCount);
     setGameMode(GAME_MODES.KANJI);
     setGameState(GAME_STATES.REVIEW);
   };
@@ -56,8 +50,8 @@ export const GameProvider = ({ children }) => {
   const value = {
     // Data
     kanaData,
-    vocabularyLists,
-    vocabularyLoading,
+    kanaLoading,
+    kanaError,
 
     // Game state
     gameState,
@@ -86,18 +80,14 @@ export const GameProvider = ({ children }) => {
     startTime,
     setStartTime,
 
-    // Vocabulary
-    wordsSelectedLists,
-    setWordsSelectedLists,
-    currentVocabularyWords,
-    setCurrentVocabularyWords,
+    // Review
+    reviewExpectedCountKanji,
 
     // Actions
     switchToVocabulary,
     switchToKana,
     switchToKanji,
     openReviewKana,
-    openReviewVocabulary,
     openReviewKanji,
   };
 

@@ -16,25 +16,12 @@
     "all": "All",
     "meaningsOnly": "Meanings only"
   },
-  "discoveryMode": {
-    "label": "Discovery mode",
-    "description": "Repeat kanji until you get it right"
-  },
-  "discoveryModeHelp": {
-    "title": "Discovery Mode",
-    "firstAppearanceTitle": "First appearance",
-    "firstAppearanceDesc": "Each step (kun → on → meanings) loops until you answer correctly. Retry as many times as needed.",
-    "secondAppearanceTitle": "Second appearance (if required > 1)",
-    "secondAppearanceDesc": "All steps loop together. If you fail any step, you restart from the first step and must complete all correctly in sequence.",
-    "subsequentAppearancesTitle": "Subsequent appearances (if required > 2)",
-    "subsequentAppearancesDesc": "No more looping. Works like regular mode.",
-    "note": "Great for learning new kanji progressively."
-  },
   "gameplay": {
     "typeTranslation": "Type the translation...",
     "typeReading": "Type the reading...",
     "commaSeparated": "... (comma separated)",
     "validate": "Validate (Enter)",
+    "skip": "Skip",
     "correct": "Correct!",
     "incorrect": "Incorrect",
     "youWrote": "You wrote:",
@@ -55,7 +42,7 @@
     "selectKanjiLists": "Select kanji lists...",
     "filterOptions": "Filter options...",
     "difficulty": "Difficulty",
-    "requiredSuccesses": "Required successes",
+    "repetitions": "Repetitions",
     "dakutenMode": "Dakuten & Handakuten",
     "combinationsMode": "Combinations",
     "vocabularyMode": "Reading / typing",
@@ -154,7 +141,13 @@
     "list": "list",
     "wordsSelected": "words selected",
     "kanjiSelected": "kanji selected",
-    "backToMenu": "Back to menu"
+    "backToMenu": "Back to menu",
+    "signInToUnlock": "Sign in to unlock all lists",
+    "unlockAllLists": "Unlock All Lists",
+    "bookmarkWordsPlaceholder": "Bookmark words during your session",
+    "bookmarkKanjiPlaceholder": "Bookmark kanji during your session",
+    "signInForFavorites": "Sign in to save favorites",
+    "favorites": "Favorites"
   },
   "titles": {
     "japanese": "Japanese",
@@ -187,12 +180,14 @@
   "inputRulesHelp": {
     "kanjiTitle": "Kanji Input Rules",
     "kanjiReadingsTitle": "Readings (kun/on):",
-    "kanjiReadingsDesc": "Both romaji and kana typing are accepted. Okurigana are required, but parentheses can be ignored (e.g., <code>ookii</code> and <code>oo(kii)</code> are both valid).",
+    "kanjiReadingsDesc": "Both romaji and kana typing are accepted. Okurigana are required, but parentheses surrounding them can be ignored are both valid).",
     "kanjiMeaningsTitle": "Meanings:",
     "kanjiMeaningsDesc": "Accents, parentheses, and other special characters are ignored when checking answers.",
     "vocabularyTitle": "Vocabulary Input Rules",
     "vocabularyJapaneseTitle": "Japanese text:",
-    "vocabularyJapaneseDesc": "The exact Japanese text is expected with the correct kanji. Okurigana are required, but parentheses can be ignored for them or other precisions."
+    "vocabularyJapaneseDesc": "The exact Japanese text is expected with the correct kanji. Okurigana are required, but parentheses can be ignored for them or other precisions.",
+    "vocabularyTranslationsTitle": "Translations:",
+    "vocabularyTranslationsDesc": "Accents, spaces, parentheses (and their content), \"/\", \"-\", and other characters can be ignored. With multiple translations, separators can be ignored and input order doesn't matter."
   },
   "tooltips": {
     "typeJapanese": "Type Japanese",
@@ -208,10 +203,64 @@
     "combinationsOnly": "Combinations only",
     "soundOnlyMode": "Listen and type translation",
     "kanjiModeAll": "Find the kun / on readings, and meanings",
-    "kanjiModeMeanings": "Find meanings only"
+    "kanjiModeMeanings": "Find meanings only",
+    "loopMode": "Loop current step until success",
+    "toggleFurigana": "Toggle furigana",
+    "addToFavorites": "Add to favorites",
+    "removeFromFavorites": "Remove from favorites"
   },
   "languages": {
     "fr": "Français",
     "en": "English"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "signIn": "Sign in",
+    "signInDescription": "Sign in to unlock all lists and sync your progress across devices.",
+    "termsAgreement": "By signing in, you agree to our Terms of Service and Privacy Policy."
+  },
+  "profile": {
+    "title": "Profile",
+    "manageSubscription": "Manage Subscription",
+    "contactSupport": "Get Help",
+    "activeSubscription": "Active Subscription",
+    "monthlySubscription": "Monthly Subscription",
+    "noSubscription": "No subscription",
+    "lifetimeAccess": "Lifetime Access",
+    "redirecting": "Redirecting...",
+    "renewOn": "Renewed on"
+  },
+  "subscription": {
+    "unlockTitle": "Unlock All Lists",
+    "description": "Get unlimited access to all vocabulary and kanji lists:",
+    "features": {
+      "vocabularyLists": "Access to all vocabulary lists",
+      "kanjiLists": "Access to all kanji lists",
+      "futureUpdates": "All future content updates",
+      "lifetimeAccess": "Lifetime access - pay once, use forever"
+    },
+    "perMonth": "per month",
+    "subscribeMonthly": "Subscribe Monthly",
+    "subscribeLifetime": "Subscribe - Lifetime",
+    "redirecting": "Redirecting to Stripe...",
+    "comingSoon": "Coming soon"
+  },
+  "support": {
+    "warningMessage": "Please contact for subscription-related issues (subscription not detected, payment problems, etc.).",
+    "emailAddress": "Email Address",
+    "yourInformation": "Your Information",
+    "accountEmail": "Account email",
+    "subscriptionStatus": "Subscription status",
+    "whatToInclude": "What to include in your email?",
+    "instruction1": "Your account email (if different from the email you're contacting me from)",
+    "instruction2": "Your subscription status (shown above)",
+    "instruction3": "A detailed description of your issue",
+    "openEmailClient": "Open Email Client"
+  },
+  "mobileWarning": {
+    "title": "Desktop Recommended",
+    "message": "This app is designed for desktop or tablet use with a keyboard. The mobile experience is not optimized and may not work properly.",
+    "dismiss": "Continue Anyway"
   }
 }

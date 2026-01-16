@@ -1,9 +1,11 @@
-import { Clock, RefreshCw, Sun, Moon, Volume2 } from 'lucide-react';
+import { Clock, Square, Sun, Moon, Volume2, Bookmark, Languages } from 'lucide-react';
 import { useRef, useEffect, useState } from 'react';
 import { useGameContext } from '../contexts/GameContext';
+import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useGameActions } from '../hooks';
 import { formatTime, cleanJapaneseText, speakReading } from '../utils';
 import { ProgressBar } from '.';
@@ -18,11 +20,19 @@ import {
 export const GamePlay = () => {
   const { t } = useTranslation();
   const { handleSubmit, resetGame } = useGameActions();
-  const { currentStep, stepData } = useGameContextKanji();
+  const {
+    currentStep,
+    stepData,
+    sessionFavoritesKanji,
+    addKanjiToFavorites,
+    removeKanjiFromFavorites,
+  } = useGameContextKanji();
 
   const {
     requiredSuccesses,
     vocabularyMode,
+    showFurigana,
+    handleShowFuriganaChange,
     theme,
     darkMode,
     toggleDarkMode,
@@ -40,6 +50,14 @@ export const GamePlay = () => {
     sessionStats,
     startTime,
   } = useGameContext();
+
+  const {
+    sessionFavoritesVocabulary,
+    addVocabularyToFavorites,
+    removeVocabularyFromFavorites,
+  } = useGameContextVocabulary();
+
+  const { isAuthenticated } = useAuth();
 
   const inputRef = useRef(null);
   const [liveTime, setLiveTime] = useState(0);
@@ -83,6 +101,29 @@ export const GamePlay = () => {
     }
   };
 
+  const isFavoriteVocabulary = currentItem?.id ? sessionFavoritesVocabulary.has(currentItem.id) : false;
+  const isFavoriteKanji = currentItem?.id ? sessionFavoritesKanji.has(currentItem.id) : false;
+
+  const handleToggleFavoriteVocabulary = () => {
+    if (!currentItem?.id) return;
+
+    if (isFavoriteVocabulary) {
+      removeVocabularyFromFavorites(currentItem.id);
+    } else {
+      addVocabularyToFavorites(currentItem.id);
+    }
+  };
+
+  const handleToggleFavoriteKanji = () => {
+    if (!currentItem?.id) return;
+
+    if (isFavoriteKanji) {
+      removeKanjiFromFavorites(currentItem.id);
+    } else {
+      addKanjiToFavorites(currentItem.id);
+    }
+  };
+
   const displayCorrectAnswer = feedback && isVocabularyMode && vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
     ? cleanJapaneseText(feedback.correctAnswer)
     : feedback?.correctAnswer;
@@ -122,10 +163,41 @@ export const GamePlay = () => {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <div className={`flex items-center space-x-2 ${theme.textSecondary}`}>
+              {isVocabularyMode && isAuthenticated && currentItem?.id && (
+                <button
+                  onClick={handleToggleFavoriteVocabulary}
+                  className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+                  title={isFavoriteVocabulary ? t('tooltips.removeFromFavorites') : t('tooltips.addToFavorites')}
+                >
+                  <Bookmark
+                    className={`w-5 h-5 ${isFavoriteVocabulary ? theme.bookmarkColor : ''}`}
+                    fill={isFavoriteVocabulary ? "currentColor" : "none"}
+                  />
+                </button>
+              )}
+              {isKanjiMode && isAuthenticated && currentItem?.id && (
+                <button
+                  onClick={handleToggleFavoriteKanji}
+                  className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+                  title={isFavoriteKanji ? t('tooltips.removeFromFavorites') : t('tooltips.addToFavorites')}
+                >
+                  <Bookmark
+                    className={`w-5 h-5 ${isFavoriteKanji ? theme.bookmarkColor : ''}`}
+                    fill={isFavoriteKanji ? "currentColor" : "none"}
+                  />
+                </button>
+              )}
               <Clock className="w-4 h-4" />
               <span className="text-sm">{formatTime(liveTime)}</span>
             </div>
             <div className="flex items-center space-x-2">
+              <button
+                onClick={() => cycleSoundMode(isSoundOnlyMode)}
+                className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+                title={getSoundModeIcon().tooltip}
+              >
+                {getSoundModeIcon().icon}
+              </button>
               <button
                 onClick={toggleDarkMode}
                 className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
@@ -136,18 +208,25 @@ export const GamePlay = () => {
                   : <Moon className="w-5 h-5" />
                 }
               </button>
-              <button
-                onClick={() => cycleSoundMode(isSoundOnlyMode)}
-                className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
-                title={getSoundModeIcon().tooltip}
-              >
-                {getSoundModeIcon().icon}
-              </button>
+              {isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE && (
+                <button
+                  onClick={() => handleShowFuriganaChange(!showFurigana)}
+                  className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer relative`}
+                  title={t('tooltips.toggleFurigana')}
+                >
+                  <Languages className="w-5 h-5" />
+                  {!showFurigana && (
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className={`w-6 h-0.5 ${darkMode ? 'bg-gray-200' : 'bg-gray-600'} -rotate-45`} />
+                    </div>
+                  )}
+                </button>
+              )}
               <button
                 onClick={resetGame}
-                className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
+                className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer hover:text-red-500`}
               >
-                <RefreshCw className="w-5 h-5" />
+                <Square className="w-5 h-5" />
               </button>
             </div>
           </div>
@@ -174,7 +253,7 @@ export const GamePlay = () => {
                   <Volume2 className="w-16 h-16" />
                 </button>
               ) : isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE ? (
-                <JapaneseTextDisplay parts={currentItem.parts} theme={theme} />
+                <JapaneseTextDisplay parts={currentItem.parts} theme={theme} showFurigana={showFurigana} />
               ) : (
                 currentItem.question
               )}
@@ -268,6 +347,15 @@ export const GamePlay = () => {
               </button>
             )}
 
+            {!feedback && !userInput.trim() && (
+              <button
+                onClick={() => handleSubmit(true)}
+                className={`ml-2 font-semibold py-3 px-8 rounded-xl ${theme.buttonSkip} ransform hover:scale-105 transition-all duration-200 shadow-lg cursor-pointer`}
+              >
+                {t('gameplay.skip')}
+              </button>
+            )}
+
             <div className={`mt-4 text-sm ${theme.textMuted}`}>
               {t('titles.success')}: {progress[currentItem.question]?.successes || 0}/{requiredSuccesses} | {t('titles.errors')}: {progress[currentItem.question]?.failures || 0}
             </div>
@@ -278,7 +366,7 @@ export const GamePlay = () => {
   );
 };
 
-const JapaneseTextDisplay = ({ parts, theme }) => {
+const JapaneseTextDisplay = ({ parts, theme, showFurigana = true }) => {
   if (!parts) return null;
 
   return (
@@ -287,9 +375,11 @@ const JapaneseTextDisplay = ({ parts, theme }) => {
         if (part.type === 'kanji') {
           return (
             <span key={idx} className="inline-block align-bottom text-center">
-              <span className={`block text-sm ${theme.textMuted}`}>
-                {part.reading}
-              </span>
+              {showFurigana && (
+                <span className={`block text-sm ${theme.textMuted}`}>
+                  {part.reading}
+                </span>
+              )}
               <span className="block">
                 {part.text}
               </span>
