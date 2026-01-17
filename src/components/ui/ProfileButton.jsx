@@ -105,14 +105,7 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
         <div ref={menuRef} className="relative">
           <button
             onClick={() => isAuthenticated ? setShowMenu(!showMenu) : handleLogin()}
-            className={`
-              w-11 h-11 p-3 rounded-full
-              ${theme.selectorBg}
-              ${theme.text}
-              shadow-lg hover:shadow-xl transition-all
-              cursor-pointer
-              flex items-center justify-center
-            `}
+            className={`w-11 h-11 p-3 rounded-full ${theme.selectorBg} ${theme.text} shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center`}
             title={isAuthenticated ? t('profile.title') : t('auth.login')}
           >
             {isAuthenticated ? (
@@ -127,111 +120,104 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
           {/* Dropdown Menu - Only for authenticated users */}
           {isAuthenticated && showMenu && (
             <div
-              className={`
-                absolute bottom-full right-0 mb-2
-                ${theme.selectorBg} ${theme.text}
-                rounded-lg shadow-xl
-                min-w-[220px]
-                border ${theme.border}
-                overflow-hidden
-              `}
+              className={`absolute bottom-full right-0 mb-2 ${theme.selectorBg} ${theme.text} rounded-lg shadow-xl min-w-[220px] border ${theme.border} overflow-hidden`}
             >
-            {/* User Info */}
-            <div className={`px-4 py-3 border-b ${theme.border}`}>
-              <div className="flex-1 min-w-0">
-                <p className="font-semibold truncate">
-                  {user?.firstName} {user?.lastName}
-                </p>
-                <p className="text-xs opacity-70 truncate">
-                  {user?.email}
-                </p>
-                {hasActiveSubscription &&
-                  <p className="pt-4 text-xs opacity-50 truncate">
-                    {t('profile.activeSubscription')}
-                    &nbsp;-&nbsp;
-                    {t('profile.renewOn')}&nbsp;
-                    {new Date(user.subscriptionEndDate).toLocaleDateString()}
+              {/* User Info */}
+              <div className={`px-4 py-3 border-b ${theme.border}`}>
+                <div className="flex-1 min-w-0">
+                  <p className="font-semibold truncate">
+                    {user?.firstName} {user?.lastName}
                   </p>
-                }
-              </div>
-            </div>
-
-            {/* Menu Items */}
-            <div className="py-1">
-              {/* Lifetime Access - Non-clickable */}
-              {hasLifetimeAccess && (
-                <div className="px-4 py-2.5 flex items-center gap-3">
-                  <Crown className="w-4 h-4 text-amber-500" />
-                  <span className="font-medium text-amber-600 dark:text-amber-400">
-                    {t('profile.lifetimeAccess')}
-                  </span>
+                  <p className="text-xs opacity-70 truncate">
+                    {user?.email}
+                  </p>
+                  {hasActiveSubscription &&
+                    <p className="pt-4 text-xs opacity-50 truncate">
+                      {t('profile.activeSubscription')}
+                      &nbsp;-&nbsp;
+                      {t('profile.renewOn')}&nbsp;
+                      {new Date(user.subscriptionEndDate).toLocaleDateString()}
+                    </p>
+                  }
                 </div>
-              )}
+              </div>
 
-              {/* Manage Subscription - For users without lifetime access */}
-              {!hasLifetimeAccess && (
-                <button
-                  onClick={isStripeEnabled ? handleManageSubscription : undefined}
-                  disabled={!isStripeEnabled}
-                  className={`
+              {/* Menu Items */}
+              <div className="py-1">
+                {/* Lifetime Access - Non-clickable */}
+                {hasLifetimeAccess && (
+                  <div className="px-4 py-2.5 flex items-center gap-3">
+                    <Crown className="w-4 h-4 text-amber-500" />
+                    <span className="font-medium text-amber-600 dark:text-amber-400">
+                      {t('profile.lifetimeAccess')}
+                    </span>
+                  </div>
+                )}
+
+                {/* Manage Subscription - For users without lifetime access */}
+                {!hasLifetimeAccess && (
+                  <button
+                    onClick={isStripeEnabled ? handleManageSubscription : undefined}
+                    disabled={!isStripeEnabled}
+                    className={`
                     w-full px-4 py-2.5 flex items-center gap-3
                     ${isStripeEnabled ? theme.selectorHover : 'opacity-50'}
                     transition-colors text-left
                     ${isStripeEnabled ? 'cursor-pointer' : 'cursor-not-allowed'}
                   `}
+                  >
+                    <CreditCard className="w-4 h-4" />
+                    <span>
+                      {isStripeEnabled ? t('profile.manageSubscription') : t('subscription.comingSoon')}
+                    </span>
+                  </button>
+                )}
+
+                {/* Contact Support */}
+                <button
+                  onClick={handleContactSupport}
+                  className={`
+                  w-full px-4 py-2.5 flex items-center gap-3
+                  ${theme.selectorHover}
+                  transition-colors text-left
+                  cursor-pointer
+                `}
                 >
-                  <CreditCard className="w-4 h-4" />
-                  <span>
-                    {isStripeEnabled ? t('profile.manageSubscription') : t('subscription.comingSoon')}
-                  </span>
+                  <Mail className="w-4 h-4" />
+                  <span>{t('profile.contactSupport')}</span>
                 </button>
-              )}
 
-              {/* Contact Support */}
-              <button
-                onClick={handleContactSupport}
-                className={`
+                {/* Legal Information */}
+                <button
+                  onClick={handleLegalInfo}
+                  className={`
                   w-full px-4 py-2.5 flex items-center gap-3
                   ${theme.selectorHover}
                   transition-colors text-left
                   cursor-pointer
                 `}
-              >
-                <Mail className="w-4 h-4" />
-                <span>{t('profile.contactSupport')}</span>
-              </button>
+                >
+                  <Info className="w-4 h-4" />
+                  <span>{t('legal.menuItem')}</span>
+                </button>
 
-              {/* Legal Information */}
-              <button
-                onClick={handleLegalInfo}
-                className={`
-                  w-full px-4 py-2.5 flex items-center gap-3
-                  ${theme.selectorHover}
-                  transition-colors text-left
-                  cursor-pointer
-                `}
-              >
-                <Info className="w-4 h-4" />
-                <span>{t('legal.menuItem')}</span>
-              </button>
-
-              {/* Logout */}
-              <button
-                onClick={handleLogout}
-                className={`
+                {/* Logout */}
+                <button
+                  onClick={handleLogout}
+                  className={`
                   w-full px-4 py-2.5 flex items-center gap-3
                   ${theme.selectorHover}
                   transition-colors text-left
                   text-red-600 hover:text-red-700
                   cursor-pointer
                 `}
-              >
-                <LogOut className="w-4 h-4" />
-                <span>{t('auth.logout')}</span>
-              </button>
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>{t('auth.logout')}</span>
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )}
         </div>
 
         {/* Legal Info Button */}

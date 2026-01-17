@@ -65,15 +65,7 @@ export const GameMenu = ({
             <button
               key={mode.key}
               onClick={() => onModeChange(mode.key)}
-              className={`
-                ${theme.cardBg}
-                backdrop-blur-sm rounded-2xl shadow-lg
-                px-4 py-2
-                transition-all duration-200 cursor-pointer
-                hover:scale-105 hover:opacity-100
-                opacity-80
-                flex-1
-              `}
+              className={`${theme.cardBg} backdrop-blur-sm rounded-2xl shadow-lg px-4 py-2 transition-all duration-200 cursor-pointer hover:scale-105 hover:opacity-100 opacity-80 flex-1`}
             >
               <div className="text-center">
                 <div className={`text-lg font-bold ${theme.text}`}>

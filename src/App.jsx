@@ -1,4 +1,4 @@
-import { HelpCircle, Keyboard } from 'lucide-react';
+import { HelpCircle, Keyboard, Coffee } from 'lucide-react';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useGameContext } from './contexts/GameContext';
 import { useGameContextVocabulary } from './contexts/GameContextVocabulary';
@@ -91,7 +91,18 @@ function App() {
             return (
               <>
                 <GameMenuKana />
-                <ProfileButton position="bottom-4 right-6" showLegalButton />
+                <ProfileButton position="bottom-18 right-6" showLegalButton />
+                {import.meta.env.VITE_BUYMEACOFFEE_URL && (
+                  <a
+                    href={import.meta.env.VITE_BUYMEACOFFEE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`fixed bottom-4 right-6 z-50 w-11 h-11 p-3 rounded-full ${theme.sectionBg} ${theme.text} shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center`}
+                    title="Buy me a coffee"
+                  >
+                    <Coffee className="w-5 h-5" />
+                  </a>
+                )}
               </>
             );
           case APP_MODES.VOCABULARY:
