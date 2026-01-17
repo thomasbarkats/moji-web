@@ -19,6 +19,7 @@ import {
   ReviewKanji,
   ProfileButton,
   MobileWarning,
+  SlowLoadingOverlay,
 } from './components';
 import {
   useGameActions,
@@ -31,15 +32,18 @@ import {
 function App() {
   const { t } = useTranslation();
   const { theme } = usePreferences();
-  const { kanjiSelectedLists } = useGameContextKanji();
-  const { wordsSelectedLists, currentVocabularyWords } = useGameContextVocabulary();
+  const { kanjiSelectedLists, kanjiLoading } = useGameContextKanji();
+  const { wordsSelectedLists, currentVocabularyWords, vocabularyLoading } = useGameContextVocabulary();
   const {
     gameState,
     appMode,
     gameMode,
     sessionStats,
     sortBy,
+    kanaLoading,
   } = useGameContext();
+
+  const isLoading = kanaLoading || vocabularyLoading || kanjiLoading;
 
   useKeyboardNavigation();
 
@@ -183,6 +187,7 @@ function App() {
   return (
     <>
       <MobileWarning />
+      {gameState === GAME_STATES.MENU && <SlowLoadingOverlay isLoading={isLoading} />}
       {renderContent()}
     </>
   );

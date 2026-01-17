@@ -24,3 +24,4 @@ export { SkeletonButton, SkeletonListItem, SkeletonSelector } from './ui/Skeleto
 export { ProfileButton } from './ui/ProfileButton';
 export { LockedContentSection } from './ui/LockedContentSection';
 export { MobileWarning } from './ui/MobileWarning';
+export { SlowLoadingOverlay } from './ui/SlowLoadingOverlay';

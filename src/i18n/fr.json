@@ -127,7 +127,9 @@
     "bookmarkWordsPlaceholder": "Marquez des mots pendant votre session",
     "bookmarkKanjiPlaceholder": "Marquez des kanji pendant votre session",
     "signInForFavorites": "Connectez-vous pour enregistrer des favoris",
-    "favorites": "Favoris"
+    "favorites": "Favoris",
+    "loading": "Chargement des données...",
+    "loadingText": "Cela peut prendre 1min - Le serveur a besoin de se réveiller, lui aussi a besoin d'un café !"
   },
   "titles": {
     "japanese": "Japonais",

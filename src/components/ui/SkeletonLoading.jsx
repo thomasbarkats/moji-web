@@ -1,5 +1,5 @@
-export const SkeletonButton = ({ theme, height = 'h-20' }) => (
-  <div className={`${height} w-full rounded-xl ${theme?.sectionBg || 'bg-gray-200 dark:bg-gray-700'} animate-pulse`} />
+export const SkeletonButton = ({ theme }) => (
+  <div className={`h-[72px] w-full rounded-xl ${theme?.sectionBg || 'bg-gray-200 dark:bg-gray-700'} animate-pulse`} />
 );
 
 export const SkeletonListItem = ({ theme }) => (

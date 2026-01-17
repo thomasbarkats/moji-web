@@ -147,7 +147,9 @@
     "bookmarkWordsPlaceholder": "Bookmark words during your session",
     "bookmarkKanjiPlaceholder": "Bookmark kanji during your session",
     "signInForFavorites": "Sign in to save favorites",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "loading": "Loading data...",
+    "loadingText": "This may take 1 minute - The server needs to wake up, it needs a coffee too!"
   },
   "titles": {
     "japanese": "Japanese",
