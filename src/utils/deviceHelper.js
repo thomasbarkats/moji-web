@@ -8,7 +8,7 @@ export const getDeviceInfo = () => {
 }
 
 const getDeviceId = () => {
-  const DEVICE_ID_KEY = 'moji_device_id';
+  const DEVICE_ID_KEY = 'kanacafe_device_id';
   let deviceId = localStorage.getItem(DEVICE_ID_KEY);
 
   if (!deviceId) {

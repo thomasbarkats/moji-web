@@ -1,4 +1,4 @@
-# Moji Web
+# Kana Cafe
 
 A React-based Japanese learning application for practicing hiragana, katakana, kanji, and vocabulary.
 
