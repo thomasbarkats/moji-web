@@ -1,4 +1,4 @@
-import { User, CreditCard, LogOut, Crown, Loader2, Mail, AlertCircle } from 'lucide-react';
+import { User, CreditCard, LogOut, Crown, Loader2, Mail, AlertCircle, Info } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -8,9 +8,10 @@ import { subscriptionAPI } from '../../services/apiService';
 import { LoginModal } from '../LoginModal';
 import { UnlockModal } from '../UnlockModal';
 import { HelpModal } from './HelpModal';
+import { LegalModal } from './LegalModal';
 
 
-export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
+export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton = false }) => {
   const { user, isAuthenticated, hasActiveSubscription, hasLifetimeAccess, logout } = useAuth();
   const { theme, darkMode } = usePreferences();
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showUnlockModal, setShowUnlockModal] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
+  const [showLegalModal, setShowLegalModal] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const menuRef = useRef(null);
 
@@ -77,6 +79,11 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
     setShowContactModal(true);
   };
 
+  const handleLegalInfo = () => {
+    setShowMenu(false);
+    setShowLegalModal(true);
+  };
+
   const supportEmail = import.meta.env.VITE_SUPPORT_EMAIL || 'thomasbarkats@gmail.com';
   const isStripeEnabled = import.meta.env.VITE_STRIPE_ENABLED === 'true';
 
@@ -93,41 +100,42 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
 
   return (
     <>
-      <div ref={menuRef} className={`fixed ${position} z-50`}>
-        {/* Profile Button */}
-        <button
-          onClick={() => isAuthenticated ? setShowMenu(!showMenu) : handleLogin()}
-          className={`
-            w-11 h-11 p-3 rounded-full
-            ${theme.selectorBg}
-            ${theme.text}
-            shadow-lg hover:shadow-xl transition-all
-            cursor-pointer
-            flex items-center justify-center
-          `}
-          title={isAuthenticated ? t('profile.title') : t('auth.login')}
-        >
-          {isAuthenticated ? (
-            <span className="text-base font-semibold">
-              {getInitial()}
-            </span>
-          ) : (
-            <User className="w-5 h-5" />
-          )}
-        </button>
-
-        {/* Dropdown Menu - Only show if authenticated */}
-        {isAuthenticated && showMenu && (
-          <div
+      <div className={`fixed ${position} z-50 flex flex-col gap-3 items-end`}>
+        {/* Profile Button with Menu */}
+        <div ref={menuRef} className="relative">
+          <button
+            onClick={() => isAuthenticated ? setShowMenu(!showMenu) : handleLogin()}
             className={`
-              absolute bottom-full right-0 mb-2
-              ${theme.selectorBg} ${theme.text}
-              rounded-lg shadow-xl
-              min-w-[220px]
-              border ${theme.border}
-              overflow-hidden
+              w-11 h-11 p-3 rounded-full
+              ${theme.selectorBg}
+              ${theme.text}
+              shadow-lg hover:shadow-xl transition-all
+              cursor-pointer
+              flex items-center justify-center
             `}
+            title={isAuthenticated ? t('profile.title') : t('auth.login')}
           >
+            {isAuthenticated ? (
+              <span className="text-base font-semibold">
+                {getInitial()}
+              </span>
+            ) : (
+              <User className="w-5 h-5" />
+            )}
+          </button>
+
+          {/* Dropdown Menu - Only for authenticated users */}
+          {isAuthenticated && showMenu && (
+            <div
+              className={`
+                absolute bottom-full right-0 mb-2
+                ${theme.selectorBg} ${theme.text}
+                rounded-lg shadow-xl
+                min-w-[220px]
+                border ${theme.border}
+                overflow-hidden
+              `}
+            >
             {/* User Info */}
             <div className={`px-4 py-3 border-b ${theme.border}`}>
               <div className="flex-1 min-w-0">
@@ -160,7 +168,7 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
                 </div>
               )}
 
-              {/* Manage Subscription - For all users without lifetime access */}
+              {/* Manage Subscription - For users without lifetime access */}
               {!hasLifetimeAccess && (
                 <button
                   onClick={isStripeEnabled ? handleManageSubscription : undefined}
@@ -193,6 +201,21 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
                 <span>{t('profile.contactSupport')}</span>
               </button>
 
+              {/* Legal Information */}
+              <button
+                onClick={handleLegalInfo}
+                className={`
+                  w-full px-4 py-2.5 flex items-center gap-3
+                  ${theme.selectorHover}
+                  transition-colors text-left
+                  cursor-pointer
+                `}
+              >
+                <Info className="w-4 h-4" />
+                <span>{t('legal.menuItem')}</span>
+              </button>
+
+              {/* Logout */}
               <button
                 onClick={handleLogout}
                 className={`
@@ -208,6 +231,25 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
               </button>
             </div>
           </div>
+        )}
+        </div>
+
+        {/* Legal Info Button */}
+        {showLegalButton && !isAuthenticated && (
+          <button
+            onClick={handleLegalInfo}
+            className={`
+              w-11 h-11 p-3 rounded-full
+              ${theme.selectorBg}
+              ${theme.text}
+              shadow-lg hover:shadow-xl transition-all
+              cursor-pointer
+              flex items-center justify-center
+            `}
+            title={t('legal.menuItem')}
+          >
+            <Info className="w-5 h-5" />
+          </button>
         )}
       </div>
 
@@ -271,8 +313,8 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
                 {hasLifetimeAccess
                   ? t('profile.lifetimeAccess')
                   : hasActiveSubscription
-                  ? t('profile.monthlySubscription')
-                  : t('profile.noSubscription')}
+                    ? t('profile.monthlySubscription')
+                    : t('profile.noSubscription')}
               </span>
             </div>
           </div>
@@ -297,6 +339,12 @@ export const ProfileButton = ({ position = 'bottom-4 right-6' }) => {
           </ul>
         </div>
       </HelpModal>
+
+      <LegalModal
+        show={showLegalModal}
+        onClose={() => setShowLegalModal(false)}
+        theme={theme}
+      />
 
       {/* Redirecting Modal */}
       {isRedirecting && createPortal(

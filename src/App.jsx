@@ -56,7 +56,7 @@ function App() {
           return (
             <>
               <GameMenuKana />
-              <ProfileButton position="bottom-4 right-6" />
+              <ProfileButton position="bottom-4 right-6" showLegalButton />
             </>
           );
         case APP_MODES.VOCABULARY:
