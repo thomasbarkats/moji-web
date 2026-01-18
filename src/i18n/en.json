@@ -265,6 +265,12 @@
     "message": "This app is designed for desktop or tablet use with a keyboard. The mobile experience is not optimized and may not work properly.",
     "dismiss": "Continue Anyway"
   },
+  "serverError": {
+    "title": "Server Unavailable",
+    "message": "The server is currently unreachable. Please check your internet connection or try again later.",
+    "dismiss": "Close",
+    "retry": "Retry"
+  },
   "legal": {
     "title": "Legal Information",
     "menuItem": "Legal & Terms",

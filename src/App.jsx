@@ -18,6 +18,7 @@ import {
   ReviewKanji,
   ProfileButton,
   MobileWarning,
+  ServerErrorModal,
   SlowLoadingOverlay,
   FloatingButtonsContainer,
   BuyMeACoffeeButton,
@@ -187,6 +188,7 @@ function App() {
   return (
     <>
       <MobileWarning />
+      <ServerErrorModal />
       {gameState === GAME_STATES.MENU && <SlowLoadingOverlay isLoading={isLoading} />}
       {renderContent()}
     </>

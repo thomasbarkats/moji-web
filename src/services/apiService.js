@@ -4,6 +4,16 @@
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
+// Global flag for server error state (persists even if event is missed)
+let serverErrorOccurred = false;
+export const hasServerError = () => serverErrorOccurred;
+export const clearServerError = () => { serverErrorOccurred = false; };
+
+const emitServerError = () => {
+  serverErrorOccurred = true;
+  window.dispatchEvent(new Event('server-error'));
+};
+
 // ============================================
 // REQUEST HANDLING
 // ============================================
@@ -41,6 +51,9 @@ const request = async (endpoint, options = {}) => {
     }
 
     if (!response.ok) {
+      if (response.status >= 500) {
+        emitServerError();
+      }
       const errorData = await response.json().catch(() => ({}));
       throw new Error(
         errorData.message || `API request failed: ${response.status} ${response.statusText}`
@@ -54,7 +67,6 @@ const request = async (endpoint, options = {}) => {
 
     return await response.json();
   } catch (error) {
-    // Network errors or parsing errors
     console.error('API request error:', error);
     throw error;
   }

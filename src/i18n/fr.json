@@ -245,6 +245,12 @@
     "message": "Cette application est conçue pour un usage sur ordinateur ou tablette avec un clavier. L'expérience mobile n'est pas optimisée et peut ne pas fonctionner correctement.",
     "dismiss": "Continuer quand même"
   },
+  "serverError": {
+    "title": "Serveur indisponible",
+    "message": "Le serveur est actuellement inaccessible. Veuillez vérifier votre connexion internet ou réessayer plus tard.",
+    "dismiss": "Fermer",
+    "retry": "Réessayer"
+  },
   "legal": {
     "title": "Informations légales",
     "menuItem": "Informations légales",

@@ -61,7 +61,6 @@ export const KanjiGameProvider = ({ children }) => {
     setSessionFavorites: setSessionFavoritesKanji,
     listsOverrides: kanjiListsOverrides,
     setListsOverrides: setKanjiListsOverrides,
-    cache: kanjiCache,
     setCache: setKanjiCache,
   });
 

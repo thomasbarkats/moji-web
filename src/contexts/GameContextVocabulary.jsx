@@ -62,7 +62,6 @@ export const VocabularyGameProvider = ({ children }) => {
     setSessionFavorites: setSessionFavoritesVocabulary,
     listsOverrides: vocabularyListsOverrides,
     setListsOverrides: setVocabularyListsOverrides,
-    cache: wordsCache,
     setCache: setWordsCache,
   });
 
