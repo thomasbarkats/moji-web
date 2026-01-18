@@ -132,7 +132,6 @@ export const GameMenuKanji = () => {
             options={listOptions}
             selectedValues={kanjiSelectedLists}
             onChange={setKanjiSelectedLists}
-            theme={theme}
             optionLabel={t('common.list')}
             subItemsLabel={t('common.kanji')}
             py={3}
@@ -153,8 +152,8 @@ export const GameMenuKanji = () => {
         </div>
 
         {/* Advanced options */}
-        <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
-          <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
+        <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'} rounded-xl p-1`}>
+          <div className={`${theme.cardBg} rounded-lg`}>
             <div className={`px-4 divide-y ${theme.divider}`}>
               <SegmentedControl
                 value={kanjiMode}

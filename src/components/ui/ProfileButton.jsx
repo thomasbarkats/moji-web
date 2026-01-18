@@ -11,7 +11,7 @@ import { HelpModal } from './HelpModal';
 import { LegalModal } from './LegalModal';
 
 
-export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton = false }) => {
+export const ProfileButton = ({ showLegalButton = false }) => {
   const { user, isAuthenticated, hasActiveSubscription, hasLifetimeAccess, logout } = useAuth();
   const { theme, darkMode } = usePreferences();
   const { t } = useTranslation();
@@ -100,12 +100,12 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
 
   return (
     <>
-      <div className={`fixed ${position} z-50 flex flex-col gap-3 items-end`}>
+      <div className="flex flex-col gap-2 items-end">
         {/* Profile Button with Menu */}
         <div ref={menuRef} className="relative">
           <button
             onClick={() => isAuthenticated ? setShowMenu(!showMenu) : handleLogin()}
-            className={`w-11 h-11 p-3 rounded-full ${theme.selectorBg} ${theme.text} shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center`}
+            className={`w-12 h-12 p-3 rounded-full ${theme.buttonSecondaryBg} ${theme.text} shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center`}
             title={isAuthenticated ? t('profile.title') : t('auth.login')}
           >
             {isAuthenticated ? (
@@ -190,12 +190,7 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
                 {/* Legal Information */}
                 <button
                   onClick={handleLegalInfo}
-                  className={`
-                  w-full px-4 py-2.5 flex items-center gap-3
-                  ${theme.selectorHover}
-                  transition-colors text-left
-                  cursor-pointer
-                `}
+                  className={`w-full px-4 py-2.5 flex items-center gap-3 ${theme.selectorHover} transition-colors text-left cursor-pointer`}
                 >
                   <Info className="w-4 h-4" />
                   <span>{t('legal.menuItem')}</span>
@@ -204,13 +199,7 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
                 {/* Logout */}
                 <button
                   onClick={handleLogout}
-                  className={`
-                  w-full px-4 py-2.5 flex items-center gap-3
-                  ${theme.selectorHover}
-                  transition-colors text-left
-                  text-red-600 hover:text-red-700
-                  cursor-pointer
-                `}
+                  className={`w-full px-4 py-2.5 flex items-center gap-3 ${theme.selectorHover} transition-colors text-left text-red-600 hover:text-red-700 cursor-pointer`}
                 >
                   <LogOut className="w-4 h-4" />
                   <span>{t('auth.logout')}</span>
@@ -224,14 +213,7 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
         {showLegalButton && !isAuthenticated && (
           <button
             onClick={handleLegalInfo}
-            className={`
-              w-11 h-11 p-3 rounded-full
-              ${theme.selectorBg}
-              ${theme.text}
-              shadow-lg hover:shadow-xl transition-all
-              cursor-pointer
-              flex items-center justify-center
-            `}
+            className={`w-12 h-12 p-3 rounded-full ${theme.buttonSecondaryBg} ${theme.text} shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center`}
             title={t('legal.menuItem')}
           >
             <Info className="w-5 h-5" />
@@ -258,7 +240,6 @@ export const ProfileButton = ({ position = 'bottom-4 right-6', showLegalButton =
         show={showContactModal}
         onClose={() => setShowContactModal(false)}
         title={t('profile.contactSupport')}
-        theme={theme}
       >
         {/* Warning */}
         <div className={`flex gap-3 p-3 rounded-lg ${darkMode ? 'bg-amber-900/20' : 'bg-amber-50'} border ${darkMode ? 'border-amber-700' : 'border-amber-200'}`}>

@@ -26,6 +26,8 @@ export const useTheme = () => {
         cardBg: 'bg-gray-800/90',
         modalBg: 'bg-gray-800',
         selectorBg: 'bg-gray-800',
+        buttonPrimaryBg: 'bg-gray-700',
+        buttonSecondaryBg: 'bg-gray-800',
         selectorHover: 'hover:bg-gray-700',
         inputBg: 'bg-gray-700',
         progressBg: 'bg-gray-600',
@@ -40,6 +42,7 @@ export const useTheme = () => {
         buttonSecondary: 'text-gray-300 hover:text-gray-100 hover:bg-gray-700',
         buttonSkip: 'text-white bg-gray-500 hover:bg-gray-600',
         bookmarkColor: 'text-yellow-500',
+        buyMeACoffeeBtn: 'bg-[#5c5a4f] text-white',
         statsBg: {
           blue: 'bg-blue-900/50',
           red: 'bg-red-900/50',
@@ -69,6 +72,8 @@ export const useTheme = () => {
         cardBg: 'bg-white/90',
         modalBg: 'bg-white',
         selectorBg: 'bg-white',
+        buttonPrimaryBg: 'bg-white',
+        buttonSecondaryBg: 'bg-gray-100',
         selectorHover: 'hover:bg-gray-100',
         inputBg: 'bg-white',
         progressBg: 'bg-gray-200',
@@ -83,6 +88,7 @@ export const useTheme = () => {
         buttonSecondary: 'text-gray-500 hover:text-gray-700 hover:bg-gray-100',
         buttonSkip: 'text-white bg-gray-500 hover:bg-gray-600',
         bookmarkColor: 'text-yellow-600',
+        buyMeACoffeeBtn: 'bg-[#efe492] text-gray-800',
         statsBg: {
           blue: 'bg-blue-100',
           red: 'bg-red-100',

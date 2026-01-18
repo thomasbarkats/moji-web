@@ -24,8 +24,7 @@ export const GamePlay = () => {
     currentStep,
     stepData,
     sessionFavoritesKanji,
-    addKanjiToFavorites,
-    removeKanjiFromFavorites,
+    toggleKanjiFavorite,
   } = useGameContextKanji();
 
   const {
@@ -53,8 +52,7 @@ export const GamePlay = () => {
 
   const {
     sessionFavoritesVocabulary,
-    addVocabularyToFavorites,
-    removeVocabularyFromFavorites,
+    toggleVocabularyFavorite,
   } = useGameContextVocabulary();
 
   const { isAuthenticated } = useAuth();
@@ -104,23 +102,13 @@ export const GamePlay = () => {
   const isFavoriteVocabulary = currentItem?.id ? sessionFavoritesVocabulary.has(currentItem.id) : false;
   const isFavoriteKanji = currentItem?.id ? sessionFavoritesKanji.has(currentItem.id) : false;
 
-  const handleToggleFavoriteVocabulary = () => {
+  const handleToggleFavorite = () => {
     if (!currentItem?.id) return;
 
-    if (isFavoriteVocabulary) {
-      removeVocabularyFromFavorites(currentItem.id);
-    } else {
-      addVocabularyToFavorites(currentItem.id);
-    }
-  };
-
-  const handleToggleFavoriteKanji = () => {
-    if (!currentItem?.id) return;
-
-    if (isFavoriteKanji) {
-      removeKanjiFromFavorites(currentItem.id);
-    } else {
-      addKanjiToFavorites(currentItem.id);
+    if (isVocabularyMode) {
+      toggleVocabularyFavorite(currentItem.id);
+    } else if (isKanjiMode) {
+      toggleKanjiFavorite(currentItem.id);
     }
   };
 
@@ -163,27 +151,15 @@ export const GamePlay = () => {
         <div className="mb-8">
           <div className="flex justify-between items-center mb-4">
             <div className={`flex items-center space-x-2 ${theme.textSecondary}`}>
-              {isVocabularyMode && isAuthenticated && currentItem?.id && (
+              {(isVocabularyMode || isKanjiMode) && isAuthenticated && currentItem?.id && (
                 <button
-                  onClick={handleToggleFavoriteVocabulary}
+                  onClick={handleToggleFavorite}
                   className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
-                  title={isFavoriteVocabulary ? t('tooltips.removeFromFavorites') : t('tooltips.addToFavorites')}
+                  title={(isVocabularyMode ? isFavoriteVocabulary : isFavoriteKanji) ? t('tooltips.removeFromFavorites') : t('tooltips.addToFavorites')}
                 >
                   <Bookmark
-                    className={`w-5 h-5 ${isFavoriteVocabulary ? theme.bookmarkColor : ''}`}
-                    fill={isFavoriteVocabulary ? "currentColor" : "none"}
-                  />
-                </button>
-              )}
-              {isKanjiMode && isAuthenticated && currentItem?.id && (
-                <button
-                  onClick={handleToggleFavoriteKanji}
-                  className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer`}
-                  title={isFavoriteKanji ? t('tooltips.removeFromFavorites') : t('tooltips.addToFavorites')}
-                >
-                  <Bookmark
-                    className={`w-5 h-5 ${isFavoriteKanji ? theme.bookmarkColor : ''}`}
-                    fill={isFavoriteKanji ? "currentColor" : "none"}
+                    className={`w-5 h-5 ${(isVocabularyMode ? isFavoriteVocabulary : isFavoriteKanji) ? theme.bookmarkColor : ''}`}
+                    fill={(isVocabularyMode ? isFavoriteVocabulary : isFavoriteKanji) ? "currentColor" : "none"}
                   />
                 </button>
               )}

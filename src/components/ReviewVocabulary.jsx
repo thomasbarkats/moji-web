@@ -5,6 +5,7 @@ import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDataLoader } from '../hooks';
 import { speakReading, parseVocabularyEntry } from '../utils';
 import { vocabularyAPI } from '../services/apiService';
 import { ReviewLayout } from './';
@@ -27,66 +28,27 @@ export const ReviewVocabulary = () => {
 
   const { isAuthenticated } = useAuth();
   const [rawWords, setRawWords] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const { loading, loadData } = useDataLoader({
+    cache: wordsCache,
+    setCache: setWordsCache,
+    setSessionFavorites: setSessionFavoritesVocabulary,
+    language,
+  });
 
   // Load data when selection changes
   useEffect(() => {
     const loadWordsData = async () => {
-      if (wordsSelectedLists.length === 0) return;
-
-      const cacheKey = `${[...wordsSelectedLists].sort().join(',')}_${language}`;
-      const isFavoritesIncluded = wordsSelectedLists.includes('favorites');
-
-      // Check cache first (synchronously to avoid loading flash)
-      if (wordsCache[cacheKey]) {
-        setRawWords(wordsCache[cacheKey]);
-        if (isFavoritesIncluded) {
-          const favoritesMap = new Map();
-          wordsCache[cacheKey].forEach(word => {
-            if (word.isFavorite) {
-              favoritesMap.set(word.id, true);
-            }
-          });
-          setSessionFavoritesVocabulary(favoritesMap);
-        }
-        setLoading(false);
-        return;
-      }
-
-      // Data not in cache - show loading and fetch
-      setRawWords([]);
-      setLoading(true);
-
-      try {
-        const listData = await vocabularyAPI.getWords(wordsSelectedLists, language);
-        const allWords = listData.words || [];
-
-        // Store in cache
-        setWordsCache(prev => ({ ...prev, [cacheKey]: allWords }));
-
-        // Initialize session favorites using isFavorite field
-        if (isFavoritesIncluded) {
-          const favoritesMap = new Map();
-          allWords.forEach(word => {
-            if (word.isFavorite) {
-              favoritesMap.set(word.id, true);
-            }
-          });
-          setSessionFavoritesVocabulary(favoritesMap);
-        }
-
-        setRawWords(allWords);
-      } catch (error) {
-        console.error('Failed to load vocabulary lists:', error);
-        setRawWords([]);
-      }
-
-      setLoading(false);
+      const data = await loadData({
+        selectedLists: wordsSelectedLists,
+        fetchFn: vocabularyAPI.getWords,
+        dataKey: 'words',
+      });
+      setRawWords(data);
     };
 
     loadWordsData();
-  }, [wordsSelectedLists, language]);
+  }, [wordsSelectedLists, loadData]);
 
   const sortOptions = [
     { value: SORT_MODES.DEFAULT, label: 'sortModes.default' },

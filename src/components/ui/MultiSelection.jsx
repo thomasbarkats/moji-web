@@ -1,6 +1,7 @@
 import { ChevronDown, Check, Lock, Bookmark, Eraser } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from '../../contexts/I18nContext';
+import { usePreferences } from '../../contexts/PreferencesContext';
 import { SkeletonListItem } from './SkeletonLoading';
 
 
@@ -8,11 +9,11 @@ export const MultiSelection = ({
   options,
   selectedValues,
   onChange,
-  theme,
   py,
   optionLabel,
   subItemsLabel
 }) => {
+  const { theme } = usePreferences();
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [focusedIndex, setFocusedIndex] = useState(-1);
@@ -142,19 +143,14 @@ export const MultiSelection = ({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`
-          relative w-full px-4 py-${py} rounded-xl border-2
-          ${theme.inputBorder} ${theme.inputBg} ${theme.text}
-          flex items-center justify-between
-          hover:border-blue-400 transition-colors
-        `}
+        className={`relative w-full px-4 py-${py} rounded-xl border-2 ${theme.inputBorder} ${theme.inputBg} ${theme.text} flex items-center justify-between hover:border-blue-400 transition-colors`}
       >
         <span className={selectedLabels.length > 0 ? 'pr-10 truncate' : theme.textMuted}>
           {selectedLabels.length === 0
             ? `${t('menu.selectListsOf')} ${subItemsLabel}...`
             : selectedLabels.length === 1
-            ? selectedLabels[0]
-            : `${selectedLabels.length} ${optionLabel}s ${t('menu.selected')}`}
+              ? selectedLabels[0]
+              : `${selectedLabels.length} ${optionLabel}s ${t('menu.selected')}`}
         </span>
         {selectedValues.length > 0 && (
           <span
@@ -176,58 +172,52 @@ export const MultiSelection = ({
           ref={dropdownRef}
           tabIndex={0}
           onKeyDown={handleKeyDown}
-          className={`
-            absolute z-20 w-full mt-2 rounded-xl shadow-lg
-            ${theme.selectorBg} border ${theme.border}
-            max-h-60 overflow-y-auto outline-none
-          `}
+          className={`absolute z-20 w-full mt-2 rounded-xl shadow-lg ${theme.selectorBg} border ${theme.border} max-h-60 overflow-y-auto outline-none`}
         >
-            {options.length === 0 ? (
-              <>
-                <SkeletonListItem theme={theme} />
-                <SkeletonListItem theme={theme} />
-                <SkeletonListItem theme={theme} />
-              </>
-            ) : (
-              options.map((option, index) => {
-                const isHovered = hoveredIndex === index;
-                const isFocused = focusedIndex === index && hoveredIndex < 0;
-                const isHighlighted = (isHovered || isFocused) && !option.disabled;
+          {options.length === 0 ? (
+            <>
+              <SkeletonListItem />
+              <SkeletonListItem />
+              <SkeletonListItem />
+            </>
+          ) : (
+            options.map((option, index) => {
+              const isHovered = hoveredIndex === index;
+              const isFocused = focusedIndex === index && hoveredIndex < 0;
+              const isHighlighted = (isHovered || isFocused) && !option.disabled;
 
-                return (
-                  <button
-                    key={option.value}
-                    ref={el => itemRefs.current[index] = el}
-                    onClick={() => {
-                      if (option.disabled) return;
-                      // If option has onClick callback (CTA), call it instead of toggling
-                      if (option.onClick) {
-                        option.onClick();
-                        setIsOpen(false);
-                      } else {
-                        toggleOption(option.value);
-                      }
-                    }}
-                    onMouseMove={() => {
-                      if (isKeyboardNavigating.current) {
-                        isKeyboardNavigating.current = false;
-                      }
-                      if (hoveredIndex !== index) {
-                        setHoveredIndex(index);
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredIndex(-1);
-                    }}
-                    disabled={option.disabled}
-                    className={`
-                      w-full px-4 py-3 flex items-center justify-between
-                      ${theme.text}
+              return (
+                <button
+                  key={option.value}
+                  ref={el => itemRefs.current[index] = el}
+                  onClick={() => {
+                    if (option.disabled) return;
+                    // If option has onClick callback (CTA), call it instead of toggling
+                    if (option.onClick) {
+                      option.onClick();
+                      setIsOpen(false);
+                    } else {
+                      toggleOption(option.value);
+                    }
+                  }}
+                  onMouseMove={() => {
+                    if (isKeyboardNavigating.current) {
+                      isKeyboardNavigating.current = false;
+                    }
+                    if (hoveredIndex !== index) {
+                      setHoveredIndex(index);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredIndex(-1);
+                  }}
+                  disabled={option.disabled}
+                  className={`
+                      w-full px-4 py-3 ${theme.text} flex items-center justify-between transition-colors text-left
                       ${option.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
                       ${isHighlighted ? theme.selectorHover.replace('hover:', '') : ''}
-                      transition-colors text-left
                     `}
-                  >
+                >
                   <div className="flex items-center gap-2">
                     <div>
                       <div className="font-medium flex items-center gap-2">
@@ -259,8 +249,8 @@ export const MultiSelection = ({
                   )}
                 </button>
               );
-              })
-            )}
+            })
+          )}
         </div>
       )}
     </div>

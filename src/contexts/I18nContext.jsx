@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from 'react'
 import frTranslations from '../i18n/fr.json'
 import enTranslations from '../i18n/en.json'
+import { LANGUAGES } from '../constants'
 
 
 const I18nContext = createContext()
@@ -10,7 +11,7 @@ const translations = {
   en: enTranslations,
 }
 
-export function I18nProvider({ children, language = 'fr' }) {
+export function I18nProvider({ children, language = LANGUAGES.FR }) {
   const currentTranslations = translations[language] || translations.fr
 
   const t = useMemo(() => (key) => {

@@ -6,6 +6,7 @@ import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useAuth } from '../contexts/AuthContext';
+import { useDataLoader } from '../hooks';
 import { formatKanjiForReview, speakReading } from '../utils';
 import { kanjiAPI } from '../services/apiService';
 import { ReviewLayout } from './';
@@ -28,66 +29,27 @@ export const ReviewKanji = () => {
 
   const { isAuthenticated } = useAuth();
   const [rawKanji, setRawKanji] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const { loading, loadData } = useDataLoader({
+    cache: kanjiCache,
+    setCache: setKanjiCache,
+    setSessionFavorites: setSessionFavoritesKanji,
+    language,
+  });
 
   // Load data when selection changes
   useEffect(() => {
     const loadKanjiData = async () => {
-      if (kanjiSelectedLists.length === 0) return;
-
-      const cacheKey = `${[...kanjiSelectedLists].sort().join(',')}_${language}`;
-      const isFavoritesIncluded = kanjiSelectedLists.includes('favorites');
-
-      // Check cache first (synchronously to avoid loading flash)
-      if (kanjiCache[cacheKey]) {
-        setRawKanji(kanjiCache[cacheKey]);
-        if (isFavoritesIncluded) {
-          const favoritesMap = new Map();
-          kanjiCache[cacheKey].forEach(kanji => {
-            if (kanji.isFavorite) {
-              favoritesMap.set(kanji.id, true);
-            }
-          });
-          setSessionFavoritesKanji(favoritesMap);
-        }
-        setLoading(false);
-        return;
-      }
-
-      // Data not in cache - show loading and fetch
-      setRawKanji([]);
-      setLoading(true);
-
-      try {
-        const listData = await kanjiAPI.getKanji(kanjiSelectedLists, language);
-        const allKanji = listData.kanji || [];
-
-        // Store in cache
-        setKanjiCache(prev => ({ ...prev, [cacheKey]: allKanji }));
-
-        // Initialize session favorites using isFavorite field
-        if (isFavoritesIncluded) {
-          const favoritesMap = new Map();
-          allKanji.forEach(kanji => {
-            if (kanji.isFavorite) {
-              favoritesMap.set(kanji.id, true);
-            }
-          });
-          setSessionFavoritesKanji(favoritesMap);
-        }
-
-        setRawKanji(allKanji);
-      } catch (error) {
-        console.error('Failed to load kanji lists:', error);
-        setRawKanji([]);
-      }
-
-      setLoading(false);
+      const data = await loadData({
+        selectedLists: kanjiSelectedLists,
+        fetchFn: kanjiAPI.getKanji,
+        dataKey: 'kanji',
+      });
+      setRawKanji(data);
     };
 
     loadKanjiData();
-  }, [kanjiSelectedLists, language]);
+  }, [kanjiSelectedLists, loadData]);
 
   const sortOptions = [
     { value: SORT_MODES.DEFAULT, label: 'sortModes.default' },

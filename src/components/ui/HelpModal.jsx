@@ -1,9 +1,12 @@
 import { X } from 'lucide-react';
 import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { usePreferences } from '../../contexts/PreferencesContext';
 
 
-export const HelpModal = ({ show, onClose, title, children, theme }) => {
+export const HelpModal = ({ show, onClose, title, children }) => {
+  const { theme } = usePreferences();
+
   useEffect(() => {
     const handleEscape = (e) => {
       if (e.key === 'Escape' && show) {

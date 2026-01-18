@@ -149,15 +149,15 @@
   "keyboardHelp": {
     "title": "Configuration du clavier japonais",
     "windowsTitle": "Windows :",
-    "windowsStep1": "Appuyez sur <kbd>Win + Espace</kbd> pour changer de méthode d'entrée",
+    "windowsStep1": "Appuyez sur Win + Espace pour changer de méthode d'entrée",
     "windowsStep2": "Ou cliquez sur l'icône de langue dans la barre des tâches",
     "windowsStep3": "Sélectionnez l'IME japonais",
-    "windowsStep4": "Appuyez sur <kbd>Verr. Maj.</kbd> pour basculer hiragana/romaji",
+    "windowsStep4": "Appuyez sur Verr. Maj. pour basculer hiragana/romaji",
     "quickTipsTitle": "Astuces rapides :",
     "tip1": "Tapez en romaji, c'est converti en hiragana",
-    "tip2": "Appuyez sur <kbd>Espace</kbd> pour convertir en kanji",
-    "tip3": "Appuyez sur <kbd>F7</kbd> pour le katakana",
-    "tip4": "Appuyez sur <kbd>Entrée</kbd> pour confirmer"
+    "tip2": "Appuyez sur Espace pour convertir en kanji",
+    "tip3": "Appuyez sur F7 pour le katakana",
+    "tip4": "Appuyez sur Entrée pour confirmer"
   },
   "inputRulesHelp": {
     "kanjiTitle": "Règles de saisie - Kanji",

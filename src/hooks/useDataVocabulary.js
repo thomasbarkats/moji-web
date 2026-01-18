@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { LANGUAGES } from '../constants';
 import { vocabularyAPI } from '../services/apiService';
 
 
-export const useDataVocabulary = (language = 'fr', isAuthenticated = false) => {
+export const useDataVocabulary = (language = LANGUAGES.FR, isAuthenticated = false) => {
   const [vocabularyLists, setVocabularyLists] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

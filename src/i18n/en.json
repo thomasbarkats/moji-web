@@ -169,15 +169,15 @@
   "keyboardHelp": {
     "title": "Japanese Input Setup",
     "windowsTitle": "Windows:",
-    "windowsStep1": "Press <kbd>Win + Space</kbd> to switch input methods",
+    "windowsStep1": "Press Win + Space to switch input methods",
     "windowsStep2": "Or click the language icon in taskbar",
     "windowsStep3": "Select Japanese IME",
-    "windowsStep4": "Press <kbd>Capslock</kbd> to toggle hiragana/romaji",
+    "windowsStep4": "Press Capslock to toggle hiragana/romaji",
     "quickTipsTitle": "Quick tips:",
     "tip1": "Type in romaji, it converts to hiragana",
-    "tip2": "Press <kbd>Space</kbd> to convert to kanji",
-    "tip3": "Press <kbd>F7</kbd> for katakana",
-    "tip4": "Press <kbd>Enter</kbd> to confirm"
+    "tip2": "Press Space to convert to kanji",
+    "tip3": "Press F7 for katakana",
+    "tip4": "Press Enter to confirm"
   },
   "inputRulesHelp": {
     "kanjiTitle": "Kanji Input Rules",

@@ -9,6 +9,8 @@ import {
   finalizeItemSelection,
   initializeKanjiData,
   getFirstStepForKanji,
+  initializeFavoritesMap,
+  loadDataWithCache,
 } from '../utils';
 
 
@@ -27,7 +29,6 @@ export const useGameLogicKanji = () => {
   } = useGameContext();
 
   const {
-    kanjiLists,
     setCurrentKanjiList,
     resetSteps,
     setCurrentStep,
@@ -44,35 +45,20 @@ export const useGameLogicKanji = () => {
     const setters = { setGameMode, setGameState, setUserInput, setStartTime, setFeedback };
     initializeGameState(setters, GAME_MODES.KANJI);
 
-    // Load actual kanji data from API for all selected lists in one request
+    // Load kanji data from cache or API
     const isFavoritesIncluded = selectedLists.includes('favorites');
-    let allKanji = [];
-    const cacheKey = `${[...selectedLists].sort().join(',')}_${language}`;
-
-    // Check cache first
-    if (kanjiCache[cacheKey]) {
-      allKanji = kanjiCache[cacheKey];
-    } else {
-      try {
-        const listData = await kanjiAPI.getKanji(selectedLists, language);
-        // API returns kanji with readings.meanings in the correct language
-        allKanji = listData.kanji || [];
-        // Store in cache
-        setKanjiCache(prev => ({ ...prev, [cacheKey]: allKanji }));
-      } catch (error) {
-        console.error(`Failed to load kanji lists:`, error);
-      }
-    }
+    const allKanji = await loadDataWithCache({
+      selectedLists,
+      cache: kanjiCache,
+      setCache: setKanjiCache,
+      language,
+      fetchFn: kanjiAPI.getKanji,
+      dataKey: 'kanji',
+    });
 
     // Initialize session favorites using isFavorite field
     if (isFavoritesIncluded) {
-      const favoritesMap = new Map();
-      allKanji.forEach(kanji => {
-        if (kanji.isFavorite) {
-          favoritesMap.set(kanji.id, true);
-        }
-      });
-      setSessionFavoritesKanji(favoritesMap);
+      setSessionFavoritesKanji(initializeFavoritesMap(allKanji));
     } else {
       setSessionFavoritesKanji(new Map());
     }

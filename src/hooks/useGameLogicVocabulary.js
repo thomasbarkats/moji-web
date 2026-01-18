@@ -10,6 +10,8 @@ import {
   initializeGameState,
   finalizeItemSelection,
   initializeVocabularyData,
+  initializeFavoritesMap,
+  loadDataWithCache,
 } from '../utils';
 
 
@@ -44,24 +46,16 @@ export const useGameLogicVocabulary = () => {
       setSoundModeValue(SOUND_MODES.SPEECH_ONLY);
     }
 
-    // Load actual word data from API for all selected lists in one request
-    let rawWords = [];
+    // Load word data from cache or API
     const isFavoritesIncluded = selectedListKeys.includes('favorites');
-    const cacheKey = `${[...selectedListKeys].sort().join(',')}_${language}`;
-
-    // Check cache first
-    if (wordsCache[cacheKey]) {
-      rawWords = wordsCache[cacheKey];
-    } else {
-      try {
-        const listData = await vocabularyAPI.getWords(selectedListKeys, language);
-        rawWords = listData.words || [];
-        // Store in cache
-        setWordsCache(prev => ({ ...prev, [cacheKey]: rawWords }));
-      } catch (error) {
-        console.error(`Failed to load vocabulary lists:`, error);
-      }
-    }
+    const rawWords = await loadDataWithCache({
+      selectedLists: selectedListKeys,
+      cache: wordsCache,
+      setCache: setWordsCache,
+      language,
+      fetchFn: vocabularyAPI.getWords,
+      dataKey: 'words',
+    });
 
     const words = rawWords.map(word => {
       try {
@@ -86,13 +80,7 @@ export const useGameLogicVocabulary = () => {
 
     // Initialize session favorites using isFavorite field
     if (isFavoritesIncluded) {
-      const favoritesMap = new Map();
-      rawWords.forEach(word => {
-        if (word.isFavorite) {
-          favoritesMap.set(word.id, true);
-        }
-      });
-      setSessionFavoritesVocabulary(favoritesMap);
+      setSessionFavoritesVocabulary(initializeFavoritesMap(rawWords));
     } else {
       setSessionFavoritesVocabulary(new Map());
     }

@@ -1,10 +1,9 @@
-import { HelpCircle, Keyboard, Coffee } from 'lucide-react';
+import { HelpCircle, Keyboard } from 'lucide-react';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useGameContext } from './contexts/GameContext';
 import { useGameContextVocabulary } from './contexts/GameContextVocabulary';
 import { useGameContextKanji } from './contexts/GameContextKanji';
 import { useTranslation } from './contexts/I18nContext';
-import { usePreferences } from './contexts/PreferencesContext';
 import { useKeyboardNavigation } from './hooks';
 import { getSortedStats } from './services/statsService';
 import {
@@ -20,6 +19,8 @@ import {
   ProfileButton,
   MobileWarning,
   SlowLoadingOverlay,
+  FloatingButtonsContainer,
+  BuyMeACoffeeButton,
 } from './components';
 import {
   useGameActions,
@@ -31,7 +32,6 @@ import {
 
 function App() {
   const { t } = useTranslation();
-  const { theme } = usePreferences();
   const { kanjiSelectedLists, kanjiLoading } = useGameContextKanji();
   const { wordsSelectedLists, currentVocabularyWords, vocabularyLoading } = useGameContextVocabulary();
   const {
@@ -58,26 +58,24 @@ function App() {
       icon={Keyboard}
       tooltip={t('tooltips.jpKeyboardHelp')}
       title={t('keyboardHelp.title')}
-      theme={theme}
     >
       <div>
         <h4 className="font-medium mb-1">{t('keyboardHelp.windowsTitle')}</h4>
-        <p className="text-sm" dangerouslySetInnerHTML={{
-          __html:
-            `1. ${t('keyboardHelp.windowsStep1')}<br/>` +
-            `2. ${t('keyboardHelp.windowsStep2')}<br/>` +
-            `3. ${t('keyboardHelp.windowsStep3')}<br/>` +
-            `4. ${t('keyboardHelp.windowsStep4')}`
-        }} />
+        <ol className="text-sm list-decimal list-inside space-y-0.5">
+          <li>{t('keyboardHelp.windowsStep1')}</li>
+          <li>{t('keyboardHelp.windowsStep2')}</li>
+          <li>{t('keyboardHelp.windowsStep3')}</li>
+          <li>{t('keyboardHelp.windowsStep4')}</li>
+        </ol>
       </div>
 
       <div>
         <h4 className="font-medium mb-1">{t('keyboardHelp.quickTipsTitle')}</h4>
         <ul className="text-sm space-y-1">
           <li>• {t('keyboardHelp.tip1')}</li>
-          <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip2') }} /></li>
-          <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip3') }} /></li>
-          <li>• <span dangerouslySetInnerHTML={{ __html: t('keyboardHelp.tip4') }} /></li>
+          <li>• {t('keyboardHelp.tip2')}</li>
+          <li>• {t('keyboardHelp.tip3')}</li>
+          <li>• {t('keyboardHelp.tip4')}</li>
         </ul>
       </div>
     </FloatingHelpButton>
@@ -88,68 +86,59 @@ function App() {
       case GAME_STATES.MENU:
         switch (appMode) {
           case APP_MODES.KANA:
-            return (
-              <>
-                <GameMenuKana />
-                <ProfileButton position="bottom-18 right-6" showLegalButton />
-                {import.meta.env.VITE_BUYMEACOFFEE_URL && (
-                  <a
-                    href={import.meta.env.VITE_BUYMEACOFFEE_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`fixed bottom-4 right-6 z-50 w-11 h-11 p-3 rounded-full ${theme.sectionBg} ${theme.text} shadow-lg hover:shadow-xl transition-all cursor-pointer flex items-center justify-center`}
-                    title="Buy me a coffee"
-                  >
-                    <Coffee className="w-5 h-5" />
-                  </a>
-                )}
-              </>
-            );
+            return (<>
+              <GameMenuKana />
+              <FloatingButtonsContainer>
+                <BuyMeACoffeeButton />
+                <ProfileButton showLegalButton />
+              </FloatingButtonsContainer>
+            </>);
           case APP_MODES.VOCABULARY:
             return (<>
               <GameMenuVocabulary />
-              <ProfileButton position="bottom-32 right-6" />
-              <FloatingHelpButton
-                icon={HelpCircle}
-                tooltip={t('tooltips.inputRulesHelp')}
-                title={t('inputRulesHelp.vocabularyTitle')}
-                theme={theme}
-                position="bottom-18 right-6"
-              >
-                <div>
-                  <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyJapaneseTitle')}</h4>
-                  <p className="text-sm">{t('inputRulesHelp.vocabularyJapaneseDesc')}</p>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyTranslationsTitle')}</h4>
-                  <p className="text-sm">{t('inputRulesHelp.vocabularyTranslationsDesc')}</p>
-                </div>
-              </FloatingHelpButton>
-              ${KeyboardButton}
+              <FloatingButtonsContainer>
+                <BuyMeACoffeeButton />
+                {KeyboardButton}
+                <FloatingHelpButton
+                  icon={HelpCircle}
+                  tooltip={t('tooltips.inputRulesHelp')}
+                  title={t('inputRulesHelp.vocabularyTitle')}
+                >
+                  <div>
+                    <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyJapaneseTitle')}</h4>
+                    <p className="text-sm">{t('inputRulesHelp.vocabularyJapaneseDesc')}</p>
+                  </div>
+                  <div>
+                    <h4 className="font-medium mb-2">{t('inputRulesHelp.vocabularyTranslationsTitle')}</h4>
+                    <p className="text-sm">{t('inputRulesHelp.vocabularyTranslationsDesc')}</p>
+                  </div>
+                </FloatingHelpButton>
+                <ProfileButton />
+              </FloatingButtonsContainer>
             </>);
           case APP_MODES.KANJI:
             return (<>
               <GameMenuKanji />
-              <ProfileButton position="bottom-32 right-6" />
-              <FloatingHelpButton
-                icon={HelpCircle}
-                tooltip={t('tooltips.inputRulesHelp')}
-                title={t('inputRulesHelp.kanjiTitle')}
-                theme={theme}
-                position="bottom-18 right-6"
-              >
-                <div>
-                  <h4 className="font-medium mb-2">{t('inputRulesHelp.kanjiReadingsTitle')}</h4>
-                  <p className="text-sm" dangerouslySetInnerHTML={{ __html: t('inputRulesHelp.kanjiReadingsDesc') }} />
-                </div>
+              <FloatingButtonsContainer>
+                <BuyMeACoffeeButton />
+                {KeyboardButton}
+                <FloatingHelpButton
+                  icon={HelpCircle}
+                  tooltip={t('tooltips.inputRulesHelp')}
+                  title={t('inputRulesHelp.kanjiTitle')}
+                >
+                  <div>
+                    <h4 className="font-medium mb-2">{t('inputRulesHelp.kanjiReadingsTitle')}</h4>
+                    <p className="text-sm">{t('inputRulesHelp.kanjiReadingsDesc')}</p>
+                  </div>
 
-                <div>
-                  <h4 className="font-medium mb-2">{t('inputRulesHelp.kanjiMeaningsTitle')}</h4>
-                  <p className="text-sm">{t('inputRulesHelp.kanjiMeaningsDesc')}</p>
-                </div>
-              </FloatingHelpButton>
-              ${KeyboardButton}
+                  <div>
+                    <h4 className="font-medium mb-2">{t('inputRulesHelp.kanjiMeaningsTitle')}</h4>
+                    <p className="text-sm">{t('inputRulesHelp.kanjiMeaningsDesc')}</p>
+                  </div>
+                </FloatingHelpButton>
+                <ProfileButton />
+              </FloatingButtonsContainer>
             </>);
           default:
             return null;

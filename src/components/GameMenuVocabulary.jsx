@@ -133,7 +133,6 @@ export const GameMenuVocabulary = () => {
             options={listOptions}
             selectedValues={wordsSelectedLists}
             onChange={setWordsSelectedLists}
-            theme={theme}
             optionLabel={t('common.list')}
             subItemsLabel={t('common.words')}
             py={3}
@@ -154,8 +153,8 @@ export const GameMenuVocabulary = () => {
         </div>
 
         {/* Advanced options */}
-        <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-50'} rounded-xl p-1`}>
-          <div className={`${theme.cardBg} rounded-lg shadow-inner`}>
+        <div className={`mt-8 ${darkMode ? 'bg-gray-700/50' : 'bg-gray-100'} rounded-xl p-1`}>
+          <div className={`${theme.cardBg} rounded-lg`}>
             <div className={`px-4`}>
               <SegmentedControl
                 value={vocabularyMode}
