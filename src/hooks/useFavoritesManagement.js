@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { GAME_STATES } from '../constants';
 import { updateCacheFavoriteStatus } from '../utils/cacheHelpers';
 
+
 /**
  * Shared hook for managing favorites with optimistic updates
  * Works for both vocabulary and kanji

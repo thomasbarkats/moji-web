@@ -1,11 +1,11 @@
 import { Clock, Square, Sun, Moon, Volume2, Bookmark, Languages } from 'lucide-react';
 import { useRef, useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { useGameContext } from '../contexts/GameContext';
-import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
+import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useAuth } from '../contexts/AuthContext';
 import { useGameActions } from '../hooks';
 import { formatTime, cleanJapaneseText, speakReading } from '../utils';
 import { ProgressBar } from '.';

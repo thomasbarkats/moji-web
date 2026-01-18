@@ -1,6 +1,6 @@
 import { useGameContext } from '../contexts/GameContext';
-import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
+import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameLogicKana } from './useGameLogicKana';
 import { useGameLogicKanji } from './useGameLogicKanji';

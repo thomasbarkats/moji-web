@@ -101,7 +101,6 @@ export const LegalModal = ({ show, onClose, theme }) => {
               <SectionContent>
                 <p><strong>{t('legal.legalNotice.publisherTitle')}</strong></p>
                 <p>{t('legal.legalNotice.publisherName')}: {legalName}</p>
-                <p>{t('legal.legalNotice.status')}: {t('legal.legalNotice.statusValue')}</p>
                 <p>SIRET: {legalSiret}</p>
                 <p>{t('legal.legalNotice.address')}: {legalAddress}</p>
                 <p>{t('legal.legalNotice.email')}: {legalEmail}</p>

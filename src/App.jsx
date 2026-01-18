@@ -1,8 +1,8 @@
 import { HelpCircle, Keyboard } from 'lucide-react';
 import { GAME_STATES, APP_MODES, GAME_MODES } from './constants';
 import { useGameContext } from './contexts/GameContext';
-import { useGameContextVocabulary } from './contexts/GameContextVocabulary';
 import { useGameContextKanji } from './contexts/GameContextKanji';
+import { useGameContextVocabulary } from './contexts/GameContextVocabulary';
 import { useTranslation } from './contexts/I18nContext';
 import { useKeyboardNavigation } from './hooks';
 import { getSortedStats } from './services/statsService';

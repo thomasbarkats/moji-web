@@ -1,6 +1,7 @@
 import { Coffee } from 'lucide-react';
 import { usePreferences } from '../../contexts/PreferencesContext';
 
+
 export const BuyMeACoffeeButton = () => {
   const { theme } = usePreferences();
   const url = import.meta.env.VITE_BUYMEACOFFEE_URL;

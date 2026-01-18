@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { getCacheKey, initializeFavoritesMap } from '../utils/cacheHelpers';
 
+
 /**
  * Shared hook for loading data with caching and favorites initialization
  * Works for both vocabulary and kanji in Review components and game logic

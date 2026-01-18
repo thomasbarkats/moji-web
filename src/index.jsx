@@ -5,8 +5,8 @@ import './index.css';
 import App from './App';
 import { AuthProvider } from './contexts/AuthContext';
 import { GameProvider } from './contexts/GameContext';
-import { VocabularyGameProvider } from './contexts/GameContextVocabulary';
 import { KanjiGameProvider } from './contexts/GameContextKanji';
+import { VocabularyGameProvider } from './contexts/GameContextVocabulary';
 import { I18nProvider } from './contexts/I18nContext';
 import { PreferencesProvider, usePreferences } from './contexts/PreferencesContext';
 

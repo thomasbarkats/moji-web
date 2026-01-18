@@ -1,5 +1,6 @@
 import { usePreferences } from '../../contexts/PreferencesContext';
 
+
 export const SkeletonButton = () => {
   const { theme } = usePreferences();
   return (

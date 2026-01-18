@@ -5,6 +5,7 @@ import { useTranslation } from '../../contexts/I18nContext';
 import { OAuthButtons } from '../OAuthButtons';
 import { UnlockModal } from '../UnlockModal';
 
+
 const isStripeEnabled = import.meta.env.VITE_STRIPE_ENABLED === 'true';
 
 export const LockedContentSection = ({

@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
 import { Coffee } from 'lucide-react';
-import { usePreferences } from '../../contexts/PreferencesContext';
+import { useState, useEffect } from 'react';
 import { useTranslation } from '../../contexts/I18nContext';
+import { usePreferences } from '../../contexts/PreferencesContext';
 
 
 export const SlowLoadingOverlay = ({ isLoading }) => {

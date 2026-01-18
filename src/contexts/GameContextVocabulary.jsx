@@ -2,10 +2,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { GAME_STATES, GAME_MODES } from '../constants';
 import { useDataVocabulary } from '../hooks';
 import { useFavoritesManagement } from '../hooks/useFavoritesManagement';
-import { useAuth } from './AuthContext';
-import { usePreferences } from './PreferencesContext';
-import { useGameContext } from './GameContext';
 import { vocabularyAPI } from '../services/apiService';
+import { useAuth } from './AuthContext';
+import { useGameContext } from './GameContext';
+import { usePreferences } from './PreferencesContext';
 
 
 const GameContextVocabulary = createContext();

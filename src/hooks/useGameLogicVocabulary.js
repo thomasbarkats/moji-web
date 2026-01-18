@@ -2,8 +2,8 @@ import { GAME_MODES, VOCABULARY_MODES, SOUND_MODES } from '../constants';
 import { useGameContext } from '../contexts/GameContext';
 import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
 import { vocabularyAPI } from '../services/apiService';
+import { parseVocabularyEntry } from '../utils/vocabularyHelpers';
 import {
   speakReading,
   selectNextItem,

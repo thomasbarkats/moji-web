@@ -2,10 +2,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { KANJI_STEPS, GAME_STATES } from '../constants';
 import { useDataKanji } from '../hooks';
 import { useFavoritesManagement } from '../hooks/useFavoritesManagement';
-import { useAuth } from './AuthContext';
-import { usePreferences } from './PreferencesContext';
-import { useGameContext } from './GameContext';
 import { kanjiAPI } from '../services/apiService';
+import { useAuth } from './AuthContext';
+import { useGameContext } from './GameContext';
+import { usePreferences } from './PreferencesContext';
 import {
   getFirstStepForKanji,
   getNextStepForKanji,
