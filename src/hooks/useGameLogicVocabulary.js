@@ -61,13 +61,15 @@ export const useGameLogicVocabulary = () => {
       try {
         return {
           ...parseVocabularyEntry(word, language),
-          id: word.id
+          id: word.id,
+          listId: word.listId,
         };
       } catch (error) {
         console.error('Failed to parse word:', word, error);
         // Return a fallback parsed word
         return {
           id: word.id,
+          listId: word.listId,
           jp: word.jp || '',
           cleanedJp: word.jp || '',
           speechText: word.jp || '',
@@ -121,6 +123,7 @@ export const useGameLogicVocabulary = () => {
 
     const newItem = {
       id: nextWord.id,
+      listId: nextWord.listId,
       key: nextWord.jp,
       question: isToJapaneseMode
         ? nextWord.translation

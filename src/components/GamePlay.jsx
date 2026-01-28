@@ -9,6 +9,7 @@ import { usePreferences } from '../contexts/PreferencesContext';
 import { useGameActions } from '../hooks';
 import { formatTime, cleanJapaneseText, speakReading } from '../utils';
 import { ProgressBar } from '.';
+import { StopGameModal } from './ui/StopGameModal';
 import {
   FEEDBACK_TYPES,
   GAME_MODES,
@@ -59,6 +60,7 @@ export const GamePlay = () => {
 
   const inputRef = useRef(null);
   const [liveTime, setLiveTime] = useState(0);
+  const [showStopModal, setShowStopModal] = useState(false);
 
 
   useEffect(() => {
@@ -77,12 +79,34 @@ export const GamePlay = () => {
     return () => clearInterval(interval);
   }, [startTime]);
 
+  // Global Escape key listener
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      if (e.key === 'Escape' && !showStopModal) {
+        e.preventDefault();
+        setShowStopModal(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleGlobalKeyDown);
+    return () => window.removeEventListener('keydown', handleGlobalKeyDown);
+  }, [showStopModal]);
+
 
   const handleKeyDown = (e) => {
     if ((e.key === 'Enter') && !feedback) {
       e.preventDefault();
       handleSubmit();
     }
+  };
+
+  const handleStopGame = () => {
+    setShowStopModal(false);
+    resetGame();
+  };
+
+  const handleCancelStop = () => {
+    setShowStopModal(false);
   };
 
   const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
@@ -199,7 +223,7 @@ export const GamePlay = () => {
                 </button>
               )}
               <button
-                onClick={resetGame}
+                onClick={() => setShowStopModal(true)}
                 className={`p-2 ${theme.buttonSecondary} rounded-full transition-colors cursor-pointer hover:text-red-500`}
               >
                 <Square className="w-5 h-5" />
@@ -338,6 +362,12 @@ export const GamePlay = () => {
           </div>
         )}
       </div>
+
+      <StopGameModal
+        isOpen={showStopModal}
+        onConfirm={handleStopGame}
+        onCancel={handleCancelStop}
+      />
     </div>
   );
 };

@@ -26,6 +26,7 @@ export const GameProvider = ({ children }) => {
   const [sessionStats, setSessionStats] = useState({});
   const [sortBy, setSortBy] = useState(SORT_MODES.FAILURES);
   const [startTime, setStartTime] = useState(null);
+  const [stoppedEarly, setStoppedEarly] = useState(false);
 
   // Expected count for review mode skeleton loading (kanji only - vocabulary uses its own context)
   const [reviewExpectedCountKanji, setReviewExpectedCountKanji] = useState(0);
@@ -79,6 +80,8 @@ export const GameProvider = ({ children }) => {
     setSortBy,
     startTime,
     setStartTime,
+    stoppedEarly,
+    setStoppedEarly,
 
     // Review
     reviewExpectedCountKanji,

@@ -20,7 +20,13 @@ export const MenuControls = ({
   const { t } = useTranslation();
 
   const toggleLanguage = () => {
-    handleLanguageChange(language === LANGUAGES.FR ? LANGUAGES.EN : LANGUAGES.FR);
+    if (language === LANGUAGES.FR) {
+      handleLanguageChange(LANGUAGES.EN);
+    } else if (language === LANGUAGES.EN) {
+      handleLanguageChange(LANGUAGES.JP);
+    } else {
+      handleLanguageChange(LANGUAGES.FR);
+    }
   };
 
   return (

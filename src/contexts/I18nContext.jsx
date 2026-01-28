@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from 'react'
 import frTranslations from '../i18n/fr.json'
 import enTranslations from '../i18n/en.json'
+import jpTranslations from '../i18n/jp.json'
 import { LANGUAGES } from '../constants'
 
 
@@ -9,6 +10,7 @@ const I18nContext = createContext()
 const translations = {
   fr: frTranslations,
   en: enTranslations,
+  jp: jpTranslations,
 }
 
 export function I18nProvider({ children, language = LANGUAGES.FR }) {

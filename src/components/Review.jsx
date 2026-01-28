@@ -13,7 +13,10 @@ export const ReviewLayout = ({
   renderTable,
   isMergedSort,
   loading = false,
-  expectedCount = 0
+  expectedCount = 0,
+  renderControls = null, // Optional additional controls to render next to sort selector
+  renderGlobalProgress = null, // Optional global progress header
+  isModalOpen = false, // Whether a modal is currently open
 }) => {
   const { t } = useTranslation();
   const { theme } = usePreferences();
@@ -23,13 +26,13 @@ export const ReviewLayout = ({
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
+      if (e.key === 'Escape' && !isModalOpen) {
         setGameState(GAME_STATES.MENU);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [setGameState]);
+  }, [setGameState, isModalOpen]);
 
   const allItems = getAllItems(sortBy);
   const shouldMerge = isMergedSort(sortBy);
@@ -48,21 +51,26 @@ export const ReviewLayout = ({
               <span>{t('common.backToMenu')}</span>
             </button>
 
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className={`appearance-none ${theme.sectionBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
-              >
-                {sortOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {t(option.label)}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className={`w-5 h-5 ${theme.textMuted} absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none`} />
+            <div className="flex items-center gap-3">
+              {renderControls && renderControls()}
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className={`appearance-none ${theme.sectionBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
+                >
+                  {sortOptions.map(option => (
+                    <option key={option.value} value={option.value}>
+                      {t(option.label)}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown className={`w-5 h-5 ${theme.textMuted} absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none`} />
+              </div>
             </div>
           </div>
+
+          {renderGlobalProgress && renderGlobalProgress()}
 
           <div className="space-y-8">
             {loading ? (

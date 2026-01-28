@@ -12,6 +12,11 @@
     "toJapanese": "FR→JP",
     "soundOnly": "🔊"
   },
+  "vocabularyModesLong": {
+    "fromJapanese": "Lire le Japonais",
+    "toJapanese": "Écrire en Japonais",
+    "soundOnly": "Écouter le Japonais"
+  },
   "kanjiModes": {
     "all": "Tout",
     "meaningsOnly": "Significations"
@@ -140,7 +145,21 @@
     "on": "On",
     "meanings": "Significations",
     "errors": "Erreurs",
-    "success": "Succès"
+    "success": "Succès",
+    "progression": "Progrès"
+  },
+  "progress": {
+    "notPracticed": " - Pas encore pratiqué",
+    "mastered": " - Maîtrisé !",
+    "keepPracticing": " - Continuez à pratiquer !"
+  },
+  "review": {
+    "loginToTrackProgress": "Connectez-vous pour suivre votre progression",
+    "subscribeToTrackProgress": "Mettez à niveau votre compte pour suivre votre progression pour les kanji et le vocabulaire",
+    "mastered": "maîtrisé(s)",
+    "kunReadings": "lectures kun",
+    "onReadings": "lectures on",
+    "meanings": "significations"
   },
   "settings": {
     "language": "Langue",
@@ -193,7 +212,8 @@
   },
   "languages": {
     "fr": "Français",
-    "en": "English"
+    "en": "English",
+    "jp": "日本語"
   },
   "auth": {
     "login": "Connexion",
@@ -224,7 +244,7 @@
     },
     "perMonth": "par mois",
     "subscribeMonthly": "S'abonner mensuellement",
-    "subscribeLifetime": "S'abonner - À vie",
+    "subscribeLifetime": "Mise à niveau - Accès à vie",
     "redirecting": "Redirection vers Stripe...",
     "comingSoon": "Bientôt disponible"
   },
@@ -250,6 +270,12 @@
     "message": "Le serveur est actuellement inaccessible. Veuillez vérifier votre connexion internet ou réessayer plus tard.",
     "dismiss": "Fermer",
     "retry": "Réessayer"
+  },
+  "stopGame": {
+    "title": "Arrêter la session ?",
+    "message": "Êtes-vous sûr de vouloir arrêter la session en cours ? Votre progression sera sauvegardée.",
+    "cancel": "Continuer à jouer",
+    "confirm": "Arrêter la session"
   },
   "legal": {
     "title": "Informations légales",

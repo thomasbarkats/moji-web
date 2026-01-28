@@ -6,7 +6,8 @@ export const APP_MODES = {
 
 export const LANGUAGES = {
   FR: 'fr',
-  EN: 'en'
+  EN: 'en',
+  JP: 'jp'
 };
 
 export const GAME_STATES = {
@@ -100,4 +101,18 @@ export const KANJI_STEPS = {
   KUN_READINGS: 1,
   ON_READINGS: 2,
   MEANINGS: 3
+};
+
+// Progress tracking API types
+export const ITEM_TYPES = {
+  KANJI: 'kanji',
+  VOCABULARY: 'vocabulary',
+  KANA: 'kana',
+};
+
+// Maps kanji step numbers to progress type strings
+export const KANJI_PROGRESS_TYPES = {
+  [KANJI_STEPS.KUN_READINGS]: 'kun_readings',
+  [KANJI_STEPS.ON_READINGS]: 'on_readings',
+  [KANJI_STEPS.MEANINGS]: 'meanings',
 };

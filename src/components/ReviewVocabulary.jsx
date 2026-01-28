@@ -1,19 +1,20 @@
-import { Volume2, Bookmark } from 'lucide-react';
+import { Volume2, Bookmark, ChevronDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { SORT_MODES } from '../constants';
+import { SORT_MODES, ITEM_TYPES, VOCABULARY_MODES } from '../constants';
 import { useAuth } from '../contexts/AuthContext';
 import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
-import { useDataLoader } from '../hooks';
+import { useDataLoader, useProgress } from '../hooks';
 import { vocabularyAPI } from '../services/apiService';
 import { speakReading, parseVocabularyEntry } from '../utils';
-import { ReviewLayout } from './';
+import { ReviewLayout, ScoreProgressBar } from './';
+import { ReviewProgressHeader } from './ui/ReviewProgressHeader';
 
 
 export const ReviewVocabulary = () => {
   const { t } = useTranslation();
-  const { theme, language, showFurigana } = usePreferences();
+  const { theme, language, showFurigana, vocabularyMode, darkMode } = usePreferences();
   const {
     vocabularyLists,
     wordsSelectedLists,
@@ -26,8 +27,14 @@ export const ReviewVocabulary = () => {
     reviewExpectedCount,
   } = useGameContextVocabulary();
 
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, hasActiveSubscription, hasLifetimeAccess } = useAuth();
+  const haveAccess = hasActiveSubscription || hasLifetimeAccess;
   const [rawWords, setRawWords] = useState([]);
+  const [reviewVocabMode, setReviewVocabMode] = useState(vocabularyMode);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Fetch progress data for authenticated users
+  const { getProgress } = useProgress(ITEM_TYPES.VOCABULARY);
 
   const { loading, loadData } = useDataLoader({
     cache: wordsCache,
@@ -54,6 +61,34 @@ export const ReviewVocabulary = () => {
     { value: SORT_MODES.DEFAULT, label: 'sortModes.default' },
     { value: SORT_MODES.ALPHABETICAL, label: 'sortModes.alphabetical' }
   ];
+
+  const vocabModeOptions = [
+    { value: VOCABULARY_MODES.FROM_JAPANESE, label: 'vocabularyModesLong.fromJapanese' },
+    { value: VOCABULARY_MODES.TO_JAPANESE, label: 'vocabularyModesLong.toJapanese' },
+    { value: VOCABULARY_MODES.SOUND_ONLY, label: 'vocabularyModesLong.soundOnly' },
+  ];
+
+  // Render mode selector for premium users
+  const renderControls = () => {
+    if (!haveAccess) return null;
+
+    return (
+      <div className="relative">
+        <select
+          value={reviewVocabMode}
+          onChange={(e) => setReviewVocabMode(e.target.value)}
+          className={`appearance-none ${theme.sectionBg} ${theme.border} ${theme.text} rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer`}
+        >
+          {vocabModeOptions.map(option => (
+            <option key={option.value} value={option.value}>
+              {t(option.label)}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className={`w-5 h-5 ${theme.textMuted} absolute right-2 top-1/2 transform -translate-y-1/2 pointer-events-none`} />
+      </div>
+    );
+  };
 
   const isMergedSort = (sortBy) => sortBy === SORT_MODES.ALPHABETICAL;
 
@@ -130,6 +165,7 @@ export const ReviewVocabulary = () => {
 
   const renderWordRow = (wordData) => {
     const { parsed } = wordData;
+    const progress = haveAccess ? getProgress(wordData.original.id, reviewVocabMode) : { score: 0 };
 
     return (
       <tr key={`${wordData.listKey}-${wordData.originalIndex}`} className={`${theme.border} border-b ${theme.selectorHover} transition-colors`}>
@@ -168,6 +204,13 @@ export const ReviewVocabulary = () => {
         </td>
         <td className={`p-4 ${theme.text}`}>{parsed.translation}</td>
         <td className={`p-4 ${theme.textMuted} text-sm`}>{parsed.infoText || ''}</td>
+        {haveAccess && (
+          <td className="p-4">
+            <div className="flex items-center justify-center">
+              <ScoreProgressBar score={progress.score} theme={theme} />
+            </div>
+          </td>
+        )}
         {isAuthenticated && (
           <td className="p-4 text-center">
             <button
@@ -186,6 +229,38 @@ export const ReviewVocabulary = () => {
     );
   };
 
+  const renderGlobalProgressHeader = () => {
+    // Calculate global progress for premium users
+    const allItems = getAllWords(SORT_MODES.DEFAULT);
+    const totalWords = allItems.length;
+    const masteredWords = allItems.filter(wordData => {
+      const progress = getProgress(wordData.original.id, reviewVocabMode);
+      return progress.score === 5;
+    }).length;
+
+    const progressPercentage = totalWords > 0 ? (masteredWords / totalWords) * 100 : 0;
+
+    // Get full mode label for display
+    const modeLabelLong = reviewVocabMode === VOCABULARY_MODES.TO_JAPANESE
+      ? t('vocabularyModesLong.toJapanese')
+      : reviewVocabMode === VOCABULARY_MODES.SOUND_ONLY
+        ? t('vocabularyModesLong.soundOnly')
+        : t('vocabularyModesLong.fromJapanese');
+
+    return (
+      <ReviewProgressHeader
+        theme={theme}
+        darkMode={darkMode}
+        progressPercentage={progressPercentage}
+        onModalOpenChange={setIsModalOpen}
+      >
+        <span>{masteredWords} {t('common.words')} / {totalWords} {t('review.mastered')}</span>
+        <span className={theme.textMuted}>|</span>
+        <span className={theme.textSecondary}>{modeLabelLong}</span>
+      </ReviewProgressHeader>
+    );
+  };
+
   const renderTable = (words, listName, key) => (
     <div key={key}>
       {listName && (
@@ -200,6 +275,9 @@ export const ReviewVocabulary = () => {
             <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.japanese')}</th>
             <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.translation')}</th>
             <th className={`text-left p-4 ${theme.text} font-semibold`}>{t('titles.notes')}</th>
+            {haveAccess && (
+              <th className={`text-center p-4 ${theme.text} font-semibold`}>{t('titles.progression')}</th>
+            )}
             {isAuthenticated && (<th></th>)}
           </tr>
         </thead>
@@ -218,6 +296,9 @@ export const ReviewVocabulary = () => {
       isMergedSort={isMergedSort}
       loading={loading}
       expectedCount={reviewExpectedCount}
+      renderControls={renderControls}
+      renderGlobalProgress={renderGlobalProgressHeader}
+      isModalOpen={isModalOpen}
     />
   );
 };

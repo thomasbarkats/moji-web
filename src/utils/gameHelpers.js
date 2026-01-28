@@ -49,6 +49,7 @@ export const initializeKanaData = (kanaArray) => {
       lastSeen: null
     };
     initialStats[kana.char] = {
+      id: kana.id,
       key: kana.char,
       title: kana.char,
       subtitle: kana.reading,
@@ -75,6 +76,7 @@ export const initializeKanjiData = (kanjiArray) => {
       lastSeen: null
     };
     initialStats[key] = {
+      id: kanji.id,
       key,
       title: kanji.character,
       subtitle: '',
@@ -100,6 +102,7 @@ export const initializeVocabularyData = (words, vocabularyMode) => {
       lastSeen: null
     };
     initialStats[key] = {
+      id: word.id,
       key: word.jp,
       title: vocabularyMode === VOCABULARY_MODES.TO_JAPANESE
         ? word.translation

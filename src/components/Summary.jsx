@@ -1,24 +1,83 @@
 import { Trophy, Target, BarChart3, Clock, ChevronDown } from 'lucide-react';
-import { GAME_MODES } from '../constants';
+import { useEffect, useState } from 'react';
+import { GAME_MODES, ITEM_TYPES, KANJI_PROGRESS_TYPES, KANJI_STEPS, KANJI_MODES } from '../constants';
+import { useAuth } from '../contexts/AuthContext';
 import { useGameContext } from '../contexts/GameContext';
 import { useTranslation } from '../contexts/I18nContext';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useProgress } from '../hooks';
 import { calculateTintStyle } from '../services/statsService';
-import { formatTime } from '../utils';
-import { Button, StatsCard } from '.';
+import { formatTime, triggerConfetti } from '../utils';
+import { Button, StatsCard, ScoreProgressBar } from '.';
+import { ReviewProgressHeader } from './ui/ReviewProgressHeader';
 
 
 export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
   const { t } = useTranslation();
-  const { gameMode, sessionStats, sortBy, setSortBy } = useGameContext();
-  const { requiredSuccesses, theme } = usePreferences();
+  const { gameMode, sessionStats, sortBy, setSortBy, stoppedEarly } = useGameContext();
+  const { requiredSuccesses, theme, vocabularyMode, darkMode, kanjiMode } = usePreferences();
+  const { hasActiveSubscription, hasLifetimeAccess } = useAuth();
+  const haveAccess = hasActiveSubscription || hasLifetimeAccess;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Determine item type for progress fetching
+  const itemType = gameMode === GAME_MODES.VOCABULARY
+    ? ITEM_TYPES.VOCABULARY
+    : gameMode === GAME_MODES.KANJI
+      ? ITEM_TYPES.KANJI
+      : ITEM_TYPES.KANA;
+
+  const { getProgress } = useProgress(itemType);
+
+  // Helper function to calculate kanji score
+  // In meanings_only mode: return only meanings score
+  // In all mode: return average of kun, on, and meanings scores
+  const getKanjiScore = (itemId) => {
+    if (!itemId) return 0;
+
+    if (kanjiMode === KANJI_MODES.MEANINGS_ONLY) {
+      const meaningsProgress = getProgress(itemId, KANJI_PROGRESS_TYPES[KANJI_STEPS.MEANINGS]);
+      return meaningsProgress?.score || 0;
+    }
+
+    // Mode ALL: calculate average of kun, on, and meanings
+    const kunProgress = getProgress(itemId, KANJI_PROGRESS_TYPES[KANJI_STEPS.KUN]);
+    const onProgress = getProgress(itemId, KANJI_PROGRESS_TYPES[KANJI_STEPS.ON]);
+    const meaningsProgress = getProgress(itemId, KANJI_PROGRESS_TYPES[KANJI_STEPS.MEANINGS]);
+
+    const kunScore = kunProgress?.score || 0;
+    const onScore = onProgress?.score || 0;
+    const meaningsScore = meaningsProgress?.score || 0;
+
+    // Calculate average and round to nearest integer
+    return Math.round((kunScore + onScore + meaningsScore) / 3);
+  };
+
+  // Trigger confetti only when session is completed normally (not stopped early)
+  useEffect(() => {
+    if (!stoppedEarly) {
+      triggerConfetti();
+    }
+  }, [stoppedEarly]);
+
+  // Handle Escape key to return to menu
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape' && !isModalOpen) {
+        onNewSession();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onNewSession, isModalOpen]);
 
   const total = Object.values(sessionStats).length;
   const totalFailures = Object.values(sessionStats).reduce((sum, s) => sum + (s.failures || 0), 0);
   const elapsedTime = Object.values(sessionStats).reduce((sum, s) => sum + (s.timeSpent || 0), 0);
   const isVocabularyMode = gameMode === GAME_MODES.VOCABULARY;
   const isKanjiMode = gameMode === GAME_MODES.KANJI;
+  const isKanaMode = !isVocabularyMode || !isKanjiMode;
 
 
   const getFinalSummaryText = () => {
@@ -76,17 +135,70 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
     }
   };
 
+  const renderGlobalProgressHeader = () => {
+    // Calculate global progress for items in this session
+    const allItems = Object.values(sessionStats);
+    const totalItems = allItems.length;
+
+    // Count mastered items (score === 5)
+    const masteredItems = allItems.filter(item => {
+      if (!item.id) return false;
+
+      let score;
+      if (isKanjiMode) {
+        score = getKanjiScore(item.id);
+      } else if (isVocabularyMode) {
+        const progress = getProgress(item.id, vocabularyMode);
+        score = progress?.score || 0;
+      } else {
+        const progress = getProgress(item.id, 'kana');
+        score = progress?.score || 0;
+      }
+
+      return score === 5;
+    }).length;
+
+    const progressPercentage = totalItems > 0 ? (masteredItems / totalItems) * 100 : 0;
+
+    // Determine the label for items
+    const itemLabel = isVocabularyMode
+      ? t('common.words')
+      : isKanjiMode
+        ? t('common.kanji')
+        : t('common.kana');
+
+    return (
+      <ReviewProgressHeader
+        theme={theme}
+        darkMode={darkMode}
+        progressPercentage={progressPercentage}
+        haveAccess={isKanaMode || haveAccess}
+        onModalOpenChange={setIsModalOpen}
+      >
+        <span>{masteredItems} {itemLabel} / {totalItems} {t('review.mastered')}</span>
+      </ReviewProgressHeader>
+    );
+  };
+
   return (
     <div className={`min-h-screen ${theme.bg} p-4 flex items-center -mb-8`}>
       <div className="w-full max-w-4xl mx-auto">
         <div className={`${theme.cardBg} backdrop-blur-sm rounded-3xl shadow-2xl p-8`}>
-          <div className="text-center mb-8">
-            <div className="flex justify-center mb-4">
-              <Trophy className="w-16 h-16 text-yellow-500" />
+          {!stoppedEarly && (
+            <div className="text-center mb-8">
+              <div className="flex justify-center mb-4">
+                <Trophy className="w-16 h-16 text-yellow-500" />
+              </div>
+              <h2 className={`text-3xl font-bold ${theme.text} mb-2`}>{t('summary.congratulations')}</h2>
+              <p className={theme.textSecondary}>{getFinalSummaryText()}</p>
             </div>
-            <h2 className={`text-3xl font-bold ${theme.text} mb-2`}>{t('summary.congratulations')}</h2>
-            <p className={theme.textSecondary}>{getFinalSummaryText()}</p>
-          </div>
+          )}
+
+          {stoppedEarly && (
+            <div className="text-center mb-8">
+              <h2 className={`text-3xl font-bold ${theme.text} mb-2`}>{t('summary.title')}</h2>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <StatsCard
@@ -128,14 +240,32 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
             </div>
           </div>
 
+          {renderGlobalProgressHeader()}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {sortedStats.map((item) => {
               const bgStyle = calculateTintStyle(item, Object.values(sessionStats), sortBy, requiredSuccesses, isVocabularyMode);
+              const isPracticed = item.timeSpent > 0;
+
+              // Get progress for this item
+              let progressScore = 0;
+              const canShowProgress = isKanaMode || haveAccess;
+              if (canShowProgress && item.id) {
+                if (isKanjiMode) {
+                  progressScore = getKanjiScore(item.id);
+                } else if (isVocabularyMode) {
+                  const vocabProgress = getProgress(item.id, vocabularyMode);
+                  progressScore = vocabProgress?.score || 0;
+                } else {
+                  const kanaProgress = getProgress(item.id, 'kana');
+                  progressScore = kanaProgress?.score || 0;
+                }
+              }
 
               return (
                 <div
                   key={item.key}
-                  className={`rounded-lg p-4 transition-colors duration-200 ${item.infoText ? 'cursor-help' : ''}`}
+                  className={`rounded-lg p-4 transition-colors duration-200 ${item.infoText ? 'cursor-help' : ''} ${!isPracticed ? 'opacity-50' : ''}`}
                   style={bgStyle}
                   title={item.infoText || ''}
                 >
@@ -147,10 +277,16 @@ export const Summary = ({ onNewSession, onRestartSameMode, sortedStats }) => {
                       {item.subtitle}
                     </span>
                   </div>
-                  <div className={`flex justify-between items-center text-sm ${theme.textMuted}`}>
-                    <span>{formatTime(item.timeSpent || 0)}</span>
+                  <div className={`flex justify-between items-center text-sm ${theme.textMuted} mb-2`}>
+                    {isPracticed && <span>{formatTime(item.timeSpent || 0)}</span>}
+                    {!isPracticed && <span></span>}
                     {(item.failures || 0) > 0 ? <span>✗ {item.failures}</span> : <span></span>}
                   </div>
+                  {canShowProgress && (
+                    <div className="mt-2">
+                      <ScoreProgressBar score={progressScore} theme={theme} />
+                    </div>
+                  )}
                 </div>
               );
             })}

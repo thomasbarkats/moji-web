@@ -178,6 +178,33 @@ export const subscriptionAPI = {
   }),
 };
 
+export const progressAPI = {
+  /**
+   * Record a game result (success/failure) for progress tracking
+   * @param {Object} params
+   * @param {string} params.itemId - The ID of the item
+   * @param {string} params.itemType - 'kanji' | 'vocabulary' | 'kana'
+   * @param {string} params.progressType - Specific progress type
+   * @param {string} params.listId - The list ID the item belongs to
+   * @param {boolean} params.success - Whether the answer was correct
+   */
+  recordProgress: ({ itemId, itemType, progressType, listId, success }) =>
+    request('/progress', {
+      method: 'POST',
+      body: JSON.stringify({ itemId, itemType, progressType, listId, success }),
+    }),
+
+  /**
+   * Retrieve user progress by item type
+   * @param {string} itemType - 'kanji' | 'vocabulary' | 'kana'
+   * @param {string} [listId] - Optional list ID filter
+   */
+  getProgress: (itemType, listId) => {
+    const params = new URLSearchParams({ itemType });
+    if (listId) params.append('listId', listId);
+    return request(`/progress?${params.toString()}`);
+  },
+};
 
 export default {
   kana: kanaAPI,
@@ -185,4 +212,5 @@ export default {
   kanji: kanjiAPI,
   auth: authAPI,
   subscription: subscriptionAPI,
+  progress: progressAPI,
 };

@@ -58,6 +58,7 @@ export const useGameLogicKana = () => {
     if (!nextKana) return null;
 
     const newItem = {
+      id: nextKana.id,
       key: nextKana.char,
       question: nextKana.char,
       answer: nextKana.reading,

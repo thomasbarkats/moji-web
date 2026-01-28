@@ -10,7 +10,8 @@ export const LanguageSelector = ({ theme, darkMode }) => {
 
   const languages = [
     { code: LANGUAGES.FR, label: t('languages.fr') },
-    { code: LANGUAGES.EN, label: t('languages.en') }
+    { code: LANGUAGES.EN, label: t('languages.en') },
+    { code: LANGUAGES.JP, label: t('languages.jp') }
   ];
 
   return (

@@ -95,6 +95,7 @@ export const useGameLogicKanji = () => {
 
     const newItem = {
       id: nextKanji.id,
+      listId: nextKanji.listId,
       key: nextKanji.character,
       question: nextKanji.character,
       answer: '',

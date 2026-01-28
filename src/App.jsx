@@ -51,7 +51,7 @@ function App() {
   const { initializeKanaGame } = useGameLogicKana();
   const { initializeVocabularyGame } = useGameLogicVocabulary();
   const { initializeKanjiGame } = useGameLogicKanji();
-  const { resetGame } = useGameActions();
+  const { clearGameData } = useGameActions();
 
 
   const KeyboardButton = (
@@ -151,7 +151,7 @@ function App() {
       case GAME_STATES.SUMMARY:
         return (
           <Summary
-            onNewSession={resetGame}
+            onNewSession={clearGameData}
             onRestartSameMode={() => {
               switch (gameMode) {
                 case GAME_MODES.VOCABULARY:

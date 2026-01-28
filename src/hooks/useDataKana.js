@@ -3,11 +3,33 @@ import { toRomaji } from 'wanakana';
 import { kanaAPI } from '../services/apiService';
 
 
-const convertKanaList = (kanaArray) => {
-  return kanaArray.map(char => ({
-    char,
-    reading: toRomaji(char)
-  }));
+/**
+ * Groups flat kana array by category and adds reading
+ * @param {Array} kanaArray - Array of { id, character, category }
+ * @returns {Object} Grouped kana data by category
+ */
+const groupKanaByCategory = (kanaArray) => {
+  const grouped = {
+    hiragana: [],
+    katakana: [],
+    hiraganaDakuten: [],
+    katakanaDakuten: [],
+    hiraganaCombinations: [],
+    katakanaCombinations: []
+  };
+
+  kanaArray.forEach(kana => {
+    const category = kana.category;
+    if (grouped[category]) {
+      grouped[category].push({
+        id: kana.id,
+        char: kana.character,
+        reading: toRomaji(kana.character)
+      });
+    }
+  });
+
+  return grouped;
 };
 
 export const useDataKana = () => {
@@ -29,14 +51,9 @@ export const useDataKana = () => {
         setError(null);
         const response = await kanaAPI.getAll();
 
-        setKanaData({
-          hiragana: convertKanaList(response.hiragana),
-          katakana: convertKanaList(response.katakana),
-          hiraganaDakuten: convertKanaList(response.hiraganaDakuten),
-          katakanaDakuten: convertKanaList(response.katakanaDakuten),
-          hiraganaCombinations: convertKanaList(response.hiraganaCombinations),
-          katakanaCombinations: convertKanaList(response.katakanaCombinations)
-        });
+        // API now returns flat array of { id, character, category }
+        const kanaArray = Array.isArray(response) ? response : (response?.items || response?.data || []);
+        setKanaData(groupKanaByCategory(kanaArray));
       } catch (err) {
         console.error('Failed to load kana data:', err);
         setError(err.message);

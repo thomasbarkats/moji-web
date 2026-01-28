@@ -117,23 +117,54 @@ const compareByText = (a, b) => {
 };
 
 const sortByFailures = (stats) => {
-  return [...stats].sort((a, b) => {
+  // Separate practiced (timeSpent > 0) from unpracticed (timeSpent === 0)
+  const practiced = stats.filter(s => (s.timeSpent || 0) > 0);
+  const unpracticed = stats.filter(s => (s.timeSpent || 0) === 0);
+
+  // Sort practiced items by failures
+  const sortedPracticed = practiced.sort((a, b) => {
     const failuresDiff = (b.failures || 0) - (a.failures || 0);
     if (failuresDiff !== 0) return failuresDiff;
     return compareByText(a, b);
   });
+
+  // Sort unpracticed items alphabetically
+  const sortedUnpracticed = unpracticed.sort(compareByText);
+
+  // Return practiced first, then unpracticed
+  return [...sortedPracticed, ...sortedUnpracticed];
 };
 
 const sortByTime = (stats) => {
-  return [...stats].sort((a, b) => {
+  // Separate practiced (timeSpent > 0) from unpracticed (timeSpent === 0)
+  const practiced = stats.filter(s => (s.timeSpent || 0) > 0);
+  const unpracticed = stats.filter(s => (s.timeSpent || 0) === 0);
+
+  // Sort practiced items by time
+  const sortedPracticed = practiced.sort((a, b) => {
     const timeDiff = (b.timeSpent || 0) - (a.timeSpent || 0);
     if (timeDiff !== 0) return timeDiff;
     return compareByText(a, b);
   });
+
+  // Sort unpracticed items alphabetically
+  const sortedUnpracticed = unpracticed.sort(compareByText);
+
+  // Return practiced first, then unpracticed
+  return [...sortedPracticed, ...sortedUnpracticed];
 };
 
 const sortAlphabetically = (stats) => {
-  return [...stats].sort(compareByText);
+  // Separate practiced (timeSpent > 0) from unpracticed (timeSpent === 0)
+  const practiced = stats.filter(s => (s.timeSpent || 0) > 0);
+  const unpracticed = stats.filter(s => (s.timeSpent || 0) === 0);
+
+  // Sort both groups alphabetically
+  const sortedPracticed = practiced.sort(compareByText);
+  const sortedUnpracticed = unpracticed.sort(compareByText);
+
+  // Return practiced first, then unpracticed
+  return [...sortedPracticed, ...sortedUnpracticed];
 };
 
 const enrichStatsWithVocabulary = (sessionStats, currentVocabularyWords) => {

@@ -2,17 +2,21 @@ import { useGameContext } from '../contexts/GameContext';
 import { useGameContextKanji } from '../contexts/GameContextKanji';
 import { useGameContextVocabulary } from '../contexts/GameContextVocabulary';
 import { usePreferences } from '../contexts/PreferencesContext';
+import { useAuth } from '../contexts/AuthContext';
 import { useGameLogicKana } from './useGameLogicKana';
 import { useGameLogicKanji } from './useGameLogicKanji';
 import { useGameLogicVocabulary } from './useGameLogicVocabulary';
+import { progressAPI } from '../services/apiService';
 import {
   GAME_STATES,
   FEEDBACK_TYPES,
   TIMING,
   SOUND_MODES,
   GAME_MODES,
-  VOCABULARY_MODES,
   KANJI_STEPS,
+  ITEM_TYPES,
+  KANJI_PROGRESS_TYPES,
+  VOCABULARY_MODES,
 } from '../constants';
 import {
   getAllKanaForMode,
@@ -44,6 +48,7 @@ export const useGameActions = () => {
     setSessionStats,
     setStartTime,
     setFeedback,
+    setStoppedEarly,
   } = useGameContext();
 
   const {
@@ -74,6 +79,55 @@ export const useGameActions = () => {
   const { selectNextVocabularyWord } = useGameLogicVocabulary();
   const { selectNextKanji } = useGameLogicKanji();
 
+  const { isAuthenticated } = useAuth();
+
+  // Helper to get progress type based on game mode and current step
+  const getProgressType = (mode, step = null) => {
+    switch (mode) {
+      case GAME_MODES.KANJI:
+        return KANJI_PROGRESS_TYPES[step] ?? null;
+      case GAME_MODES.VOCABULARY:
+        return vocabularyMode;
+      default:
+        return 'kana';
+    }
+  };
+
+  // Helper to get item type based on game mode
+  const getItemType = (mode) => {
+    switch (mode) {
+      case GAME_MODES.KANJI:
+        return ITEM_TYPES.KANJI;
+      case GAME_MODES.VOCABULARY:
+        return ITEM_TYPES.VOCABULARY;
+      default:
+        return ITEM_TYPES.KANA;
+    }
+  };
+
+  // Record progress to the API (fire-and-forget, no error handling needed)
+  const recordProgress = (item, isCorrect, step = null) => {
+    if (!isAuthenticated || !item) return;
+
+    const itemType = getItemType(gameMode);
+    const progressType = getProgressType(gameMode, step);
+
+    if (!progressType) return;
+
+    // Use item.id for all item types (kana now has id too)
+    const itemId = item.id;
+    const listId = item.listId ?? gameMode; // For kana, use the game mode as listId
+
+    progressAPI.recordProgress({
+      itemId: String(itemId),
+      itemType,
+      progressType,
+      listId: String(listId),
+      success: isCorrect,
+    }).catch(() => {
+      // Silent failure - progress tracking should not interrupt gameplay
+    });
+  };
 
   const calculateTimeSpent = () => {
     if (!currentItemStartRef.current) return 0;
@@ -108,12 +162,12 @@ export const useGameActions = () => {
   };
 
   const finishSession = () => {
+    setStoppedEarly(false);
     setGameState(GAME_STATES.SUMMARY);
     setCurrentItem(null);
     currentItemStartRef.current = null;
 
     playFeedbackSound('summary', soundMode);
-    triggerConfetti();
   };
 
   const proceedToNextItem = (newProgress, forceRepeatKanji = null, forceRestartStep = null, forceRepeatWord = null, forceRepeatKana = null) => {
@@ -157,6 +211,9 @@ export const useGameActions = () => {
 
     let newProgress = progress;
     let newStats = sessionStats;
+
+    // Always record progress for each kanji step (kun, on, meanings)
+    recordProgress(currentItem, isCorrect, currentStep);
 
     if (!isCorrect || isLastStep) {
       const timeSpent = calculateTimeSpent();
@@ -240,6 +297,9 @@ export const useGameActions = () => {
 
     currentItemStartRef.current = null;
 
+    // Record progress to API for vocabulary and kana modes
+    recordProgress(currentItem, isCorrect);
+
     const shouldPlaySpeech = (soundMode === SOUND_MODES.BOTH || soundMode === SOUND_MODES.SPEECH_ONLY) &&
       !(isVocabularyMode && vocabularyMode === VOCABULARY_MODES.FROM_JAPANESE);
 
@@ -279,6 +339,14 @@ export const useGameActions = () => {
   };
 
   const resetGame = () => {
+    // Show summary with stopped early flag
+    setStoppedEarly(true);
+    setGameState(GAME_STATES.SUMMARY);
+    setFeedback(null);
+  };
+
+  const clearGameData = () => {
+    // Clear all game data and return to menu
     setGameState(GAME_STATES.MENU);
     setGameMode('');
     setCurrentItem(null);
@@ -290,11 +358,13 @@ export const useGameActions = () => {
     setCurrentVocabularyWords([]);
     resetSteps();
     currentItemStartRef.current = null;
+    setStoppedEarly(false);
   };
 
   return {
     handleSubmit,
     resetGame,
+    clearGameData,
     finishSession,
   };
 };

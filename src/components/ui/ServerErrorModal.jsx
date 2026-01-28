@@ -35,7 +35,7 @@ export const ServerErrorModal = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div className={`${theme.cardBg} rounded-2xl shadow-2xl max-w-md w-full p-6 relative`}>
         <div className="text-center">
           <div className={`inline-flex items-center justify-center w-16 h-16 ${darkMode ? 'bg-red-500/20' : 'bg-red-100'} rounded-full mb-4`}>

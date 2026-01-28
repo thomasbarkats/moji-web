@@ -12,6 +12,11 @@
     "toJapanese": "EN→JP",
     "soundOnly": "🔊"
   },
+  "vocabularyModesLong": {
+    "fromJapanese": "Read Japanese",
+    "toJapanese": "Write Japanese",
+    "soundOnly": "Listen to Japanese"
+  },
   "kanjiModes": {
     "all": "All",
     "meaningsOnly": "Meanings only"
@@ -160,7 +165,21 @@
     "on": "On",
     "meanings": "Meanings",
     "errors": "Errors",
-    "success": "Success"
+    "success": "Success",
+    "progression": "Progress"
+  },
+  "progress": {
+    "notPracticed": " - Not yet practiced",
+    "mastered": " - Mastered!",
+    "keepPracticing": " - Keep practicing!"
+  },
+  "review": {
+    "loginToTrackProgress": "Log in to track your progression",
+    "subscribeToTrackProgress": "Upgrade your account to track your progression for Kanji & Vocabulary",
+    "mastered": "mastered",
+    "kunReadings": "kun readings",
+    "onReadings": "on readings",
+    "meanings": "meanings"
   },
   "settings": {
     "language": "Language",
@@ -213,7 +232,8 @@
   },
   "languages": {
     "fr": "Français",
-    "en": "English"
+    "en": "English",
+    "jp": "日本語"
   },
   "auth": {
     "login": "Login",
@@ -244,7 +264,7 @@
     },
     "perMonth": "per month",
     "subscribeMonthly": "Subscribe Monthly",
-    "subscribeLifetime": "Subscribe - Lifetime",
+    "subscribeLifetime": "Upgrade - Lifetime access",
     "redirecting": "Redirecting to Stripe...",
     "comingSoon": "Coming soon"
   },
@@ -270,6 +290,12 @@
     "message": "The server is currently unreachable. Please check your internet connection or try again later.",
     "dismiss": "Close",
     "retry": "Retry"
+  },
+  "stopGame": {
+    "title": "Stop Session?",
+    "message": "Are you sure you want to stop the current session? Your progress will be saved.",
+    "cancel": "Continue Playing",
+    "confirm": "Stop Session"
   },
   "legal": {
     "title": "Legal Information",
